@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { ClockComponent } from './Clock';
 
 export function Header() {
@@ -9,7 +10,10 @@ export function Header() {
         className='max-h-6 max-w-6'
       />
       <h1 className='grow'>Garazas</h1>
+      <div className='flex flex-row gap-1'>
+      <p>{moment().format('YYYY-MM-DD')}</p>
       <ClockComponent />
+      </div>
     </div>
   );
 }

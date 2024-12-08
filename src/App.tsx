@@ -1,6 +1,11 @@
 import { HashRouter, Route, Routes } from 'react-router';
 import { Header } from './components/Header';
-import { Dashboard } from './pages/Dashboard.js';
+import { Dashboard } from './pages/Dashboard';
+import { CarEdit } from './pages/CarEdit';
+
+export type EditCarType = {
+  id?: string
+}
 
 export default function App() {
   return (
@@ -11,6 +16,10 @@ export default function App() {
           <Route
             path='/'
             element={<Dashboard />}
+          />
+          <Route
+            path='/edit-car/:id'
+            element={<CarEdit/>}
           />
         </Routes>
       </HashRouter>
