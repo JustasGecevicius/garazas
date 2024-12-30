@@ -1,7 +1,15 @@
-type Props = {
+import { RepairHistoryItem } from './RepairHistoryItem';
 
-}
+type Props = {};
 
 export function RepairHistory(props: Props) {
-  return <div className="grow-1 w-full outline outline-red-900 rounded-md"> </div>
+  const repairHistoryList = [{ date: 'nx', note: 'nx' }];
+
+  return (
+    <div className='w-full p-2 rounded-md grow-1 outline outline-red-900'>
+      {repairHistoryList?.map((repair) => (
+        <RepairHistoryItem data={repair} />
+      ))}
+    </div>
+  );
 }

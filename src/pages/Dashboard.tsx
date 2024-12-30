@@ -1,15 +1,19 @@
-import { CarCard } from '../components/CarCard';
+import { CarCard } from '../components/carCard/CarCard';
+import { BaseModalWrapper } from '../components/modals/BaseModal';
 
 export function Dashboard() {
-
   const cars = [undefined, undefined, undefined];
   return (
-    <div className='w-full flex flex-col gap-1 items-center'>
-      <div className='flex flex-row gap-1 w-full justify-center'>
-      {cars?.map((car) => (
-        <CarCard car={car} />
-      ))}
+    <div className='flex flex-col items-center w-full gap-1'>
+      <div className='flex flex-row justify-center w-full gap-1'>
+        {cars?.map((car) => (
+          <CarCard
+            car={car}
+            key={Math.random()}
+          />
+        ))}
       </div>
+      <BaseModalWrapper isOpen={true}></BaseModalWrapper>
     </div>
   );
 }
