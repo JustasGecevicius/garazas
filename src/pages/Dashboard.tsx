@@ -1,5 +1,4 @@
 import { CarCard } from '../components/carCard/CarCard';
-import { BaseModalWrapper } from '../components/modals/BaseModal';
 
 export function Dashboard() {
   const cars = [undefined, undefined, undefined];
@@ -13,7 +12,6 @@ export function Dashboard() {
           />
         ))}
       </div>
-      <BaseModalWrapper isOpen={true}></BaseModalWrapper>
     </div>
   );
 }

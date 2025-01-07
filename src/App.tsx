@@ -1,28 +1,15 @@
-import { HashRouter, Route, Routes } from 'react-router';
 import { Header } from './components/header/Header';
-import { Dashboard } from './pages/Dashboard';
-import { CarEdit } from './pages/CarEdit';
+import { Router } from './Router';
 
 export type EditCarType = {
-  id?: string
-}
+  id?: string;
+};
 
 export default function App() {
   return (
-    <div className='p-2 bg-stone-800 h-screen flex flex-col gap-2 items-center text-white'>
+    <div className='flex flex-col items-center h-screen gap-2 p-2 text-white bg-stone-800'>
       <Header />
-      <HashRouter>
-        <Routes>
-          <Route
-            path='/'
-            element={<Dashboard />}
-          />
-          <Route
-            path='/edit-car/:id'
-            element={<CarEdit/>}
-          />
-        </Routes>
-      </HashRouter>
+      <Router />
     </div>
   );
 }

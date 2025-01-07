@@ -1,14 +1,21 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const sqlite3 = require('sqlite3');
 const { TABLES } = require('./tablesList');
-const { fullQuery, allQueries } = require('./dbInfo/dbInitQueries');
+const { allQueries } = require('./dbInfo/dbInitQueries');
 const {
-  engineSizeMeasurementQueries,
+  engineSizeMeasurementQuery,
+  engineSizeMeasurementInitValues,
+  fuelTypeValues,
+  fuelTypeQuery,
+  vehicleTypeValues,
+  vehicleTypeQuery,
 } = require('./dbInfo/defaultTablesQueries');
+const { insertValuesIfNoneFound } = require('./dbInfo/dbInitHelperFunctions');
 
 const sqlite3Verbose = sqlite3.verbose();
 
 function createWindow() {
+  const queriesList = [];
   const db = new sqlite3Verbose.Database('db');
   const win = new BrowserWindow({
     width: 800,
@@ -19,21 +26,21 @@ function createWindow() {
     },
   });
   db.serialize(() => {
-    allQueries.forEach((query) => {
-      db.run(query);
-    });
-    // db.run(
-    //   `SELECT name FROM engine_size_measurement_type WHERE type='table' AND name='engine_size_measurement_type';`,
-    //   (res, err) => {
-    //     console.log(res, err);
-    //     if (res === null) {
-    //     }
-    //   }
-    // );
-    db.run(engineSizeMeasurementQueries, (res, err) => {
-      console.log(res, err);
-    });
+    allQueries.forEach((query) => db.run(query));
   });
+  insertValuesIfNoneFound(
+    db,
+    'engine_size_measurement_type',
+    engineSizeMeasurementInitValues,
+    engineSizeMeasurementQuery
+  );
+  insertValuesIfNoneFound(db, 'fuel_type', fuelTypeValues, fuelTypeQuery);
+  insertValuesIfNoneFound(
+    db,
+    'vehicle_type',
+    vehicleTypeValues,
+    vehicleTypeQuery
+  );
 
   db.close();
   win.loadURL('http://localhost:3000');

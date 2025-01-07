@@ -96,12 +96,19 @@ FOREIGN KEY(part_task_id) REFERENCES part_task(id));
 const engineSizeMeasurementTypeQuery = `
 CREATE TABLE IF NOT EXISTS engine_size_measurement_type (
 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-measurement_unit INT NOT NULL);
+measurement_unit VARCHAR NOT NULL,
+conversion_to_litre FLOAT NOT NULL);
 `;
 const fuelTypeQuery = `
 CREATE TABLE IF NOT EXISTS fuel_type (
 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 fuel_type VARCHAR NOT NULL);
+`;
+
+const vehicleTypeQuery = `
+CREATE TABLE IF NOT EXISTS vehicle_type (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+vehicle_type VARCHAR NOT NULL);
 `;
 
 const allQueries = [
@@ -117,8 +124,7 @@ const allQueries = [
   taskPhotoQuery,
   partPhotoQuery,
   partTaskPhotoQuery,
+  vehicleTypeQuery,
 ];
 
-const fullQuery = allQueries.join('');
-
-module.exports = { fullQuery, allQueries };
+module.exports = { allQueries };

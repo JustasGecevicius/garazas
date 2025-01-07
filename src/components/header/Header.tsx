@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { ClockComponent } from './Clock';
+import { AddNewVehicleButton } from '../buttons/AddNewVahicleButton';
 
 export function Header() {
   return (
@@ -13,6 +14,7 @@ export function Header() {
       <div className='flex flex-row gap-1'>
         <p>{moment().format('YYYY-MM-DD')}</p>
         <ClockComponent />
+        <AddNewVehicleButton />
       </div>
     </div>
   );
