@@ -15,7 +15,6 @@ const { insertValuesIfNoneFound } = require('./dbInfo/dbInitHelperFunctions');
 const sqlite3Verbose = sqlite3.verbose();
 
 function createWindow() {
-  const queriesList = [];
   const db = new sqlite3Verbose.Database('db');
   const win = new BrowserWindow({
     width: 800,
@@ -51,30 +50,60 @@ function createWindow() {
 
 app.whenReady().then(createWindow);
 
-ipcMain.on('delete', (event, tableKey, id) => {
+ipcMain.on('delete', (_, tableKey, id) => {
+  if (!id) return;
   const table = TABLES[tableKey];
-  if (!table || !id) return;
+  if (!table) return;
 
   const db = new sqlite3Verbose.Database('db');
-  const deleteStmt = db.prepare(`DELETE FROM ${table} WHERE id = ?`);
-  deleteStmt.run(id);
-  deleteStmt.finalize();
-  db.each('SELECT * from vehicle', (err, row) => {
-    console.log(row);
+  db.run(`DELETE FROM ${table} WHERE id = ?`);
+  db.close();
+});
+
+ipcMain.on('create', (_, tableKey, data) => {
+  if (typeof data !== 'object' || !data) return;
+  const table = TABLES[tableKey];
+  if (!table) return;
+
+  const db = new sqlite3Verbose.Database('db');
+  db.serialize(() => {
+    db.run(
+      `INSERT into
+      ${table} (${Object.keys(data)?.join(', ')})
+      VALUES (${Object.values(data)?.reduce((prev, curr) => {
+        if (prev === '') {
+          prev += `\'${curr}\'`;
+        } else {
+          prev += `,\'${curr}\'`;
+        }
+        console.log(prev);
+        return prev;
+      }, '')})`
+    );
   });
   db.close();
 });
 
-ipcMain.on('create', (event, tableKey, id) => {
+ipcMain.on('update', (_, tableKey, data) => {
+  if (typeof data !== 'object' || !data) return;
   const table = TABLES[tableKey];
-  if (!table || !id) return;
+  if (!table) return;
 
-  const db = new sqlite3Verbose.Database('db');
-  const deleteStmt = db.prepare(`DELETE FROM ${table} WHERE id = ?`);
-  deleteStmt.run(id);
-  deleteStmt.finalize();
-  db.each('SELECT * from vehicle', (err, row) => {
-    console.log(row);
-  });
-  db.close();
+  // const db = new sqlite3Verbose.Database('db');
+  // db.serialize(() => {
+  //   // db.run(
+  //   //   `UPDATE into
+  //   //   ${table} (${Object.keys(data)?.join(', ')})
+  //   //   VALUES (${Object.values(data)?.reduce((prev, curr) => {
+  //   //     if (prev === '') {
+  //   //       prev += `\'${curr}\'`;
+  //   //     } else {
+  //   //       prev += `,\'${curr}\'`;
+  //   //     }
+  //   //     console.log(prev);
+  //   //     return prev;
+  //   //   }, '')})`
+  //   // );
+  // });
+  // db.close();
 });

@@ -1,6 +1,7 @@
 import {
   useEffect,
   useRef,
+  useState,
   type MutableRefObject,
   type ReactNode,
 } from 'react';
@@ -14,14 +15,17 @@ type PropsType = {
 export function BaseModalWrapper(props: PropsType) {
   const { closeRef, openRef, children } = props;
   const dialogRef = useRef<HTMLDialogElement>();
+  const [isOpen, setIsOpen] = useState(false);
 
   function openModal() {
     if (!dialogRef?.current) return;
     dialogRef?.current?.showModal();
+    setIsOpen(true);
   }
 
   function closeModal() {
     dialogRef.current.close();
+    setIsOpen(true);
   }
 
   function checkDialogClick(event) {
@@ -53,7 +57,7 @@ export function BaseModalWrapper(props: PropsType) {
     <dialog
       ref={dialogRef}
       className='p-4 rounded-md backdrop:bg-black/50 backdrop:backdrop-blur-sm'>
-      {children}
+      {isOpen ? children : null}
     </dialog>
   );
 }

@@ -1,6 +1,4 @@
 import { HashRouter, Route, Routes } from 'react-router';
-import { Dashboard } from './pages/Dashboard';
-import { CarEdit } from './pages/CarEdit';
 import { routes } from './Routes';
 
 export function Router() {
@@ -11,6 +9,7 @@ export function Router() {
           <Route
             path={route.path}
             element={route.element}
+            key={route.path}
           />
         ))}
       </Routes>

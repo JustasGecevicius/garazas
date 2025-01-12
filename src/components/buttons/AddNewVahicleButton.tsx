@@ -4,6 +4,7 @@ import { VehicleCreationModal } from '../modals/VehicleCreationModal';
 export function AddNewVehicleButton(props) {
   const openVehicleCreationModalRef = useRef<() => void | null>(null);
   const closeVehicleCreationModalRef = useRef<() => void | null>(null);
+  const dataRef = useRef<{ [key: string]: any }>({});
 
   return (
     <>
