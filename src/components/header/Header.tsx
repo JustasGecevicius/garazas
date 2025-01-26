@@ -1,8 +1,14 @@
 import moment from 'moment';
 import { ClockComponent } from './Clock';
 import { AddNewVehicleButton } from '../buttons/AddNewVahicleButton';
+import { useEffect } from 'react';
 
 export function Header() {
+  console.log(window);
+  useEffect(() => {
+    // @ts-ignore
+    window.select.selectEngineSizeMeasurementType(console.log);
+  }, []);
   return (
     <div className='flex justify-between w-full gap-2 p-2 text-white rounded-md bg-stone-900 outline-white outline outline-1'>
       <img
