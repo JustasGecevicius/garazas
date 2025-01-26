@@ -4,14 +4,16 @@ import { AddNewVehicleButton } from '../buttons/AddNewVahicleButton';
 
 export function Header() {
   return (
-    <div className='flex justify-between w-full gap-2 p-2 text-white rounded-md bg-stone-900 outline-white outline outline-1'>
-      <img
-        src='bmw.png'
-        alt='logo'
-        className='max-h-6 max-w-6'
-      />
-      <h1 className='grow'>Garazas</h1>
-      <div className='flex flex-row gap-1'>
+    <div className='flex justify-between items-center w-full p-5 text-white rounded-md bg-stone-900 outline-white outline outline-1'>
+      <div className='flex flex-row gap-5 items-center'>
+        <img
+          src='bmw.png'
+          alt='logo'
+          className='max-w-8 max-h-8'
+        />
+        <h1 className='text-lg'>Garazas</h1>
+      </div>
+      <div className='flex flex-row items-center gap-10'>
         <p>{moment().format('YYYY-MM-DD')}</p>
         <ClockComponent />
         <AddNewVehicleButton />
