@@ -38,18 +38,6 @@ ipcMain.on('select_full', (_, tableKey, id, callback) => {
   callback();
 });
 
-ipcMain.on('select_all', (_, tableKey, callback) => {
-  console.log('HERENX');
-  if (!tableKey) return;
-  const table = TABLES[tableKey];
-  if (!table) return;
-  const db = new sqlite3Verbose.Database('db');
-  db.get(`SELECT * FROM ${table}`, (err, res) => {
-    console.log(res);
-    callback(res);
-  });
-  db.close();
-});
 
 ipcMain.on('create', (_, tableKey, data) => {
   if (typeof data !== 'object' || !data) return;

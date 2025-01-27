@@ -2,14 +2,14 @@ import {
   useEffect,
   useRef,
   useState,
-  type MutableRefObject,
-  type ReactNode,
+  MutableRefObject,
+  ReactNode,
 } from 'react';
 
 type PropsType = {
-  openRef: MutableRefObject<() => void>;
-  closeRef: MutableRefObject<() => void>;
-  children: ReactNode;
+  openRef: MutableRefObject<() => void>
+  closeRef: MutableRefObject<() => void>
+  children: ReactNode
 };
 
 export function BaseModalWrapper(props: PropsType) {

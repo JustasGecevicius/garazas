@@ -2,9 +2,9 @@ import {
   useEffect,
   useRef,
   useState,
-  type ChangeEvent,
-  type MutableRefObject,
-  type SyntheticEvent,
+  ChangeEvent,
+  MutableRefObject,
+  SyntheticEvent,
 } from 'react';
 import { BaseModalWrapper } from './BaseModalWrapper';
 

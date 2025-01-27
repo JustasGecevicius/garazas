@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const sqlite3 = require('sqlite3');
 require('./ipcMainFunctions/on');
+require('./ipcMainFunctions/handle');
 const { allQueries } = require('./dbInfo/dbInitQueries');
 const {
   engineSizeMeasurementQuery,
@@ -11,6 +12,7 @@ const {
   vehicleTypeQuery,
 } = require('./dbInfo/defaultTablesQueries');
 const { insertValuesIfNoneFound } = require('./dbInfo/dbInitHelperFunctions');
+const { TABLES } = require('./tablesList');
 
 const sqlite3Verbose = sqlite3.verbose();
 
@@ -48,5 +50,7 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  createWindow();
+});
 
