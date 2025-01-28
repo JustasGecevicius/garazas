@@ -26,6 +26,7 @@ plate_number VARCHAR,
 FOREIGN KEY(engine_size_measurement_type_id) REFERENCES engine_size_measurement_type(id),
 FOREIGN KEY(fuel_type_id) REFERENCES fuel_type(id),
 FOREIGN KEY(client_id) REFERENCES client(id));
+FOREIGN KEY(vehicle_type_id) REFERENCES vehicle_type(id));
 `;
 
 const photoQuery = `

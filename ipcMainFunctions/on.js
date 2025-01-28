@@ -46,22 +46,16 @@ ipcMain.on('create', (_, tableKey, data) => {
 
   const db = new sqlite3Verbose.Database('db');
   console.log('TABLE', table)
-  const query = `INSERT into
-      ${table} (${Object.keys(data)?.join(', ') || '\'name\''})
-      VALUES (${Object.values(data)?.reduce((prev, curr) => {
+  const query = `INSERT into ${table} (${Object.keys(data)?.join(', ')}) VALUES (${Object.values(data)?.reduce((prev, curr) => {
         if (prev === '') {
           prev += `\'${curr}\'`;
         } else {
           prev += `,\'${curr}\'`;
         }
-        console.log('DATA2', prev);
         return prev;
       }, '') || '\'name\''})`;
       console.log('QUERY', query);
-  db.serialize(() => {
-    db.run(
-    );
-  });
+  db.run(query);
   db.close();
 });
 
