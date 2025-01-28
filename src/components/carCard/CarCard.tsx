@@ -23,11 +23,11 @@ export function CarCard({ car }: Props) {
     //     alt='bolidas'
     //     className='object-contain max-h-16 aspect-auto'></img>
     // </div>
-    <div className='box-border flex flex-col justify-between px-7 py-4 gap-4 mx-auto border-2 border-white rounded-[25px]'>
+    <div className='box-content flex flex-col justify-between px-7 py-4 gap-4 min-w-64  border-2 border-white rounded-[25px]'>
       <div className='flex flex-row justify-between'>
         <div className='flex flex-col items-start p-0 gap-[8px]  w-auto'>
-          <h3 className='font-semibold text-[36px] leading-[36px] flex items-center text-white'>AUTO</h3>
-          <p className='font-normal text-[16px] leading-[16px] flex items-center text-white'>AUTOXX</p>
+          <h3 className='font-semibold text-3xl leading-[36px] flex items-center text-white'>AUTO</h3>
+          <p className='font-normal text-base leading-[16px] flex items-center text-white'>AUTOXX</p>
         </div>
         <button onClick={() => window.delete.deleteCar('1')}>
           <img
@@ -39,7 +39,7 @@ export function CarCard({ car }: Props) {
       <img
         src='fastcar.jpg'
         alt='bolidas'
-        className='flex flex-col justify-center items-center p-[10px] gap-[10px] mx-auto bg-cover bg-center'>
+        className='flex flex-col justify-center items-center p-[10px] gap-[10px] mx-auto bg-cover bg-center bg-no-repeat'>
       </img>
     </div>
   );
