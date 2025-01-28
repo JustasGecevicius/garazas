@@ -1,12 +1,14 @@
 import {
   useEffect,
-  useRef,
   useState,
   ChangeEvent,
   MutableRefObject,
-  SyntheticEvent,
 } from 'react';
 import { BaseModalWrapper } from './BaseModalWrapper';
+import { useSelector } from 'react-redux';
+import { selectEngineSizeMeasurementType } from '../../redux/slices/engineSizeMeasurementTypeSlice';
+import { selectFuelType } from '../../redux/slices/fuelTypeSlice';
+import { selectVehicleType } from '../../redux/slices/vehicleTypeSlice';
 
 type PropsType = {
   openRef: MutableRefObject<() => void>;
@@ -19,6 +21,14 @@ export function VehicleCreationModal(props: PropsType) {
 
   const [vehicleCreationData, setVehicleCreationData] = useState<any>({});
 
+  const engineSizeMeasurementTypes = useSelector(selectEngineSizeMeasurementType);
+  const fuelType= useSelector(selectFuelType);
+  const vehicleType = useSelector(selectVehicleType);
+
+  useEffect(() => {
+    console.log('EGNINE', engineSizeMeasurementTypes)
+  }, [engineSizeMeasurementTypes]);
+
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     const { target } = e;
     const { value, placeholder } = target;
@@ -30,6 +40,7 @@ export function VehicleCreationModal(props: PropsType) {
 
   function submitVehicle() {
     // @ts-ignore
+    console.log('DATA', vehicleCreationData)
     window.create.createVehicle(vehicleCreationData);
   }
 
@@ -56,12 +67,14 @@ export function VehicleCreationModal(props: PropsType) {
           value={vehicleCreationData?.engine_size}
           onChange={handleInputChange}
         />
-        <input
-          type='text'
-          placeholder='engine_size_measurement_type_id'
-          value={vehicleCreationData?.engine_size_measurement_type_id}
-          onChange={handleInputChange}
-        />
+        <select
+          name='fuel_type_id'
+          value={vehicleCreationData?.fuel_type_id}
+        >
+          {fuelType.options.map((option) => (<option value={option.id}>
+            {option.fuel_type}
+          </option>))}
+          </select>
         <input
           type='text'
           placeholder='vin_code'
@@ -74,12 +87,14 @@ export function VehicleCreationModal(props: PropsType) {
           value={vehicleCreationData?.make}
           onChange={handleInputChange}
         />
-        <input
-          type='text'
-          placeholder='fuel_type_id'
-          value={vehicleCreationData?.fuel_type_id}
-          onChange={handleInputChange}
-        />
+        <select
+          name='engine_size_measurement_type_id'
+          value={vehicleCreationData?.engine_size_measurement_type_id}
+        >
+          {engineSizeMeasurementTypes.options.map((option) => (<option value={option.id}>
+            {option.measurement_unit}
+          </option>))}
+          </select>
         <input
           type='number'
           placeholder='odometer'
@@ -111,12 +126,14 @@ export function VehicleCreationModal(props: PropsType) {
           value={vehicleCreationData?.plate_number}
           onChange={handleInputChange}
         />
-        <input
-          type='text'
-          placeholder='vehicle_type_id'
+        <select
+          name='vehicle_type_id'
           value={vehicleCreationData?.vehicle_type_id}
-          onChange={handleInputChange}
-        />
+        >
+          {vehicleType.options.map((option) => (<option value={option.id}>
+            {option.vehicle_type}
+          </option>))}
+          </select>
         <div className='flex justify-center col-span-2'>
           <button
             className='rounded-sm'
