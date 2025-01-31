@@ -18,17 +18,6 @@ export function VehicleCreationModal(props: PropsType) {
 
   const dataRef = useRef<{ [key: string]: any }>({});
 
-  const [vehicleCreationData, setVehicleCreationData] = useState<any>({});
-
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    const { target } = e;
-    const { value, placeholder } = target;
-    setVehicleCreationData((prevState) => ({
-      ...prevState,
-      [placeholder]: value,
-    }));
-  }
-
   function submitVehicle() {
     console.log(dataRef?.current);
     window.create.createVehicle(dataRef?.current);
@@ -38,7 +27,7 @@ export function VehicleCreationModal(props: PropsType) {
     <BaseModalWrapper
       closeRef={closeRef}
       openRef={openRef}>
-      <form className='grid grid-cols-2 gap-2'>
+        <div className='grid grid-cols-2 gap-2'>
         <TextInput name='name' dataRef={dataRef} />
         <TextInput name='model' dataRef={dataRef} />
         <NumberInput name='engine_size' dataRef={dataRef} />
@@ -46,8 +35,9 @@ export function VehicleCreationModal(props: PropsType) {
         <TextInput name='vin_code' dataRef={dataRef} />
         <TextInput name='make' dataRef={dataRef} /> 
         {/* <VehicleMakeSelect dataRef={dataRef} />  */}
-        <EngineSizeMeasurementTypeSelect />
+        <EngineSizeMeasurementTypeSelect dataRef={dataRef}/>
         <NumberInput name='engine_size' dataRef={dataRef} />
+        <NumberInput name='odometer' dataRef={dataRef} />
         <DateInput name='fabrication_year' dataRef={dataRef} /> 
         <DateInput name='tech_inspection_due_date' dataRef={dataRef} /> 
         <TextInput name='note' dataRef={dataRef} /> 
@@ -60,7 +50,7 @@ export function VehicleCreationModal(props: PropsType) {
             Save
           </button>
         </div>
-      </form>
+        </div>
     </BaseModalWrapper>
   );
 }

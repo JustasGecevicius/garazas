@@ -22,10 +22,11 @@ fabrication_year DATE,
 tech_inspection_due_date DATE,
 note VARCHAR,
 client_id INTEGER,
+vehicle_type_id INTEGER,
 plate_number VARCHAR,
 FOREIGN KEY(engine_size_measurement_type_id) REFERENCES engine_size_measurement_type(id),
 FOREIGN KEY(fuel_type_id) REFERENCES fuel_type(id),
-FOREIGN KEY(client_id) REFERENCES client(id));
+FOREIGN KEY(client_id) REFERENCES client(id),
 FOREIGN KEY(vehicle_type_id) REFERENCES vehicle_type(id));
 `;
 
@@ -114,6 +115,7 @@ vehicle_type VARCHAR NOT NULL);
 
 const allQueries = [
   clientQuery,
+  vehicleTypeQuery,
   engineSizeMeasurementTypeQuery,
   fuelTypeQuery,
   partQuery,
@@ -125,7 +127,6 @@ const allQueries = [
   taskPhotoQuery,
   partPhotoQuery,
   partTaskPhotoQuery,
-  vehicleTypeQuery,
 ];
 
 module.exports = { allQueries };

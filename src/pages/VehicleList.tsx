@@ -5,12 +5,14 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ListElement } from '../components/vehicleListComponents/listElement';
+import { useQuery } from 'react-query';
+import { useEffect, useMemo } from 'react';
 
 type Props = {};
 
 const columnHelper = createColumnHelper();
 
-const columns = [
+const columns = Object.freeze([
   columnHelper.accessor('name', {
     cell: (info) => info.getValue(),
   }),
@@ -32,9 +34,24 @@ const columns = [
   columnHelper.accessor('odometer', {
     cell: (info) => info.getValue(),
   }),
-];
+]);
 
 export function VehicleList(props: Props) {
+
+  const params = useMemo(() => ({
+    page: 1,
+    limit: 15,
+  }), [])
+  
+  const data = useQuery({
+    queryKey: [params],
+    queryFn: () => window.select.selectVehicles(params),
+  })
+
+  useEffect(() => {
+   console.log(data) ;
+  }, [data]);
+  
   const vehicles = [
     {
       name: 'zeba',

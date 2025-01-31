@@ -3,7 +3,6 @@ import { routes } from './Routes';
 
 export function Router() {
   return (
-    <HashRouter>
       <Routes>
         {routes.map((route) => (
           <Route
@@ -13,6 +12,5 @@ export function Router() {
           />
         ))}
       </Routes>
-    </HashRouter>
   );
 }

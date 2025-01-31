@@ -6,12 +6,20 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import { HashRouter } from 'react-router';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const clientQuery = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <QueryClientProvider client={clientQuery}>
+      <HashRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </HashRouter>
+    </QueryClientProvider>
   </React.StrictMode>
 );
