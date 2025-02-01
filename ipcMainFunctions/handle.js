@@ -2,7 +2,7 @@
 const { ipcMain } = require('electron');
 const { TABLES } = require('../tablesList');
 const sqlite3 = require('sqlite3');
-const { CHANNELS } = require('../preload');
+const { CHANNELS } = require('../channels');
 
 const sqlite3Verbose = sqlite3.verbose();
 
@@ -25,10 +25,18 @@ ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, (_, tableKey, params) => {
     : '';
 
   const db = new sqlite3Verbose.Database('db');
-  return new Promise((resolve, reject) => {
+
+  const countPromise = new Promise((resolve, reject) => db.all(`SELECT COUNT(*) FROM ${TABLES[tableKey]}`, (err, response) => {
+    resolve(response);
+  }));
+  
+  console.log('paginationQuery', `SELECT * FROM ${TABLES[tableKey]}${paginationQuery}`);
+  
+  const dataPromise = new Promise(async (resolve, reject) => {
     db.all(`SELECT * FROM ${TABLES[tableKey]}${paginationQuery}`, (err, response) => {
     resolve(response);
   });
+})
   db.close();
+  return Promise.all([countPromise, dataPromise]).then(([count, data]) => ({ total: count[0]['COUNT(*)'], data }));
   })
-});

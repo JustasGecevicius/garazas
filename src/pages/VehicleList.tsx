@@ -4,78 +4,58 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ListElement } from '../components/vehicleListComponents/listElement';
 import { useQuery } from 'react-query';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { cloneDeep } from 'lodash';
 
 type Props = {};
 
-const columnHelper = createColumnHelper();
+const array = [];
 
-const columns = Object.freeze([
-  columnHelper.accessor('name', {
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('model', {
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('engine_size', {
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('vin_code', {
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('make', {
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('fuel_type', {
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor('odometer', {
-    cell: (info) => info.getValue(),
-  }),
-]);
+const columnHelper = createColumnHelper();
 
 export function VehicleList(props: Props) {
 
-  const params = useMemo(() => ({
-    page: 1,
-    limit: 15,
-  }), [])
+  const [pagination, setPagination] = useState({pageIndex: 0, pageSize: 10})
   
-  const data = useQuery({
-    queryKey: [params],
-    queryFn: () => window.select.selectVehicles(params),
-  })
-
   useEffect(() => {
-   console.log(data) ;
-  }, [data]);
+    console.log('PAGINATION', pagination);
+  }, [pagination]);
   
-  const vehicles = [
-    {
-      name: 'zeba',
+  const { data, error, isFetching } = useQuery({
+    queryKey: ['vehicle_list', pagination],
+    queryFn: async ({ queryKey }) => {
+
+      console.log('QUERY', cloneDeep(queryKey[1]));
+      const response = await window.select.selectVehicles({ page: queryKey[1].pageIndex + 1, limit: queryKey[1].pageSize });
+      console.log(response);
+      return response;
     },
-    {
-      name: 'deba',
-    },
-    {
-      name: 'gaba',
-    },
-    {
-      name: 'nx',
-    },
-  ];
+  })
+  
+  const columns = useMemo(() => Object.keys(data?.data?.[0] || {}).map((key) => {
+    return columnHelper.accessor(key, { cell: (info) => info.getValue() })
+  }), [data?.data]);
+
+  const emptyTable = useMemo(() => ([]), []);
 
   const table = useReactTable({
-    data: vehicles,
-    columns,
+    data: data?.data || array,
+    columns: columns || array,
     getCoreRowModel: getCoreRowModel(),
+    onPaginationChange: setPagination,
+    initialState: { pagination },
+    rowCount: data?.total || 0,
+    manualPagination: true,
+
   });
 
+  useEffect(() => {
+    console.log(data?.vehicles)
+  }, [data?.vehicles]);
+  
   return (
     <div className='w-full'>
-      {
         <table className='w-full border border-white rounded-md'>
           <thead className='border-b'>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -111,7 +91,70 @@ export function VehicleList(props: Props) {
             ))}
           </tbody>
         </table>
-      }
+              <div className="flex items-center gap-2">
+        <button
+          className="border rounded p-1"
+          onClick={() => table.firstPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {'<<'}
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {'<'}
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          {'>'}
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.lastPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          {'>>'}
+        </button>
+        <span className="flex items-center gap-1">
+          <div>Page</div>
+          <strong>
+            {table.getState().pagination.pageIndex + 1} of{' '}
+            {table.getPageCount().toLocaleString()}
+          </strong>
+        </span>
+        <span className="flex items-center gap-1">
+          | Go to page:
+          <input
+            type="number"
+            min="1"
+            max={table.getPageCount()}
+            defaultValue={table.getState().pagination.pageIndex + 1}
+            onChange={e => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0
+              table.setPageIndex(page)
+            }}
+            className="border p-1 rounded w-16 text-black"
+          />
+        </span>
+        <select
+          value={pagination.pageSize}
+          onChange={e => {
+            table.setPageSize(Number(e.target.value))
+          }}
+          className='text-black border p-1 rounded'
+        >
+          {[10, 20, 30, 40, 50].map(pageSize => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }

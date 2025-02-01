@@ -26,7 +26,7 @@ contextBridge.exposeInMainWorld('select', {
   selectVehicleType: () => {
     return ipcRenderer.invoke(CHANNELS.SELECT_ALL, 'vehicle_type');
   },
-  // selectVehicles: (params) => {
-  //   return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, 'vehicle', params);
-  // },
+  selectVehicles: (params) => {
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, 'vehicle', params);
+  },
 });
