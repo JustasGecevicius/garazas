@@ -21,6 +21,7 @@ export function VehicleCreationModal(props: PropsType) {
   function submitVehicle() {
     console.log(dataRef?.current);
     window.create.createVehicle(dataRef?.current);
+    closeRef.current();
   }
 
   return (

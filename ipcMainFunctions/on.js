@@ -5,12 +5,12 @@ const sqlite3 = require('sqlite3');
 const sqlite3Verbose = sqlite3.verbose();
 
 ipcMain.on('delete', (_, tableKey, id) => {
-  if (!id) return;
+  const numberId = Number(id);
   const table = TABLES[tableKey];
-  if (!table) return;
+  if (!numberId || !table) return;
 
   const db = new sqlite3Verbose.Database('db');
-  db.run(`DELETE FROM ${table} WHERE id = ?`);
+  db.run(`DELETE FROM ${table} WHERE id = '${numberId}'`);
   db.close();
 });
 

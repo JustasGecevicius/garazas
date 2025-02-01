@@ -4,6 +4,19 @@ const { TABLES } = require('../tablesList');
 const sqlite3 = require('sqlite3');
 const { CHANNELS } = require('../channels');
 
+ipcMain.handle(CHANNELS.SELECT, (_, tableKey, id) => {
+  const numberId = Number(id);
+  console.log('SELECT', tableKey, numberId);
+  if (!tableKey || !TABLES[tableKey] || !numberId) return;
+  const db = new sqlite3Verbose.Database('db');
+  return new Promise((resolve, reject) => {
+    db.get(`SELECT * FROM ${TABLES[tableKey]} WHERE id='${numberId}'`, (err, response) => {
+    resolve(response);
+  });
+  db.close();
+  })
+});
+
 const sqlite3Verbose = sqlite3.verbose();
 
 ipcMain.handle(CHANNELS.SELECT_ALL, (_, tableKey) => {
@@ -29,8 +42,6 @@ ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, (_, tableKey, params) => {
   const countPromise = new Promise((resolve, reject) => db.all(`SELECT COUNT(*) FROM ${TABLES[tableKey]}`, (err, response) => {
     resolve(response);
   }));
-  
-  console.log('paginationQuery', `SELECT * FROM ${TABLES[tableKey]}${paginationQuery}`);
   
   const dataPromise = new Promise(async (resolve, reject) => {
     db.all(`SELECT * FROM ${TABLES[tableKey]}${paginationQuery}`, (err, response) => {

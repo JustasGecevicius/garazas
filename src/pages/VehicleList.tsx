@@ -5,8 +5,9 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useQuery } from 'react-query';
-import { useEffect, useMemo, useState } from 'react';
-import { cloneDeep } from 'lodash';
+import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { IndeterminateCheckbox } from '../components/checkbox/Checkbox';
 
 type Props = {};
 
@@ -16,46 +17,87 @@ const columnHelper = createColumnHelper();
 
 export function VehicleList(props: Props) {
 
-  const [pagination, setPagination] = useState({pageIndex: 0, pageSize: 10})
+  const navigate = useNavigate();
   
-  useEffect(() => {
-    console.log('PAGINATION', pagination);
-  }, [pagination]);
+  const [pagination, setPagination] = useState({pageIndex: 0, pageSize: 10})
+  const [rowSelection, setRowSelection] = useState({});
+  const [refetchToggle, setRefetchToggle] = useState(false);
   
   const { data, error, isFetching } = useQuery({
-    queryKey: ['vehicle_list', pagination],
+    queryKey: ['vehicle_list', pagination, refetchToggle],
     queryFn: async ({ queryKey }) => {
 
-      console.log('QUERY', cloneDeep(queryKey[1]));
       const response = await window.select.selectVehicles({ page: queryKey[1].pageIndex + 1, limit: queryKey[1].pageSize });
-      console.log(response);
       return response;
     },
   })
-  
-  const columns = useMemo(() => Object.keys(data?.data?.[0] || {}).map((key) => {
-    return columnHelper.accessor(key, { cell: (info) => info.getValue() })
-  }), [data?.data]);
 
-  const emptyTable = useMemo(() => ([]), []);
+  
+  const cols = useMemo(() => {
+    const normalCols =  Object.keys(data?.data?.[0] || {}).map((key) => {
+    return columnHelper.accessor(key, { cell: (info) => info.getValue() })
+  });
+
+  normalCols.unshift(columnHelper.accessor('checkbox', {
+        header: ({ table }) => (
+          <IndeterminateCheckbox
+              checked={table.getIsAllRowsSelected()}
+              indeterminate={table.getIsSomeRowsSelected()}
+              onChange={table.getToggleAllRowsSelectedHandler()}
+          />
+        ),
+        cell: ({ row }) => (
+          <div className="px-1">
+            <IndeterminateCheckbox
+                checked={row.getIsSelected()}
+                disabled={!row.getCanSelect()}
+                indeterminate={row.getIsSomeSelected()}
+                onChange={row.getToggleSelectedHandler()}
+            />
+          </div>
+        ),
+      }))
+
+      return normalCols
+      
+}, [data?.data]);
+
+   const columns = useMemo(() => cols, [cols]);
 
   const table = useReactTable({
     data: data?.data || array,
     columns: columns || array,
     getCoreRowModel: getCoreRowModel(),
     onPaginationChange: setPagination,
-    initialState: { pagination },
+    onRowSelectionChange: setRowSelection,
+    state: { pagination, rowSelection },
     rowCount: data?.total || 0,
     manualPagination: true,
-
+    enableRowSelection: true,
   });
 
-  useEffect(() => {
-    console.log(data?.vehicles)
-  }, [data?.vehicles]);
+
+  const handleDeleteClick = () => {
+    const selected = table.getSelectedRowModel().rows;
+    console.log(selected);
+    if (selected.length === 0) {
+      return;
+    }
+    selected.forEach((row) => {
+      window.delete.deleteVehicle(row.original.id);
+    })
+    setRefetchToggle(prevState => !prevState);
+    setRowSelection({});
+  }
   
   return (
     <div className='w-full'>
+      <button
+      className='px-2 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline'
+      onClick={handleDeleteClick}
+      >
+        Delete
+        </button>
         <table className='w-full border border-white rounded-md'>
           <thead className='border-b'>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -78,12 +120,17 @@ export function VehicleList(props: Props) {
           <tbody>
             {table.getRowModel().rows.map((row) => (
               <tr
-                key={row.id}
-                className=''>
+                key={row.original.id}
+                className=''
+                >
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className='text-center border border-white'>
+                    className='text-center border border-white'
+                    onClick={() => {
+                      cell?.column?.id !== 'checkbox' && navigate(`/edit-vehicle/${row.original.id}`);
+                    }}
+                    >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
@@ -91,7 +138,24 @@ export function VehicleList(props: Props) {
             ))}
           </tbody>
         </table>
-              <div className="flex items-center gap-2">
+              <div className="flex gap-2 justify-between pt-2">
+
+<div>
+        <select
+          value={pagination.pageSize}
+          onChange={e => {
+            table.setPageSize(Number(e.target.value))
+          }}
+          className='text-black border p-1 rounded'
+        >
+          {[10, 20, 30, 40, 50].map(pageSize => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+</div>
+<div className='flex items-center gap-2'>
         <button
           className="border rounded p-1"
           onClick={() => table.firstPage()}
@@ -106,6 +170,13 @@ export function VehicleList(props: Props) {
         >
           {'<'}
         </button>
+        <span className="flex items-center gap-1">
+          <div>Page</div>
+          <strong>
+            {pagination.pageIndex + 1} of{' '}
+            {table.getPageCount().toLocaleString()}
+          </strong>
+        </span>
         <button
           className="border rounded p-1"
           onClick={() => table.nextPage()}
@@ -120,15 +191,9 @@ export function VehicleList(props: Props) {
         >
           {'>>'}
         </button>
+</div>
         <span className="flex items-center gap-1">
-          <div>Page</div>
-          <strong>
-            {table.getState().pagination.pageIndex + 1} of{' '}
-            {table.getPageCount().toLocaleString()}
-          </strong>
-        </span>
-        <span className="flex items-center gap-1">
-          | Go to page:
+          Go to page:
           <input
             type="number"
             min="1"
@@ -141,19 +206,6 @@ export function VehicleList(props: Props) {
             className="border p-1 rounded w-16 text-black"
           />
         </span>
-        <select
-          value={pagination.pageSize}
-          onChange={e => {
-            table.setPageSize(Number(e.target.value))
-          }}
-          className='text-black border p-1 rounded'
-        >
-          {[10, 20, 30, 40, 50].map(pageSize => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ const { CHANNELS } = require('./channels');
 
 contextBridge.exposeInMainWorld('delete', {
   deleteVehicle: (id) => {
-    ipcRenderer.send(CHANNELS.DELETE, id);
+    ipcRenderer.send(CHANNELS.DELETE, 'vehicle', id);
   },
 });
 
@@ -14,8 +14,8 @@ contextBridge.exposeInMainWorld('create', {
 });
 
 contextBridge.exposeInMainWorld('select', {
-  selectVehicle: (id, callback) => {
-    ipcRenderer.send(CHANNELS.SELECT, 'vehicle', id, callback);
+  selectVehicle: (id) => {
+    return ipcRenderer.invoke(CHANNELS.SELECT, 'vehicle', id);
   },
   selectEngineSizeMeasurementType: () => {
     return ipcRenderer.invoke(CHANNELS.SELECT_ALL, 'engine_size_measurement_type');
