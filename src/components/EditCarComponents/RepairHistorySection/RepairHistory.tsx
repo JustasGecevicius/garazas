@@ -1,6 +1,10 @@
+import { MutableRefObject } from 'react';
 import { RepairHistoryItem } from './RepairHistoryItem';
 
-type Props = {};
+type Props = {
+  data: any,
+    dataRef?: MutableRefObject<{ [key: string]: any }>;
+};
 
 export function RepairHistory(props: Props) {
   const repairHistoryList = [{ date: 'nx', note: 'nx' }];

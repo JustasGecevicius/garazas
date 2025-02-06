@@ -4,11 +4,12 @@ import { selectEngineSizeMeasurementType } from '../../redux/slices/engineSizeMe
 
 type EngineSizeMeasurementTypeSelectProps = {
   dataRef: MutableRefObject<{ [key: string]: any }>,
+  value?: string,
 };
 
 export function EngineSizeMeasurementTypeSelect(props: EngineSizeMeasurementTypeSelectProps) {
-  const { dataRef } = props;
-  const [selectedEngineSize, setSelectedEngineSize] = useState<string>('');
+  const { dataRef, value: propsValue } = props;
+  const [selectedEngineSize, setSelectedEngineSize] = useState<string>(propsValue || '');
   const engineSizes = useSelector(selectEngineSizeMeasurementType);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -22,7 +23,7 @@ export function EngineSizeMeasurementTypeSelect(props: EngineSizeMeasurementType
   }, [selectedEngineSize]);
 
   return (
-      <select value={selectedEngineSize} onChange={handleChange}>
+      <select value={selectedEngineSize} onChange={handleChange} className='text-black'>
         <option value="" disabled>Select an engine size</option>
         {engineSizes.options.map((size) => (
           <option key={size.id} value={size.id}>

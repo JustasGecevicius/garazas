@@ -4,11 +4,12 @@ import { selectFuelType } from '../../redux/slices/fuelTypeSlice';
 
 type PropsType = {
   dataRef: MutableRefObject<{ [key: string]: any }>,
+  value?: string,
 }
 
 export function FuelTypeSelect(props: PropsType) {
-  const { dataRef } = props;
-  const [selectedFuelType, setSelectedFuelType] = useState<string>('');
+  const { dataRef, value: propsValue} = props;
+  const [selectedFuelType, setSelectedFuelType] = useState<string>(propsValue || '');
   const fuelTypes = useSelector(selectFuelType);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -21,7 +22,7 @@ export function FuelTypeSelect(props: PropsType) {
   }, [selectedFuelType]);
 
   return (
-      <select value={selectedFuelType} onChange={handleChange}>
+      <select value={selectedFuelType} onChange={handleChange} className='text-black'>
         <option value="" disabled>Select a fuel type</option>
         {fuelTypes.options.map((type) => (
           <option key={type.id} value={type.id}>

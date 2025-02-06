@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  MutableRefObject,
-  ReactNode,
-} from 'react';
+import { useEffect, useRef, useState, MutableRefObject, ReactNode } from 'react';
 
 type PropsType = {
   openRef: MutableRefObject<() => void>

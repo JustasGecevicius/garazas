@@ -19,5 +19,5 @@ export function Input(props: InputPropsType) {
     }
   }, [name, value]);
 
-  return <input className='rounded-md' type={type} placeholder={name} value={value} onChange={(e) => setValue(e.target.value)}/>
+  return <input className='rounded-md text-black' type={type} placeholder={name} value={value} onChange={(e) => setValue(e.target.value)}/>
 }
