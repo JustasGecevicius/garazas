@@ -26,24 +26,60 @@ export function CarCard({ car }: Props) {
     //     alt='bolidas'
     //     className='object-contain max-h-16 aspect-auto'></img>
     // </div>
-    <div className='box-content flex flex-col justify-between px-7 py-4 gap-4 min-w-64  border-2 border-white rounded-[25px]'>
-      <div className='flex flex-row justify-between'>
-        <div className='flex flex-col items-start p-0 gap-[8px]  w-auto'>
-          <h3 className='font-semibold text-3xl leading-[36px] flex items-center text-white'>AUTO</h3>
-          <p className='font-normal text-base leading-[16px] flex items-center text-white'>AUTOXX</p>
+
+
+    // <div className='box-content flex flex-row flex-wrap items-center content-start py-[20px] px-[30px] gap-4 w-full min-w-[400px] border-2 border-white rounded-[25px]'>
+    //   <div className='flex flex-row justify-between items-center w-full min-w-[400px] max-w-[550px]'>
+    //     <div className='flex flex-col p-0 gap-[8px]'>
+    //       <h3 className='font-semibold text-3xl leading-[36px] flex items-center text-white'>AUTO</h3>
+    //       <p className='font-normal text-base leading-[16px] flex items-center text-white'>AUTOXX</p>
+    //     </div>
+    //     <button onClick={() => window.delete.deleteCar('1')}>
+    //       <img
+    //         alt='ARROW'
+    //         src={'icons/right-arrow.svg'}
+    //         className='flex flex-col justify-center items-center p-[4px_4px] mx-auto w-[51px] h-[47px] bg-[#ffffff] rounded-full'></img>
+    //     </button>
+    //   </div>
+    //   <div className="flex flex-col justify-center items-center p-[10px] gap-[10px] max-w-[400px]">
+    //     <img
+    //       src='Bmw330.png'
+    //       alt='bolidas'
+    //       className='object-contain'>
+    //     </img>
+    //   </div>
+    // </div>
+
+
+    <div className="FrontCard">
+      <div className="Label ">
+        <div className="Text">
+          <h3 className="CarName flex items-center font-semibold text-4xl">
+            BMW F30 2012
+          </h3>
+          <p className="Plate flex items-center font-semibold text-lg">
+            LGV 021
+          </p>
         </div>
-        <button onClick={() => window.delete.deleteCar('1')}>
-          <img
-            alt='ARROW'
-            src={'icons/right-arrow.svg'}
-            className='flex flex-col justify-center items-center p-[4px_4px] mx-auto w-[51px] h-[47px] bg-[#ffffff] rounded-full'></img>
-        </button>
+        <div className="Arrow">
+          <button onClick={() => window.delete.deleteCar('1')}>
+            <img
+              alt="ARROW"
+              src={"icons/right-arrow.svg"}
+              className="Arrow flex flex-col justify-center items-center p-[4px_4px] mx-auto w-[51px] h-[47px] bg-[#ffffff] rounded-2xl"
+            ></img>
+          </button>
+        </div>
       </div>
-      <img
-        src='fastcar.jpg'
-        alt='bolidas'
-        className='flex flex-col justify-center items-center p-[10px] gap-[10px] mx-auto bg-cover bg-center bg-no-repeat'>
-      </img>
+      <div className="Wraper flex flex-col justify-center items-center w-full">
+        <img
+          src='Bmw330.png'
+          alt='bolidas'
+          className=''>
+        </img>
+      </div>
     </div>
+
+
   );
 }

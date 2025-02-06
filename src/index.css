@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
 .slider-container{
   width: calc(100% - 50px)
 }
+
+.MainBody {
+  font-family: "Josefin Sans", serif;
+  font-optical-sizing: auto;
+  background-color: #1c1917;
+  color: #fff;
+  padding: 0.7rem;
+}
+
