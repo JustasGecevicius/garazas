@@ -1,11 +1,13 @@
-import { MutableRefObject, useEffect } from "react";
-import { LabelledInput, LabelledInputWrapper } from "../../Inputs/LabelledInput"
+import { MutableRefObject } from "react";
+import { LabelledInputWrapper } from "../../Inputs/LabelledInput"
 import { NumberInput } from "../../Inputs/NumberInput";
 import { TextInput } from "../../Inputs/TextInput";
 import VehicleTypeSelect from "../../selects/VehicleTypeSelect";
 import { DateInput } from "../../Inputs/DateInput";
 import FuelTypeSelect from "../../selects/FuelTypeSelect";
 import EngineSizeMeasurementTypeSelect from "../../selects/EngineTypeSelect";
+import { LabelledTextInput } from "../../labeledInputs/LabelledTextInput";
+import { LabelledNumberInput } from "../../labeledInputs/LabelledNumberInput";
 
 type Props ={
     data: {
@@ -15,13 +17,17 @@ type Props ={
     odometer?: string,
     type?: string,
     production_year?:string,
-    }
-    dataRef?: MutableRefObject<{ [key: string]: any }>;
     plate_number?: string;
     note?: string,
     tech_inspection_due_date?: string,
     fabrication_year?: string,
     engine_size_measurement_type?: string,
+    fuel_type_id?: string,
+    vehicle_type_id?: string,
+    client_id?: string,
+    engine_size_measurement_type_id?: string,
+    }
+    dataRef?: MutableRefObject<{ [key: string]: any }>;
 }
 export function Info(props: Props) {
   const { data, dataRef } = props;
@@ -43,23 +49,11 @@ export function Info(props: Props) {
     engine_size_measurement_type_id,
   } = data || {};
 
-  useEffect(() => {
-    console.log('DATAl', data)
-  }, [data]);
-  
   return <div className="w-full outline outline-white grow-1 rounded-md px-2">
-    <LabelledInputWrapper title="make">
-      <TextInput name="make" dataRef={dataRef} value={make}/>
-    </LabelledInputWrapper>
-    <LabelledInputWrapper title="vin_code">
-      <TextInput name="vin_code" dataRef={dataRef} value={vin_code}/>
-    </LabelledInputWrapper>
-    <LabelledInputWrapper title="engine_size">
-      <NumberInput name='engine_size' dataRef={dataRef} value={engine_size} />
-    </LabelledInputWrapper>
-    <LabelledInputWrapper title="odometer">
-      <NumberInput name='odometer' dataRef={dataRef} value={odometer} />
-    </LabelledInputWrapper>
+    <LabelledTextInput name="make" dataRef={dataRef} value={make}/>
+    <LabelledTextInput name="vin_code" dataRef={dataRef} value={vin_code}/>
+    <LabelledNumberInput name="engine_size" dataRef={dataRef} value={engine_size}/>
+    <LabelledNumberInput name="odometer" dataRef={dataRef} value={odometer}/>
     <LabelledInputWrapper title="vehicle_type">
       <VehicleTypeSelect dataRef={dataRef} value={type}/>
     </LabelledInputWrapper>
@@ -75,12 +69,8 @@ export function Info(props: Props) {
     <LabelledInputWrapper title="vehicle_type">
       <VehicleTypeSelect dataRef={dataRef} value={vehicle_type_id}/>
     </LabelledInputWrapper>
-    <LabelledInputWrapper title="plate_number">
-      <TextInput name="plate_number" dataRef={dataRef} value={plate_number}/>
-    </LabelledInputWrapper>
-    <LabelledInputWrapper title="note">
-      <TextInput name="note" dataRef={dataRef} value={note}/>
-    </LabelledInputWrapper>
+    <LabelledTextInput name="plate_number" dataRef={dataRef} value={plate_number}/>
+    <LabelledTextInput name="note" dataRef={dataRef} value={note}/>
     <LabelledInputWrapper title="tech_inspection_due_date">
       <DateInput name="tech_inspection_due_date" dataRef={dataRef} value={tech_inspection_due_date}/>
     </LabelledInputWrapper>
