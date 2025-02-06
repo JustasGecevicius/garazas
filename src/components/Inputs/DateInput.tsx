@@ -18,5 +18,5 @@ export function DateInput(props: DateInputPropsType) {
     }
   }, [name, value]);
 
-  return <input className='rounded-md' type="date" placeholder={name} value={value} onChange={(e) => setValue(e.target.value)}/>
+  return <input className='rounded-md text-black' type="date" placeholder={name} value={value} onChange={(e) => setValue(e.target.value)}/>
 }

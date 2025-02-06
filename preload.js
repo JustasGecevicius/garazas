@@ -13,6 +13,12 @@ contextBridge.exposeInMainWorld('create', {
   },
 });
 
+contextBridge.exposeInMainWorld('update', {
+  updateVehicle: (data) => {
+    ipcRenderer.send(CHANNELS.UPDATE, 'vehicle', data);
+  },
+});
+
 contextBridge.exposeInMainWorld('select', {
   selectVehicle: (id) => {
     return ipcRenderer.invoke(CHANNELS.SELECT, 'vehicle', id);

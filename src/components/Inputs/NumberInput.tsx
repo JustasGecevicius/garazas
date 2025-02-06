@@ -18,5 +18,9 @@ export function NumberInput(props: TextInputPropsType) {
     }
   }, [name, value]);
 
-  return <input className='rounded-md' type="number" placeholder={name} value={value} onChange={(e) => setValue(e.target.value)}/>
+  useEffect(() => {
+    console.log('VALUE', value);
+  }, [value]);
+  
+  return <input className='rounded-md text-black' type="number" placeholder={name} value={value} onChange={(e) => setValue(e.target.value)}/>
 }

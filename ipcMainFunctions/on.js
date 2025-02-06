@@ -64,21 +64,22 @@ ipcMain.on('update', (_, tableKey, data) => {
   const table = TABLES[tableKey];
   if (!table) return;
 
-  // const db = new sqlite3Verbose.Database('db');
-  // db.serialize(() => {
-  //   // db.run(
-  //   //   `UPDATE into
-  //   //   ${table} (${Object.keys(data)?.join(', ')})
-  //   //   VALUES (${Object.values(data)?.reduce((prev, curr) => {
-  //   //     if (prev === '') {
-  //   //       prev += `\'${curr}\'`;
-  //   //     } else {
-  //   //       prev += `,\'${curr}\'`;
-  //   //     }
-  //   //     console.log(prev);
-  //   //     return prev;
-  //   //   }, '')})`
-  //   // );
-  // });
-  // db.close();
+  const db = new sqlite3Verbose.Database('db');
+  console.log(
+     `UPDATE ${table} SET ${Object.entries(data).reduce((prev, curr) => {
+      if (curr[0] === 'id') { return prev; }
+        prev += ((prev ? ',' : '') + `${curr[0]}=${curr[1] || `\'\'`}`);
+        return prev
+      }, '')}
+      WHERE id=\'${data.id}\'`
+  )
+    db.run(
+     `UPDATE ${table} SET ${Object.entries(data).reduce((prev, curr) => {
+      if (curr[0] === 'id') { return prev; }
+        prev += ((prev ? ',' : '') + `${curr[0]}=\'${curr[1]}\'`);
+        return prev
+      }, '')}
+      WHERE id=\'${data.id}\'`
+    );
+  db.close();
 });

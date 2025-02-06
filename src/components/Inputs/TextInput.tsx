@@ -18,5 +18,5 @@ export function TextInput(props: TextInputPropsType) {
     }
   }, [name, value]);
 
-  return <input className='rounded-md' type="text" value={value} placeholder={name} onChange={(e) => setValue(e.target.value)}/>
+  return <input className='rounded-md text-black' type="text" value={value} placeholder={name} onChange={(e) => setValue(e.target.value)}/>
 }

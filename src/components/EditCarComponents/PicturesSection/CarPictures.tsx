@@ -1,7 +1,9 @@
+import { MutableRefObject } from "react";
 import { EmptyPicture, Picture } from "./Picture"
 
 type Props = {
   data: any,
+    dataRef?: MutableRefObject<{ [key: string]: any }>;
 }
 
 export function CarPictures(props: Props) {
