@@ -18,5 +18,5 @@ export function NumberInput(props: TextInputPropsType) {
     }
   }, [name, value]);
 
-  return <input className='rounded-md' type="number" placeholder={name} value={value} onChange={(e) => setValue(e.target.value)}/>
+  return <input className='flex flex-row border rounded-md bg-gray-100 p-1 focus-within:outline-2 focus-within:outline-gray-600' type="number" placeholder={name} value={value} onChange={(e) => setValue(e.target.value)}/>
 }
