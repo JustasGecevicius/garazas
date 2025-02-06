@@ -1,7 +1,7 @@
 import { EmptyPicture, Picture } from "./Picture"
 
 type Props = {
-
+  data: any,
 }
 
 export function CarPictures(props: Props) {
