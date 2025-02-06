@@ -48,9 +48,9 @@ export function CarCard({ car }: Props) {
     //   </div>
     // </div>
 
-    <div className="FrontCard">
-      <div className="Label ">
-        <div className="Text">
+    <div className="FrontCard flex flex-auto flex-row flex-wrap items-center content-start px-5 py-7 min-w-[370px] w-full border-2 border-white rounded-2xl">
+      <div className="Label flex flex-auto flex-row justify-between items-center min-w-[300px] max-w-[550px]">
+        <div className="Text flex flex-col items-start gap-1">
           <h3 className="CarName flex items-center font-semibold text-4xl">
             BMW F30 2012
           </h3>
@@ -68,8 +68,8 @@ export function CarCard({ car }: Props) {
           </button>
         </div>
       </div>
-      <div className="Wraper flex flex-col justify-center items-center w-full">
-        <img src="Bmw330.png" alt="bolidas" className=""></img>
+      <div className="Wraper flex flex-auto flex-col justify-center items-center w-full min-w-24">
+        <img src="Bmw330.png" alt="bolidas" className="aspect-auto w-64"></img>
       </div>
     </div>
   );

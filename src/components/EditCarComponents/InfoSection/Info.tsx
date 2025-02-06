@@ -25,7 +25,7 @@ export function Info(props: Props) {
 
 
   
-  return <div className="w-full outline outline-white grow-1 rounded-md px-2">
+  return <div className="w-full outline outline-white grow-1 rounded-md p-2">
     <LabelledInput title="make" value={make}/>
     <LabelledInput title="vin_code" value={vin_code}/>
     <LabelledInputWrapper title="engine_size">

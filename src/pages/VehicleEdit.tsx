@@ -23,7 +23,7 @@ export function VehicleEdit(props: Props) {
   }, [data]);
   
   return (
-    <div className='flex flex-row w-full h-full gap-2'>
+    <div className='flex flex-row w-full h-full gap-3 my-5'>
       <CarPictures data={data}/>
       <Info data={data}/>
       <RepairHistory data={data}/>
