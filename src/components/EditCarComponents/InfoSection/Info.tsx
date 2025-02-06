@@ -40,7 +40,7 @@ export function Info(props: Props) {
     note,
     tech_inspection_due_date,
     fabrication_year,
-    engine_size_measurement_type,
+    engine_size_measurement_type_id,
   } = data || {};
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export function Info(props: Props) {
       <FuelTypeSelect dataRef={dataRef} value={fuel_type_id}/>
     </LabelledInputWrapper>
     <LabelledInputWrapper title="engine_size_measurement_type">
-      <EngineSizeMeasurementTypeSelect dataRef={dataRef} value={engine_size_measurement_type }/>
+      <EngineSizeMeasurementTypeSelect dataRef={dataRef} value={engine_size_measurement_type_id }/>
     </LabelledInputWrapper>
     <LabelledInputWrapper title="vehicle_type">
       <VehicleTypeSelect dataRef={dataRef} value={vehicle_type_id}/>
