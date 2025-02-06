@@ -17,8 +17,8 @@ export function Dashboard() {
     undefined,
   ];
   return (
-    <div className="flex flex-col justify-items-start w-full gap-2">
-      <div className="flex flex-wrap justify-items-start w-full gap-2">
+    <div className="">
+      <div className="flex flex-row flex-wrap items-start content-start gap-3">
         {cars?.slice(0, 9).map((car) => (
           <CarCard car={car} key={Math.random()} />
         ))}
