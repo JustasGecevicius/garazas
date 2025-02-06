@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const sqlite3 = require('sqlite3');
-const { TABLES } = require('./tablesList');
+require('./ipcMainFunctions/on');
+require('./ipcMainFunctions/handle');
 const { allQueries } = require('./dbInfo/dbInitQueries');
 const {
   engineSizeMeasurementQuery,
@@ -11,6 +12,7 @@ const {
   vehicleTypeQuery,
 } = require('./dbInfo/defaultTablesQueries');
 const { insertValuesIfNoneFound } = require('./dbInfo/dbInitHelperFunctions');
+const { TABLES } = require('./tablesList');
 
 const sqlite3Verbose = sqlite3.verbose();
 
@@ -48,62 +50,7 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(createWindow);
-
-ipcMain.on('delete', (_, tableKey, id) => {
-  if (!id) return;
-  const table = TABLES[tableKey];
-  if (!table) return;
-
-  const db = new sqlite3Verbose.Database('db');
-  db.run(`DELETE FROM ${table} WHERE id = ?`);
-  db.close();
+app.whenReady().then(() => {
+  createWindow();
 });
 
-ipcMain.on('create', (_, tableKey, data) => {
-  if (typeof data !== 'object' || !data) return;
-  const table = TABLES[tableKey];
-  if (!table) return;
-
-  const db = new sqlite3Verbose.Database('db');
-  db.serialize(() => {
-    db.run(
-      `INSERT into
-      ${table} (${Object.keys(data)?.join(', ')})
-      VALUES (${Object.values(data)?.reduce((prev, curr) => {
-        if (prev === '') {
-          prev += `\'${curr}\'`;
-        } else {
-          prev += `,\'${curr}\'`;
-        }
-        console.log(prev);
-        return prev;
-      }, '')})`
-    );
-  });
-  db.close();
-});
-
-ipcMain.on('update', (_, tableKey, data) => {
-  if (typeof data !== 'object' || !data) return;
-  const table = TABLES[tableKey];
-  if (!table) return;
-
-  // const db = new sqlite3Verbose.Database('db');
-  // db.serialize(() => {
-  //   // db.run(
-  //   //   `UPDATE into
-  //   //   ${table} (${Object.keys(data)?.join(', ')})
-  //   //   VALUES (${Object.values(data)?.reduce((prev, curr) => {
-  //   //     if (prev === '') {
-  //   //       prev += `\'${curr}\'`;
-  //   //     } else {
-  //   //       prev += `,\'${curr}\'`;
-  //   //     }
-  //   //     console.log(prev);
-  //   //     return prev;
-  //   //   }, '')})`
-  //   // );
-  // });
-  // db.close();
-});

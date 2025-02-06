@@ -4,7 +4,8 @@ type Props = {
 };
 
 export function CarCard({ car }: Props) {
-  
+  console.log("AUDI => BMWWWWWWWWWWW");
+
   return (
     // <div className='flex flex-col w-full gap-1 px-5 py-4 border border-white rounded-md hover:border-sky-500 grow-1'>
     //   <div className='flex flex-row'>
@@ -24,7 +25,6 @@ export function CarCard({ car }: Props) {
     //     alt='bolidas'
     //     className='object-contain max-h-16 aspect-auto'></img>
     // </div>
-
 
     // <div className='box-content flex flex-row flex-wrap items-center content-start py-[20px] px-[30px] gap-4 w-full min-w-[400px] border-2 border-white rounded-[25px]'>
     //   <div className='flex flex-row justify-between items-center w-full min-w-[400px] max-w-[550px]'>
@@ -48,7 +48,6 @@ export function CarCard({ car }: Props) {
     //   </div>
     // </div>
 
-
     <div className="FrontCard">
       <div className="Label ">
         <div className="Text">
@@ -60,7 +59,7 @@ export function CarCard({ car }: Props) {
           </p>
         </div>
         <div className="Arrow">
-          <button onClick={() => window.delete.deleteCar('1')}>
+          <button onClick={() => window.delete.deleteCar("1")}>
             <img
               alt="ARROW"
               src={"icons/right-arrow.svg"}
@@ -70,14 +69,8 @@ export function CarCard({ car }: Props) {
         </div>
       </div>
       <div className="Wraper flex flex-col justify-center items-center w-full">
-        <img
-          src='Bmw330.png'
-          alt='bolidas'
-          className=''>
-        </img>
+        <img src="Bmw330.png" alt="bolidas" className=""></img>
       </div>
     </div>
-
-
   );
 }

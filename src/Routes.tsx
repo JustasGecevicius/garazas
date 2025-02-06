@@ -4,6 +4,6 @@ import { VehicleList } from './pages/VehicleList';
 
 export const routes = [
   { path: '/', element: <Dashboard /> },
-  { path: '/edit-car/:id', element: <VehicleEdit /> },
+  { path: '/edit-vehicle/:id', element: <VehicleEdit /> },
   { path: '/vehicle-list', element: <VehicleList /> },
 ] as const;
