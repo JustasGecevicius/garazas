@@ -5,7 +5,7 @@ type Props = {
 
 export function CarCard({ car }: Props) {
 
-  console.log('AUDI => BMW')
+  console.log('AUDI => BMWWWWWWWWWWW')
   
   return (
     // <div className='flex flex-col w-full gap-1 px-5 py-4 border border-white rounded-md hover:border-sky-500 grow-1'>
