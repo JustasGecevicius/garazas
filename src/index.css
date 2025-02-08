@@ -4,6 +4,13 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 
+/* @theme {
+  --breakpoint-*: initial;
+  --breakpoint-mob: 30rem;
+  --breakpoint-tab: 100rem;
+  --breakpoint-desk: 120rem;
+} */
+
 .slider-container{
   width: calc(100% - 50px)
 }
