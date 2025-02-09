@@ -1,6 +1,6 @@
 import { CarCard } from '../components/carCard/CarCard';
 
-export function Dashboard() {
+export default function Dashboard() {
   const cars = [undefined, undefined, undefined];
   return (
     <div className='flex flex-col items-center w-full gap-1'>

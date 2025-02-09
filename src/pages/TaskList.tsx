@@ -8,7 +8,7 @@ import { useQuery } from 'react-query';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { IndeterminateCheckbox } from '../components/checkbox/Checkbox';
-import { selectVehicleListRefetchToggle } from '../redux/slices/vehicleListRefetchSlice';
+import { selectTaskListRefetchToggle } from '../redux/slices/vehicleListRefetchSlice';
 import { useSelector } from 'react-redux';
 
 type Props = {};
@@ -17,7 +17,7 @@ const array = [];
 
 const columnHelper = createColumnHelper();
 
-export default function VehicleList(props: Props) {
+export default function TaskList(props: Props) {
 
   const navigate = useNavigate();
   
@@ -25,13 +25,13 @@ export default function VehicleList(props: Props) {
   const [rowSelection, setRowSelection] = useState({});
   const [refetchToggle, setRefetchToggle] = useState(false);
 
-  const { vehicleListToggle }= useSelector(selectVehicleListRefetchToggle);
+  const { taskListToggle }= useSelector(selectTaskListRefetchToggle);
   
   const { data, error, isFetching } = useQuery({
-    queryKey: ['vehicle_list', pagination, refetchToggle, vehicleListToggle],
+    queryKey: ['task_list', pagination, refetchToggle, taskListToggle],
     queryFn: async ({ queryKey }) => {
 
-      const response = await window.select.selectPaginatedVehicles({ page: queryKey[1].pageIndex + 1, limit: queryKey[1].pageSize });
+      const response = await window.select.selectPaginatedTasks({ page: queryKey[1].pageIndex + 1, limit: queryKey[1].pageSize });
       return response;
     },
   })
@@ -83,12 +83,9 @@ export default function VehicleList(props: Props) {
 
   const handleDeleteClick = () => {
     const selected = table.getSelectedRowModel().rows;
-    console.log(selected);
-    if (selected.length === 0) {
-      return;
-    }
+    if (selected.length === 0) return;
     selected.forEach((row) => {
-      window.delete.deleteVehicle(row.original.id);
+      window.delete.deleteTask(row.original.id);
     })
     setRefetchToggle(prevState => !prevState);
     setRowSelection({});

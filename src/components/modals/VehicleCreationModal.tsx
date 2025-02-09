@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, MutableRefObject, useRef } from 'react';
+import { MutableRefObject, useRef } from 'react';
 import { BaseModalWrapper } from './BaseModalWrapper';
 import VehicleTypeSelect from '../selects/VehicleTypeSelect';
 import { EngineSizeMeasurementTypeSelect } from '../selects/EngineTypeSelect';
@@ -6,7 +6,8 @@ import FuelTypeSelect from '../selects/FuelTypeSelect';
 import { TextInput } from '../Inputs/TextInput';
 import { NumberInput } from '../Inputs/NumberInput';
 import { DateInput } from '../Inputs/DateInput';
-import { createLogicalAnd } from 'typescript';
+import { useDispatch } from 'react-redux';
+import { toggleVehicleListRefetchState } from '../../redux/slices/vehicleListRefetchSlice';
 
 type PropsType = {
   openRef: MutableRefObject<() => void>;
@@ -18,9 +19,12 @@ export function VehicleCreationModal(props: PropsType) {
 
   const dataRef = useRef<{ [key: string]: any }>({});
 
+  const dispatch = useDispatch();
+  
   function submitVehicle() {
     console.log(dataRef?.current);
     window.create.createVehicle(dataRef?.current);
+    dispatch(toggleVehicleListRefetchState())
     closeRef.current();
   }
 
