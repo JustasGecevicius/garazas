@@ -16,11 +16,14 @@ export function EngineSizeMeasurementTypeSelect(props: EngineSizeMeasurementType
     setSelectedEngineSize(event.target.value);
   };
 
-
   useEffect(() => {
     if (!dataRef) return;
     dataRef.current['engine_size_measurement_type_id'] = selectedEngineSize;
   }, [selectedEngineSize]);
+
+  useEffect(() => {
+    setSelectedEngineSize(propsValue || '');
+  }, [propsValue]);
 
   return (
       <select value={selectedEngineSize} onChange={handleChange} className='text-black'>

@@ -18,5 +18,9 @@ export function DateInput(props: DateInputPropsType) {
     }
   }, [name, value]);
 
+  useEffect(() => {
+    setValue(propValue || '');
+  }, [propValue]);
+  
   return <input className='rounded-md text-black' type="date" placeholder={name} value={value} onChange={(e) => setValue(e.target.value)}/>
 }

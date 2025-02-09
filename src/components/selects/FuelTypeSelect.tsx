@@ -21,6 +21,10 @@ export function FuelTypeSelect(props: PropsType) {
     dataRef.current['fuel_type_id'] = selectedFuelType;
   }, [selectedFuelType]);
 
+  useEffect(() => {
+    setSelectedFuelType(propsValue || '');
+  }, [propsValue]);
+
   return (
       <select value={selectedFuelType} onChange={handleChange} className='text-black'>
         <option value="" disabled>Select a fuel type</option>
