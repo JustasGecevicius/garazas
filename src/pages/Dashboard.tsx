@@ -1,15 +1,26 @@
-import { CarCard } from '../components/carCard/CarCard';
+import { CarCard } from "../components/carCard/CarCard";
 
 export default function Dashboard() {
-  const cars = [undefined, undefined, undefined];
+  const cars = [
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ];
   return (
-    <div className='flex flex-col items-center w-full gap-1'>
-      <div className='flex flex-row justify-center w-full gap-1'>
-        {cars?.map((car) => (
-          <CarCard
-            car={car}
-            key={Math.random()}
-          />
+    <div className="">
+      <div className="my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2.5 ">
+        {cars?.slice(0, 9).map((car) => (
+          <CarCard car={car} key={Math.random()} />
         ))}
       </div>
     </div>

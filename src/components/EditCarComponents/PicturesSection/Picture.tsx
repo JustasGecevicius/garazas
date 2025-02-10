@@ -9,7 +9,7 @@ type EmptyProps = {
 export function Picture(props: Props) {
   const { picture } = props;
   return (
-    <div className='w-full rounded-md  aspect-4/3 outline outline-white hover:outline-sky-500'>
+    <div className='flex items-center w-full rounded-md aspect-4/3 outline outline-white hover:outline-sky-500'>
       <img
         src={picture}
         alt='CAR-IMAGE'
