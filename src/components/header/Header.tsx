@@ -24,7 +24,9 @@ export function Header() {
           <p className='hidden md:flex'>{moment().format('YYYY-MM-DD')}</p>
           <ClockComponent />
           <AddNewVehicleButton />
+          <AddNewTaskButton />
           <NavigateButton label='list' to='/vehicle-list'/>
+          <NavigateButton label='task_list' to='/task-list'/>
           {/* <NavigateButton label='Layout' to='/responsiveTest'/> */}
         </div>
 
