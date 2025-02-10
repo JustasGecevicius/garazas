@@ -21,6 +21,10 @@ export function VehicleTypeSelect(props: VehicleTypeSelectProps) {
     dataRef.current['vehicle_type_id'] = selectedVehicleType;
   }, [selectedVehicleType]);
 
+  useEffect(() => {
+    setSelectedVehicleType(value || '');
+  }, [value]);
+
   return (
       <select value={selectedVehicleType} onChange={handleChange} className='text-black'>
         <option value={null} disabled>Select a vehicle type</option>

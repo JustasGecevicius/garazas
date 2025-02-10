@@ -18,5 +18,15 @@ export function DateInput(props: DateInputPropsType) {
     }
   }, [name, value]);
 
-  return <input className='flex flex-row border rounded-md bg-gray-100 p-1 focus-within:outline-2 focus-within:outline-gray-600' type="date" placeholder={name} value={value} onChange={(e) => setValue(e.target.value)}/>
+  useEffect(() => {
+    setValue(propValue || '');
+  }, [propValue]);
+  
+  return <input
+    className='flex flex-row border rounded-md bg-gray-100 p-1 focus-within:outline-2 focus-within:outline-gray-600'
+    type="date"
+    placeholder={name}
+    value={value}
+    onChange={(e) => setValue(e.target.value)}
+  />
 }

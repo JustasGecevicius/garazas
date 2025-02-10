@@ -8,7 +8,7 @@ export type TextInputPropsType = {
 
 export function NumberInput(props: TextInputPropsType) {
   const {name, value: propValue, dataRef } = props;
-  const [value, setValue] = useState(propValue || '');
+  const [value, setValue] = useState(propValue || null);
 
   useEffect(() => {
     if (!dataRef) return;
@@ -17,6 +17,10 @@ export function NumberInput(props: TextInputPropsType) {
         [name]: value
     }
   }, [name, value]);
+
+  useEffect(() => {
+    setValue(propValue || null);
+  }, [propValue]);
 
   useEffect(() => {
     console.log('VALUE', value);

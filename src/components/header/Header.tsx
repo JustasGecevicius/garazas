@@ -1,8 +1,9 @@
 import moment from 'moment';
 import { ClockComponent } from './Clock';
-import { AddNewVehicleButton } from '../buttons/AddNewVahicleButton';
+import { AddNewVehicleButton } from '../buttons/AddNewVehicleButton';
 import NavigateButton from '../buttons/NavigateButton';
 import { Link } from 'react-router';
+import { AddNewTaskButton } from '../buttons/AddNewTaskButton';
 
 export function Header() {
   return (
@@ -62,8 +63,9 @@ export function Header() {
         <p>{moment().format('YYYY-MM-DD')}</p>
         <ClockComponent />
         <AddNewVehicleButton />
+        <AddNewTaskButton />
         <NavigateButton label='list' to='/vehicle-list'/>
-        <NavigateButton label='Layout' to='/responsiveTest'/>
+        <NavigateButton label='task_list' to='/task-list'/>
       </div>
     </div> 
 

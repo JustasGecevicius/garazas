@@ -7,7 +7,7 @@ import { useParams } from 'react-router';
 import { useEffect, useRef } from 'react';
 type Props = {} & EditCarType;
 
-export function VehicleEdit(props: Props) {
+export default function VehicleEdit(props: Props) {
   const { id } = useParams();
 
   const dataRef = useRef<{ [key: string]: any }>({});
