@@ -38,7 +38,9 @@ export function Header() {
         </div>
 
         <AddNewVehicleButton />
+        <AddNewTaskButton />
         <NavigateButton label='list' to='/vehicle-list'/>
+        <NavigateButton label='task_list' to='/task-list'/>
         {/* <NavigateButton label='Layout' to='/responsiveTest'/> */}
       </div>
 
