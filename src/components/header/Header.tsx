@@ -7,6 +7,7 @@ import { AddNewTaskButton } from '../buttons/AddNewTaskButton';
 
 export function Header() {
   return (
+    <>
       <div className='flex justify-center sm:justify-between items-center text-white rounded-xl bg-stone-900 outline-white outline outline-2 p-5'>
         <Link to='/'>
           <div className='flex flex-row gap-5 items-center'>
@@ -41,6 +42,7 @@ export function Header() {
         <NavigateButton label='task_list' to='/task-list'/>
         {/* <NavigateButton label='Layout' to='/responsiveTest'/> */}
       </div>
+    </>
   );
 }
 
