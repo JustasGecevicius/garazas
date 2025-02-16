@@ -7,12 +7,13 @@ type Props = {
 };
 
 export function RepairHistory(props: Props) {
-  const repairHistoryList = [{ date: 'nx', note: 'nx' }];
+  const { data } = props;
+  const { tasks } = data || {};
 
   return (
     <div className='w-full p-2 rounded-md grow-1 outline outline-red-900'>
-      {repairHistoryList?.map((repair) => (
-        <RepairHistoryItem data={repair} />
+      {tasks?.map((task) => (
+        <RepairHistoryItem data={task} />
       ))}
     </div>
   );

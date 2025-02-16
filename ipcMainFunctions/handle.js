@@ -14,13 +14,14 @@ ipcMain.handle(CHANNELS.SELECT, (_, tableKey, id) => {
     case TABLES.vehicle:
       promise = new Promise((resolve, reject) => {
         db.get(
-          `SELECT * FROM ${table} INNER JOIN task ON task.vehicle_id = ${table}.id `,
+          `SELECT *, json_group_array(json_object('id', task.id, 'date', task.task_date, 'note', task.note)) AS tasks FROM ${table} INNER JOIN task ON task.vehicle_id = ${table}.id `,
           (err, response) => {
-            console.log("RESPONSE", response, err);
+            console.log('RESPONSE', response, err);
             resolve(response);
           }
         );
       });
+      break;
     default:
       promise = new Promise((resolve, reject) => {
         db.get(`SELECT * FROM ${table} WHERE id='${numberId}'`, (err, response) => {

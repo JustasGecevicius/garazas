@@ -6,6 +6,9 @@ contextBridge.exposeInMainWorld('delete', {
   deleteVehicle: (id) => {
     ipcRenderer.send(CHANNELS.DELETE, TABLES.vehicle, id);
   },
+  deleteTask: (id) => {
+    ipcRenderer.send(CHANNELS.DELETE, TABLES.task, id);
+  },
 });
 
 contextBridge.exposeInMainWorld('create', {

@@ -13,16 +13,13 @@ export default function VehicleEdit(props: Props) {
   const dataRef = useRef<{ [key: string]: any }>({});
 
   const { data, error, isFetching } = useQuery({
-    queryKey: ["edit-vehicle", id],
+    queryKey: ['edit-vehicle', id],
     queryFn: async ({ queryKey }) => {
       const response = await window.select.selectVehicle(id);
+      response.tasks = JSON.parse(response.tasks);
       return response;
     },
   });
-
-  useEffect(() => {
-    console.log("DATA", data);
-  }, [data]);
 
   useEffect(() => {
     dataRef.current = data;
@@ -33,14 +30,25 @@ export default function VehicleEdit(props: Props) {
   }
 
   return (
-    <div className="w-full flex flex-col h-full">
-      <div className="flex flex-row w-full h-full gap-2">
-        <CarPictures data={data} dataRef={dataRef} />
-        <Info data={data} dataRef={dataRef} />
-        <RepairHistory data={data} dataRef={dataRef} />
+    <div className='flex flex-col w-full h-full'>
+      <div className='flex flex-row w-full h-full gap-2'>
+        <CarPictures
+          data={data}
+          dataRef={dataRef}
+        />
+        <Info
+          data={data}
+          dataRef={dataRef}
+        />
+        <RepairHistory
+          data={data}
+          dataRef={dataRef}
+        />
       </div>
       <div>
-        <button onClick={handleSave} className="bg-blue-500 text-white p-2 rounded">
+        <button
+          onClick={handleSave}
+          className='p-2 text-white bg-blue-500 rounded'>
           Save
         </button>
       </div>
