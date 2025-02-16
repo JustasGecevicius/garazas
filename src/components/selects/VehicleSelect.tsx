@@ -1,6 +1,4 @@
-import React, { MutableRefObject, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectVehicleType } from '../../redux/slices/vehicleTypeSlice';
+import React, { MutableRefObject, useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 
 type VehicleTypeSelectProps = {
@@ -34,8 +32,18 @@ export function VehicleSelect(props: VehicleTypeSelectProps) {
   }, [dataRef, selectedVehicle]);
 
   useEffect(() => {
-    setSelectedVehicle(value || '');
+    setSelectedVehicle(value?.id || '');
   }, [value]);
+
+  const options = useMemo(() => {
+    return allVehicles?.map((vehicle) => (
+      <option
+        key={vehicle.id}
+        value={vehicle.id}>
+        {vehicle.name}
+      </option>
+    ));
+  }, [allVehicles]);
 
   return (
     <select
@@ -43,15 +51,9 @@ export function VehicleSelect(props: VehicleTypeSelectProps) {
       onChange={handleChange}
       className='text-black'>
       <option value={null}>Select a vehicle</option>
-      {allVehicles?.map((vehicle) => (
-        <option
-          key={vehicle.id}
-          value={vehicle.id}>
-          {vehicle.name}
-        </option>
-      ))}
+      {options}
     </select>
   );
-};
+}
 
 export default VehicleSelect;

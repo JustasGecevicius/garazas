@@ -2,7 +2,7 @@ import { useId } from 'react';
 
 type FieldProps = { name?: string; data?: string };
 
-type Props = { data: { date: string; note: string } };
+type Props = { data: { date: string; note: string }; onClick: () => void };
 
 function HistoryField(props: FieldProps) {
   const id = useId();
@@ -24,9 +24,17 @@ function HistoryField(props: FieldProps) {
 }
 
 export function RepairHistoryItem(props: Props) {
-  const { data } = props;
+  const { data, onClick } = props;
+
+  function handleClick(e) {
+    e.preventDefault();
+    onClick(data);
+  }
+
   return (
-    <div className='p-2 rounded-md outline outline-yellow-500'>
+    <div
+      className='p-2 rounded-md outline outline-yellow-500'
+      onClick={handleClick}>
       <HistoryField
         data={data.date}
         name='date'
