@@ -78,7 +78,7 @@ export function Header() {
 
         <div className="px-3">
           {/* <Link to="/add-car">  */}
-          <div className="flex items-center gap-4 pl-3 pr-1 py-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer">
+          <div className="flex items-center gap-4 pl-3 py-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer">
             <div
               className={`w-10 h-10 flex justify-center ${
                 isCollapsed ? "w-full" : "max-w-full opacity-100"
@@ -117,8 +117,10 @@ export function Header() {
             <Link key={index} to={item.to} className="w-full">
               <div
                 key={index}
-                className={`flex items-center gap-4 pl-3 ${
-                  isCollapsed ? "pr-0" : "pr-6"
+                className={`flex items-center ${
+                  isCollapsed
+                    ? "px-2 gap-0 justify-center"
+                    : "justify-start px-3 gap-4"
                 } py-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer`}
               >
                 <div className="w-8 h-8 flex justify-center">
