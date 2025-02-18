@@ -73,6 +73,7 @@ export function Header() {
         </div>
 
         <div className="px-3">
+          {/* <Link to="/add-car">  */}
           <div className="flex items-center gap-4 pl-3 pr-1 py-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer">
             <div
               className={`w-10 h-10 flex justify-center ${
@@ -95,6 +96,7 @@ export function Header() {
               Add new car
             </span>
           </div>
+          {/* </Link> */}
         </div>
 
         <div
@@ -102,12 +104,21 @@ export function Header() {
             isCollapsed ? "items-center justify-center" : "items-start"
           }`}
         >
+          {/* {[
+            { to: "/dashboard", src: "dashboard", label: "Dashboard" },
+            { to: "/cars", src: "cars", label: "All cars" },
+            { to: "/repairs", src: "task", label: "All repairs" },
+            { to: "/car-repair", src: "car-repair", label: "Car repairs" },
+          ].map((item, index) => (
+            <Link key={index} to={item.to}> */}
+
           {[
             { src: "dashboard", label: "Dashboard" },
             { src: "cars", label: "All cars" },
             { src: "task", label: "All repairs" },
             { src: "car-repair", label: "Car repairs" },
           ].map((item, index) => (
+            // <link key.....>
             <div
               key={index}
               className={`flex items-center gap-4 pl-3 w-full ${
@@ -132,6 +143,7 @@ export function Header() {
                 {item.label}
               </span>
             </div>
+            // </Link>
           ))}
         </div>
 
