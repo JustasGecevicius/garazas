@@ -6,6 +6,8 @@ import { Link } from "react-router";
 import { AddNewTaskButton } from "../buttons/AddNewTaskButton";
 import { useState } from "react";
 
+// Old header version -----
+
 function HeaderMain() {
   return (
     <>
@@ -45,25 +47,31 @@ function HeaderMain() {
   );
 }
 
+// New header version -----
+
 export function Header() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="flex">
+    <div className="flex my-5 ">
       <div
         className={`bg-stone-900 text-white transition-all duration-300 ${
           isCollapsed ? "w-24" : "w-64"
-        } h-full py-6 my-5 gap-10 rounded-xl border-2 border-white flex flex-col relative`}
+        } py-6 gap-10 rounded-xl border-2 border-white flex flex-col relative`}
       >
-        <div className="pl-5">
+        <div className="px-6">
           <Link to="/">
-            <div className="flex items-center gap-5">
+            <div
+              className={`flex items-center ${
+                isCollapsed ? "justify-center" : "justify-start"
+              }`}
+            >
               <img src="bmw.png" alt="logo" className="w-10 h-10" />
               <span
                 className={`text-2xl font-semibold transition-all duration-300 ${
                   isCollapsed
                     ? "max-w-0 overflow-hidden opacity-0"
-                    : "max-w-full opacity-100"
+                    : "max-w-full opacity-100 pl-5"
                 }`}
               >
                 Garazas
@@ -76,33 +84,6 @@ export function Header() {
           <AddNewTaskButton />
         </div>
 
-        <div className="px-3">
-          {/* <Link to="/add-car">  */}
-          <div className="flex items-center gap-4 pl-3 py-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer">
-            <div
-              className={`w-10 h-10 flex justify-center ${
-                isCollapsed ? "w-full" : "max-w-full opacity-100"
-              }`}
-            >
-              <img
-                src={"icons/menuIcons/plus.svg"}
-                alt="Add"
-                className={`w-8 h-8`}
-              />
-            </div>
-            <span
-              className={`text-white text-lg transition-all duration-300 ${
-                isCollapsed
-                  ? "max-w-0 overflow-hidden opacity-0"
-                  : "max-w-full opacity-100"
-              }`}
-            >
-              Add new car
-            </span>
-          </div>
-          {/* </Link> */}
-        </div>
-
         <div
           className={`flex flex-col w-full gap-2 px-3 transition-all duration-300 ${
             isCollapsed ? "items-center justify-center" : "items-start"
@@ -112,7 +93,6 @@ export function Header() {
             { to: "/", src: "dashboard", label: "Dashboard" },
             { to: "/vehicle-list", src: "cars", label: "All cars" },
             { to: "/task-list", src: "task", label: "All repairs" },
-            { to: "/car-repair", src: "car-repair", label: "Car repairs" },
           ].map((item, index) => (
             <Link key={index} to={item.to} className="w-full">
               <div
@@ -123,7 +103,7 @@ export function Header() {
                     : "justify-start px-3 gap-4"
                 } py-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer`}
               >
-                <div className="w-8 h-8 flex justify-center">
+                <div className="w-8 h-8 flex justify-center items-center">
                   <img
                     src={`icons/menuIcons/${item.src}.svg`}
                     alt={item.label}
@@ -134,7 +114,7 @@ export function Header() {
                 <span
                   className={`text-white text-lg transition-all duration-300 ${
                     isCollapsed
-                      ? "max-w-0 overflow-hidden opacity-0"
+                      ? "max-w-0 overflow-hidden opacity-0 h-10"
                       : "max-w-full opacity-100"
                   }`}
                 >
