@@ -71,6 +71,10 @@ export function Header() {
             </div>
           </Link>
         </div>
+        <div className="flex flex-col w-full gap-2 px-3 transition-all duration-300">
+          <AddNewVehicleButton />
+          <AddNewTaskButton />
+        </div>
 
         <div className="px-3">
           {/* <Link to="/add-car">  */}
@@ -104,46 +108,38 @@ export function Header() {
             isCollapsed ? "items-center justify-center" : "items-start"
           }`}
         >
-          {/* {[
-            { to: "/dashboard", src: "dashboard", label: "Dashboard" },
-            { to: "/cars", src: "cars", label: "All cars" },
-            { to: "/repairs", src: "task", label: "All repairs" },
+          {[
+            { to: "/", src: "dashboard", label: "Dashboard" },
+            { to: "/vehicle-list", src: "cars", label: "All cars" },
+            { to: "/task-list", src: "task", label: "All repairs" },
             { to: "/car-repair", src: "car-repair", label: "Car repairs" },
           ].map((item, index) => (
-            <Link key={index} to={item.to}> */}
-
-          {[
-            { src: "dashboard", label: "Dashboard" },
-            { src: "cars", label: "All cars" },
-            { src: "task", label: "All repairs" },
-            { src: "car-repair", label: "Car repairs" },
-          ].map((item, index) => (
-            // <link key.....>
-            <div
-              key={index}
-              className={`flex items-center gap-4 pl-3 w-full ${
-                isCollapsed ? "pr-0" : "pr-6"
-              } py-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer`}
-            >
-              <div className="w-8 h-8 flex justify-center">
-                <img
-                  src={`icons/menuIcons/${item.src}.svg`}
-                  alt={item.label}
-                  className="w-6 h-6"
-                />
-              </div>
-
-              <span
-                className={`text-white text-lg transition-all duration-300 ${
-                  isCollapsed
-                    ? "max-w-0 overflow-hidden opacity-0"
-                    : "max-w-full opacity-100"
-                }`}
+            <Link key={index} to={item.to} className="w-full">
+              <div
+                key={index}
+                className={`flex items-center gap-4 pl-3 ${
+                  isCollapsed ? "pr-0" : "pr-6"
+                } py-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer`}
               >
-                {item.label}
-              </span>
-            </div>
-            // </Link>
+                <div className="w-8 h-8 flex justify-center">
+                  <img
+                    src={`icons/menuIcons/${item.src}.svg`}
+                    alt={item.label}
+                    className="w-6 h-6"
+                  />
+                </div>
+
+                <span
+                  className={`text-white text-lg transition-all duration-300 ${
+                    isCollapsed
+                      ? "max-w-0 overflow-hidden opacity-0"
+                      : "max-w-full opacity-100"
+                  }`}
+                >
+                  {item.label}
+                </span>
+              </div>
+            </Link>
           ))}
         </div>
 
