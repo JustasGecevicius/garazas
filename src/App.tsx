@@ -6,6 +6,17 @@ import { useDispatch } from "react-redux";
 import { initialiseFuelType } from "./redux/slices/fuelTypeSlice";
 import { initialiseVehicleType } from "./redux/slices/vehicleTypeSlice";
 
+// Define the select property on the window object
+declare global {
+  interface Window {
+    select: {
+      selectEngineSizeMeasurementType: () => Promise<any>;
+      selectFuelType: () => Promise<any>;
+      selectVehicleType: () => Promise<any>;
+    };
+  }
+}
+
 export type EditCarType = {
   id?: string;
 };
@@ -32,7 +43,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="MainBody flex flex-col items-center h-screen gap-2 p-2 text-white bg-stone-800">
+    <div className="MainBody flex flex-row p-7 text-white h-full gap-5">
       <Header />
       <Router />
     </div>
