@@ -32,7 +32,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="MainBody flex flex-row p-5 gap-5">
+    <div className="MainBody flex flex-col items-center h-screen gap-2 p-2 text-white bg-stone-800">
       <Header />
       <Router />
     </div>

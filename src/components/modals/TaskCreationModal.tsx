@@ -1,10 +1,10 @@
-import { MutableRefObject, useRef } from "react";
-import { BaseModalWrapper } from "./BaseModalWrapper";
-import { useDispatch } from "react-redux";
-import { toggleTaskListRefetchState } from "../../redux/slices/vehicleListRefetchSlice";
-import VehicleSelect from "../selects/VehicleSelect";
-import { TextInput } from "../Inputs/TextInput";
-import { DateInput } from "../Inputs/DateInput";
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { BaseModalWrapper } from './BaseModalWrapper';
+import { useDispatch } from 'react-redux';
+import { toggleTaskListRefetchState } from '../../redux/slices/vehicleListRefetchSlice';
+import VehicleSelect from '../selects/VehicleSelect';
+import { TextInput } from '../Inputs/TextInput';
+import { DateInput } from '../Inputs/DateInput';
 
 type PropsType = {
   openRef: MutableRefObject<() => void>;
@@ -37,16 +37,28 @@ export function TaskCreationModal(props: PropsType) {
   }, [task]);
 
   return (
-    <BaseModalWrapper closeRef={closeRef} openRef={openRef}>
-      <div className="grid grid-cols-2 gap-2">
-        <VehicleSelect dataRef={dataRef} value={value?.vehicle} />
-        <TextInput name="note" dataRef={dataRef} value={value?.note} />
-        <DateInput name="task_date" value={value?.date} dataRef={dataRef} />
-        <div className="flex justify-center col-span-2">
+    <BaseModalWrapper
+      closeRef={closeRef}
+      openRef={openRef}>
+      <div className='grid grid-cols-2 gap-2'>
+        <VehicleSelect
+          dataRef={dataRef}
+          value={value?.vehicle}
+        />
+        <TextInput
+          name='note'
+          dataRef={dataRef}
+          value={value?.note}
+        />
+        <DateInput
+          name='task_date'
+          value={value?.date}
+          dataRef={dataRef}
+        />
+        <div className='flex justify-center col-span-2'>
           <button
-            className="rounded-sm"
-            onClick={value?.id ? saveTask : submitTask}
-          >
+            className='rounded-sm'
+            onClick={value?.id ? saveTask : submitTask}>
             Save
           </button>
         </div>
