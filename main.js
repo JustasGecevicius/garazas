@@ -19,8 +19,8 @@ const sqlite3Verbose = sqlite3.verbose();
 function createWindow() {
   const db = new sqlite3Verbose.Database('db');
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1500,
+    height: 1100,
     webPreferences: {
       nodeIntegration: true,
       preload: `${__dirname}/preload.js`,
@@ -45,9 +45,7 @@ function createWindow() {
 
   db.close();
   win.loadURL('http://localhost:3000');
-  win.webContents.openDevTools({
-    mode: 'detach',
-  });
+  win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {

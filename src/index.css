@@ -14,15 +14,3 @@
 .slider-container{
   width: calc(100% - 50px)
 }
-
-.MainBody {
-  font-family: "Josefin Sans", serif;
-  font-optical-sizing: auto;
-  background-color: #1c1917;
-  color: #fff;
-  padding: 0.7rem;
-}
-
-body {
-  background-color: #1c1917;
-}

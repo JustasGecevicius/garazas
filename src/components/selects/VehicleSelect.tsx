@@ -1,6 +1,4 @@
-import React, { MutableRefObject, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectVehicleType } from '../../redux/slices/vehicleTypeSlice';
+import React, { MutableRefObject, useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 
 type VehicleTypeSelectProps = {
@@ -10,19 +8,19 @@ type VehicleTypeSelectProps = {
 
 export function VehicleSelect(props: VehicleTypeSelectProps) {
   const { dataRef, value } = props;
-  const [selectedVehicle, setSelectedVehicle] = useState(value || '');
+  const [selectedVehicle, setSelectedVehicle] = useState(value || null);
 
-  const { data: allVehicles, error, isFetching } = useQuery({
+  const {
+    data: allVehicles,
+    error,
+    isFetching,
+  } = useQuery({
     queryKey: ['all_vehicles'],
     queryFn: async () => {
       const response = await window.select.selectAllVehicles();
       return response;
     },
-  })
-
-  useEffect(() => {
-    console.log('DATA', allVehicles)
-  }, [allVehicles]);
+  });
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedVehicle(event.target.value);
@@ -31,22 +29,31 @@ export function VehicleSelect(props: VehicleTypeSelectProps) {
   useEffect(() => {
     if (!dataRef) return;
     dataRef.current['vehicle_id'] = selectedVehicle;
-  }, [selectedVehicle]);
+  }, [dataRef, selectedVehicle]);
 
   useEffect(() => {
-    setSelectedVehicle(value || '');
+    setSelectedVehicle(value?.id || '');
   }, [value]);
 
+  const options = useMemo(() => {
+    return allVehicles?.map((vehicle) => (
+      <option
+        key={vehicle.id}
+        value={vehicle.id}>
+        {vehicle.name}
+      </option>
+    ));
+  }, [allVehicles]);
+
   return (
-      <select value={selectedVehicle} onChange={handleChange} className='text-black'>
-        <option value={null} disabled>Select a vehicle</option>
-        {allVehicles?.map((vehicle) => (
-          <option key={vehicle.id} value={vehicle.id}>
-            {vehicle.name}
-          </option>
-        ))}
-      </select>
+    <select
+      value={selectedVehicle}
+      onChange={handleChange}
+      className='text-black'>
+      <option value={null}>Select a vehicle</option>
+      {options}
+    </select>
   );
-};
+}
 
 export default VehicleSelect;
