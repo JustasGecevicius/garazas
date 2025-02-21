@@ -24,7 +24,6 @@ ipcMain.handle(CHANNELS.SELECT, (_, tableKey, id) => {
     default:
       promise = new Promise((resolve, reject) => {
         db.get(`SELECT * FROM ${table} WHERE id='${numberId}'`, (err, response) => {
-          console.log("RESPONSE2", response);
           resolve(response);
         });
       });

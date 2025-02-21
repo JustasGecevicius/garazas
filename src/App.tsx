@@ -6,17 +6,6 @@ import { useDispatch } from "react-redux";
 import { initialiseFuelType } from "./redux/slices/fuelTypeSlice";
 import { initialiseVehicleType } from "./redux/slices/vehicleTypeSlice";
 
-// Define the select property on the window object
-declare global {
-  interface Window {
-    select: {
-      selectEngineSizeMeasurementType: () => Promise<any>;
-      selectFuelType: () => Promise<any>;
-      selectVehicleType: () => Promise<any>;
-    };
-  }
-}
-
 export type EditCarType = {
   id?: string;
 };
@@ -26,8 +15,7 @@ export default function App() {
 
   useEffect(function initialSetup() {
     const func = async () => {
-      const engineMeasurementTypePromise =
-        window.select.selectEngineSizeMeasurementType();
+      const engineMeasurementTypePromise = window.select.selectEngineSizeMeasurementType();
       const fuelTypePromise = window.select.selectFuelType();
       const selectVehicleTypePromise = window.select.selectVehicleType();
       const resolvedPromises = await Promise.all([

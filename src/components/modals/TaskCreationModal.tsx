@@ -6,22 +6,13 @@ import VehicleSelect from "../selects/VehicleSelect";
 import { TextInput } from "../Inputs/TextInput";
 import { DateInput } from "../Inputs/DateInput";
 
-declare global {
-  interface Window {
-    create: {
-      createTask: (data: any) => void;
-      updateTask: (data: any) => void;
-    };
-  }
-}
-
 type PropsType = {
   openRef: MutableRefObject<() => void>;
   closeRef: MutableRefObject<() => void>;
   id?: number;
   task?: {
     id?: number;
-    vehicle?: string;
+    vehicle?: number;
     note?: string;
     date?: string;
   };
@@ -29,6 +20,8 @@ type PropsType = {
 
 export function TaskCreationModal(props: PropsType) {
   const { closeRef, openRef, task } = props;
+
+  console.log("TASK", task);
 
   const dataRef = useRef<{ [key: string]: any }>({});
   const [value, setValue] = useState(task);
@@ -42,7 +35,7 @@ export function TaskCreationModal(props: PropsType) {
   }
 
   function saveTask() {
-    window.create.updateTask(dataRef?.current);
+    window.update.updateTask(dataRef?.current);
     dispatch(toggleTaskListRefetchState());
     closeRef.current();
   }
@@ -51,6 +44,10 @@ export function TaskCreationModal(props: PropsType) {
     setValue(task);
   }, [task]);
 
+  useEffect(() => {
+    console.log("VALUE", value);
+  }, [value]);
+
   return (
     <BaseModalWrapper closeRef={closeRef} openRef={openRef}>
       <div className="grid grid-cols-2 gap-2">
@@ -58,10 +55,7 @@ export function TaskCreationModal(props: PropsType) {
         <TextInput name="note" dataRef={dataRef} value={value?.note} />
         <DateInput name="task_date" value={value?.date} dataRef={dataRef} />
         <div className="flex justify-center col-span-2">
-          <button
-            className="rounded-sm"
-            onClick={value?.id ? saveTask : submitTask}
-          >
+          <button className="rounded-sm" onClick={value?.id ? saveTask : submitTask}>
             Save
           </button>
         </div>
