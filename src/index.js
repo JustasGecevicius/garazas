@@ -9,6 +9,7 @@ import store from './redux/store';
 import { HashRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
+
 const clientQuery = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

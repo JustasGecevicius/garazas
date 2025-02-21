@@ -11,6 +11,10 @@
   --breakpoint-desk: 120rem;
 } */
 
+body {
+  background-color: rgb(28 25 23);
+}
+
 .slider-container{
   width: calc(100% - 50px)
 }
