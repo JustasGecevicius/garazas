@@ -41,6 +41,7 @@ export function TaskCreationModal(props: PropsType) {
   }
 
   useEffect(() => {
+    console.log("SETTASk", task);
     setValue(task);
   }, [task]);
 

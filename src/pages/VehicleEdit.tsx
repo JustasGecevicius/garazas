@@ -5,15 +5,18 @@ import { CarPictures } from "../components/EditCarComponents/PicturesSection/Car
 import { RepairHistory } from "../components/EditCarComponents/RepairHistorySection/RepairHistory";
 import { useParams } from "react-router";
 import { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import { selectTaskListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";
 type Props = {} & EditCarType;
 
 export default function VehicleEdit(props: Props) {
   const { id } = useParams();
 
   const dataRef = useRef<{ [key: string]: any }>({});
+  const { taskListToggle } = useSelector(selectTaskListRefetchToggle);
 
   const { data, error, isFetching } = useQuery({
-    queryKey: ["edit-vehicle", id],
+    queryKey: ["edit-vehicle", id, taskListToggle],
     queryFn: async ({ queryKey }) => {
       const response = await window.select.selectVehicle(id);
       response.tasks = JSON.parse(response.tasks);
@@ -22,6 +25,7 @@ export default function VehicleEdit(props: Props) {
   });
 
   useEffect(() => {
+    console.log("DATA", data);
     dataRef.current = data;
   }, [data]);
 

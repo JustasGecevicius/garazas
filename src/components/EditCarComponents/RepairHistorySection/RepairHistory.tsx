@@ -24,14 +24,9 @@ export function RepairHistory(props: Props) {
   }
 
   const selectedTaskAllData = useMemo(() => {
-    return { ...selectedTask, vehicle: cloneDeep(data) };
+    if (!selectedTask) return null;
+    return { ...selectedTask, vehicle: data.id };
   }, [selectedTask, data]);
-
-  console.log("DATA", data);
-
-  useEffect(() => {
-    console.log("TASKALLDATA", selectedTaskAllData);
-  }, [selectedTaskAllData]);
 
   return (
     <>

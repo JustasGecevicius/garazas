@@ -1,8 +1,8 @@
-const { contextBridge, ipcRenderer } = require('electron');
-const { CHANNELS } = require('./channels');
-const { TABLES } = require('./tablesList');
+const { contextBridge, ipcRenderer } = require("electron");
+const { CHANNELS } = require("./channels");
+const { TABLES } = require("./tablesList");
 
-contextBridge.exposeInMainWorld('delete', {
+contextBridge.exposeInMainWorld("delete", {
   deleteVehicle: (id) => {
     ipcRenderer.send(CHANNELS.DELETE, TABLES.vehicle, id);
   },
@@ -11,7 +11,7 @@ contextBridge.exposeInMainWorld('delete', {
   },
 });
 
-contextBridge.exposeInMainWorld('create', {
+contextBridge.exposeInMainWorld("create", {
   createVehicle: (data) => {
     ipcRenderer.send(CHANNELS.CREATE, TABLES.vehicle, data);
   },
@@ -20,7 +20,7 @@ contextBridge.exposeInMainWorld('create', {
   },
 });
 
-contextBridge.exposeInMainWorld('update', {
+contextBridge.exposeInMainWorld("update", {
   updateVehicle: (data) => {
     ipcRenderer.send(CHANNELS.UPDATE, TABLES.vehicle, data);
   },
@@ -29,18 +29,15 @@ contextBridge.exposeInMainWorld('update', {
   },
 });
 
-contextBridge.exposeInMainWorld('select', {
+contextBridge.exposeInMainWorld("select", {
   selectVehicle: (id) => {
-    return ipcRenderer.invoke(CHANNELS.SELECT, TABLES.vehicle, id);
+    return ipcRenderer.invoke(CHANNELS.SELECT_VEHICLE, TABLES.vehicle, id);
   },
   selectTask: (id) => {
     return ipcRenderer.invoke(CHANNELS.SELECT, TABLES.task, id);
   },
   selectEngineSizeMeasurementType: () => {
-    return ipcRenderer.invoke(
-      CHANNELS.SELECT_ALL,
-      TABLES.engine_size_measurement_type
-    );
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.engine_size_measurement_type);
   },
   selectFuelType: () => {
     return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.fuel_type);
@@ -49,18 +46,10 @@ contextBridge.exposeInMainWorld('select', {
     return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.vehicle_type);
   },
   selectPaginatedVehicles: (params) => {
-    return ipcRenderer.invoke(
-      CHANNELS.SELECT_ALL_WITH_PARAMS,
-      TABLES.vehicle,
-      params
-    );
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, TABLES.vehicle, params);
   },
   selectPaginatedTasks: (params) => {
-    return ipcRenderer.invoke(
-      CHANNELS.SELECT_ALL_WITH_PARAMS,
-      TABLES.task,
-      params
-    );
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, TABLES.task, params);
   },
   selectAllVehicles: () => {
     return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.vehicle);
