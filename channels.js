@@ -3,7 +3,7 @@ const CHANNELS = {
   CREATE: "create",
   UPDATE: "update",
   SELECT: "select",
-  SELECT_VEHICLE: "select",
+  SELECT_VEHICLE: "select_vehicle",
   SELECT_ALL: "select_all",
   SELECT_ALL_WITH_PARAMS: "select_all_with_params",
 };
