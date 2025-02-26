@@ -39,27 +39,27 @@ ipcMain.handle(CHANNELS.SELECT_ALL, (_, tableKey) => {
 ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, (_, tableKey, params) => {
   if (!tableKey || !TABLES[tableKey] | !params) return;
 
-  const paginationQuery =
-    params.limit && params.page
-      ? ` LIMIT ${params.limit} OFFSET ${(params.page - 1) * params?.limit}`
-      : "";
+  // const paginationQuery =
+  //   params.limit && params.page
+  //     ? ` LIMIT ${params.limit} OFFSET ${(params.page - 1) * params?.limit}`
+  //     : "";
 
-  const db = new sqlite3Verbose.Database("db");
+  // const db = new sqlite3Verbose.Database("db");
 
-  const countPromise = new Promise((resolve, reject) =>
-    db.all(`SELECT COUNT(*) FROM ${TABLES[tableKey]}`, (err, response) => {
-      resolve(response);
-    })
-  );
+  // const countPromise = new Promise((resolve, reject) =>
+  //   db.all(`SELECT COUNT(*) FROM ${TABLES[tableKey]}`, (err, response) => {
+  //     resolve(response);
+  //   })
+  // );
 
-  const dataPromise = new Promise(async (resolve, reject) => {
-    db.all(`SELECT * FROM ${TABLES[tableKey]}${paginationQuery}`, (err, response) => {
-      resolve(response);
-    });
-  });
-  db.close();
-  return Promise.all([countPromise, dataPromise]).then(([count, data]) => ({
-    total: count[0]["COUNT(*)"],
-    data,
-  }));
+  // const dataPromise = new Promise(async (resolve, reject) => {
+  //   db.all(`SELECT * FROM ${TABLES[tableKey]}${paginationQuery}`, (err, response) => {
+  //     resolve(response);
+  //   });
+  // });
+  // db.close();
+  // return Promise.all([countPromise, dataPromise]).then(([count, data]) => ({
+  //   total: count[0]["COUNT(*)"],
+  //   data,
+  // }));
 });

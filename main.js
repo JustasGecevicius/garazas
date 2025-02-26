@@ -1,8 +1,9 @@
 const { app, BrowserWindow } = require("electron");
 const sqlite3 = require("sqlite3");
+const { Sequelize } = require("sequelize");
 require("./ipcMainFunctions/default/on");
 require("./ipcMainFunctions/default/handle");
-const { allQueries } = require("./dbInfo/dbInitQueries");
+const { defineAllModels } = require("./dbInfo/dbInitQueries");
 const {
   engineSizeMeasurementQuery,
   engineSizeMeasurementInitValues,
@@ -12,9 +13,32 @@ const {
   vehicleTypeQuery,
 } = require("./dbInfo/defaultTablesQueries");
 const { insertValuesIfNoneFound } = require("./dbInfo/dbInitHelperFunctions");
-const { TABLES } = require("./tablesList");
 
 const sqlite3Verbose = sqlite3.verbose();
+
+const sequelize = new Sequelize({
+  dialect: "sqlite",
+  storage: "db",
+});
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Connection has been established successfully.");
+    defineAllModels(sequelize);
+  })
+  .catch((error) => {
+    console.error("Unable to connect to the database:", error);
+  });
+
+sequelize
+  .sync()
+  .then(() => {
+    console.log("All models were synchronized successfully.");
+  })
+  .catch((error) => {
+    console.error("Unable to synchronize the models with the database:", error);
+  });
 
 function createWindow() {
   const db = new sqlite3Verbose.Database("db");
@@ -26,17 +50,14 @@ function createWindow() {
       preload: `${__dirname}/preload.js`,
     },
   });
-  db.serialize(() => {
-    allQueries.forEach((query) => db.run(query));
-  });
-  insertValuesIfNoneFound(
-    db,
-    "engine_size_measurement_type",
-    engineSizeMeasurementInitValues,
-    engineSizeMeasurementQuery
-  );
-  insertValuesIfNoneFound(db, "fuel_type", fuelTypeValues, fuelTypeQuery);
-  insertValuesIfNoneFound(db, "vehicle_type", vehicleTypeValues, vehicleTypeQuery);
+  // insertValuesIfNoneFound(
+  //   db,
+  //   "engine_size_measurement_type",
+  //   engineSizeMeasurementInitValues,
+  //   engineSizeMeasurementQuery
+  // );
+  // insertValuesIfNoneFound(db, "fuel_type", fuelTypeValues, fuelTypeQuery);
+  // insertValuesIfNoneFound(db, "vehicle_type", vehicleTypeValues, vehicleTypeQuery);
 
   db.close();
   win.loadURL("http://localhost:3000");

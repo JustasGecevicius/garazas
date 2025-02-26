@@ -1,132 +1,264 @@
-const clientQuery = `
-CREATE TABLE IF NOT EXISTS client (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-name VARCHAR NOT NULL,
-last_name VARCHAR NOT NULL,
-phone VARCHAR NOT NULL,
-email VARCHAR NOT NULL);
-`;
+const { DataTypes } = require("sequelize");
 
-const vehicleQuery = `
-CREATE TABLE IF NOT EXISTS vehicle (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-name VARCHAR,
-model VARCHAR,
-engine_size FLOAT,
-engine_size_measurement_type_id INTEGER,
-vin_code VARCHAR,
-make VARCHAR,
-fuel_type_id INTEGER,
-odometer INTEGER,
-fabrication_year DATE,
-tech_inspection_due_date DATE,
-note VARCHAR,
-client_id INTEGER,
-vehicle_type_id INTEGER,
-plate_number VARCHAR,
-FOREIGN KEY(engine_size_measurement_type_id) REFERENCES engine_size_measurement_type(id),
-FOREIGN KEY(fuel_type_id) REFERENCES fuel_type(id),
-FOREIGN KEY(client_id) REFERENCES client(id),
-FOREIGN KEY(vehicle_type_id) REFERENCES vehicle_type(id));
-`;
+const Client = (sequelize) =>
+  sequelize.define("Client", {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  });
 
-const photoQuery = `
-CREATE TABLE IF NOT EXISTS photo (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-photo_blob BLOB NOT NULL,
-vehicle_id INTEGER NOT NULL,
-FOREIGN KEY(vehicle_id) REFERENCES vehicle(id));
-`;
-const taskQuery = `
-CREATE TABLE IF NOT EXISTS task (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-task_date DATE NOT NULL,
-note VARCHAR,
-vehicle_id INTEGER NOT NULL,
-FOREIGN KEY(vehicle_id) REFERENCES vehicle(id));
-`;
+const Vehicle = (sequelize) =>
+  sequelize.define("Vehicle", {
+    name: DataTypes.STRING,
+    model: DataTypes.STRING,
+    engineSize: DataTypes.FLOAT,
+    engineSizeMeasurementTypeId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "EngineSizeMeasurementType",
+        key: "id",
+      },
+    },
+    vinCode: DataTypes.STRING,
+    make: DataTypes.STRING,
+    fuelTypeId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "FuelType",
+        key: "id",
+      },
+    },
+    odometer: DataTypes.INTEGER,
+    fabricationYear: DataTypes.DATE,
+    techInspectionDueDate: DataTypes.DATE,
+    note: DataTypes.STRING,
+    clientId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Client",
+        key: "id",
+      },
+    },
+    vehicleTypeId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "VehicleType",
+        key: "id",
+      },
+    },
+    plateNumber: DataTypes.STRING,
+  });
 
-const partTaskQuery = `
-CREATE TABLE IF NOT EXISTS part_task (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-task_id INTEGER NOT NULL,
-used_part_id INTEGER NOT NULL,
-quantity FLOAT NOT NULL,
-discount FLOAT NOT NULL,
-FOREIGN KEY(task_id) REFERENCES task(id),
-FOREIGN KEY(used_part_id) REFERENCES part(id));
-`;
-const partQuery = `
-CREATE TABLE IF NOT EXISTS part (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-name VARCHAR NOT NULL,
-price INTEGER,
-install_time DATETIME);
-`;
+const Photo = (sequelize) =>
+  sequelize.define("Photo", {
+    photoBlob: {
+      type: DataTypes.BLOB,
+      allowNull: false,
+    },
+    vehicleId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Vehicle",
+        key: "id",
+      },
+    },
+  });
 
-const taskNeededPartQuery = `
-CREATE TABLE IF NOT EXISTS task_needed_part (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-task_id INTEGER NOT NULL,
-needed_part_id INTEGER NOT NULL,
-quantity FLOAT NOT NULL,
-FOREIGN KEY(task_id) REFERENCES task(id),
-FOREIGN KEY(needed_part_id) REFERENCES part(id));
-`;
+const Task = (sequelize) =>
+  sequelize.define("Task", {
+    taskDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    note: DataTypes.STRING,
+    vehicleId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Vehicle",
+        key: "id",
+      },
+    },
+  });
 
-const taskPhotoQuery = `
-CREATE TABLE IF NOT EXISTS task_photo (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-photo_blob BLOB NOT NULL,
-task_id INTEGER NOT NULL,
-FOREIGN KEY(task_id) REFERENCES task(id));
-`;
-const partPhotoQuery = `
-CREATE TABLE IF NOT EXISTS part_photo (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-photo_blob BLOB NOT NULL,
-part_id INTEGER NOT NULL,
-FOREIGN KEY(part_id) REFERENCES part(id));
-`;
-const partTaskPhotoQuery = `
-CREATE TABLE IF NOT EXISTS part_task_photo (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-photo_blob BLOB NOT NULL,
-part_task_id INTEGER NOT NULL,
-FOREIGN KEY(part_task_id) REFERENCES part_task(id));
-`;
-const engineSizeMeasurementTypeQuery = `
-CREATE TABLE IF NOT EXISTS engine_size_measurement_type (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-measurement_unit VARCHAR NOT NULL,
-conversion_to_litre FLOAT NOT NULL);
-`;
-const fuelTypeQuery = `
-CREATE TABLE IF NOT EXISTS fuel_type (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-fuel_type VARCHAR NOT NULL);
-`;
+const PartTask = (sequelize) =>
+  sequelize.define("PartTask", {
+    taskId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Task",
+        key: "id",
+      },
+    },
+    usedPartId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Part",
+        key: "id",
+      },
+    },
+    quantity: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    discount: DataTypes.FLOAT,
+  });
 
-const vehicleTypeQuery = `
-CREATE TABLE IF NOT EXISTS vehicle_type (
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-vehicle_type VARCHAR NOT NULL);
-`;
+const Part = (sequelize) =>
+  sequelize.define("Part", {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    price: DataTypes.INTEGER,
+    installTime: DataTypes.DATE,
+  });
 
-const allQueries = [
-  clientQuery,
-  vehicleTypeQuery,
-  engineSizeMeasurementTypeQuery,
-  fuelTypeQuery,
-  partQuery,
-  vehicleQuery,
-  taskQuery,
-  photoQuery,
-  partTaskQuery,
-  taskNeededPartQuery,
-  taskPhotoQuery,
-  partPhotoQuery,
-  partTaskPhotoQuery,
-];
+const TaskNeededPart = (sequelize) =>
+  sequelize.define("TaskNeededPart", {
+    taskId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Task",
+        key: "id",
+      },
+    },
+    neededPartId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Part",
+        key: "id",
+      },
+    },
+    quantity: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+  });
 
-module.exports = { allQueries };
+const TaskPhoto = (sequelize) =>
+  sequelize.define("TaskPhoto", {
+    photoBlob: {
+      type: DataTypes.BLOB,
+      allowNull: false,
+    },
+    taskId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Task",
+        key: "id",
+      },
+    },
+  });
+
+const PartPhoto = (sequelize) =>
+  sequelize.define("PartPhoto", {
+    photoBlob: {
+      type: DataTypes.BLOB,
+      allowNull: false,
+    },
+    partId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "Part",
+        key: "id",
+      },
+    },
+  });
+
+const PartTaskPhoto = (sequelize) =>
+  sequelize.define("PartTaskPhoto", {
+    photoBlob: {
+      type: DataTypes.BLOB,
+      allowNull: false,
+    },
+    partTaskId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "PartTask",
+        key: "id",
+      },
+    },
+  });
+
+const EngineSizeMeasurementType = (sequelize) =>
+  sequelize.define("EngineSizeMeasurementType", {
+    measurementUnit: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    conversionToLitre: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+  });
+
+const FuelType = (sequelize) =>
+  sequelize.define("FuelType", {
+    fuelType: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  });
+
+const VehicleType = (sequelize) =>
+  sequelize.define("VehicleType", {
+    vehicleType: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  });
+
+const defineAllModels = (sequelize) => {
+  VehicleType(sequelize);
+  FuelType(sequelize);
+  EngineSizeMeasurementType(sequelize);
+  PartTaskPhoto(sequelize);
+  PartPhoto(sequelize);
+  TaskPhoto(sequelize);
+  TaskNeededPart(sequelize);
+  Part(sequelize);
+  PartTask(sequelize);
+  Task(sequelize);
+  Photo(sequelize);
+  Vehicle(sequelize);
+  Client(sequelize);
+};
+
+module.exports = {
+  Client,
+  Vehicle,
+  Photo,
+  Task,
+  PartTask,
+  Part,
+  TaskNeededPart,
+  TaskPhoto,
+  PartPhoto,
+  PartTaskPhoto,
+  EngineSizeMeasurementType,
+  FuelType,
+  VehicleType,
+  defineAllModels,
+};
