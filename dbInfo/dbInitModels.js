@@ -230,20 +230,37 @@ const VehicleType = (sequelize) =>
     },
   });
 
-const defineAllModels = (sequelize) => {
-  VehicleType(sequelize);
-  FuelType(sequelize);
-  EngineSizeMeasurementType(sequelize);
-  PartTaskPhoto(sequelize);
-  PartPhoto(sequelize);
-  TaskPhoto(sequelize);
-  TaskNeededPart(sequelize);
-  Part(sequelize);
-  PartTask(sequelize);
-  Task(sequelize);
-  Photo(sequelize);
-  Vehicle(sequelize);
-  Client(sequelize);
+const defineAllModels = async (sequelize) => {
+  const models = await Promise.all([
+    VehicleType(sequelize),
+    FuelType(sequelize),
+    EngineSizeMeasurementType(sequelize),
+    PartTaskPhoto(sequelize),
+    PartPhoto(sequelize),
+    TaskPhoto(sequelize),
+    TaskNeededPart(sequelize),
+    Part(sequelize),
+    PartTask(sequelize),
+    Task(sequelize),
+    Photo(sequelize),
+    Vehicle(sequelize),
+    Client(sequelize),
+  ]);
+  return {
+    VehicleType: models[0],
+    FuelType: models[1],
+    EngineSizeMeasurementType: models[2],
+    PartTaskPhoto: models[3],
+    PartPhoto: models[4],
+    TaskPhoto: models[5],
+    TaskNeededPart: models[6],
+    Part: models[7],
+    PartTask: models[8],
+    Task: models[9],
+    Photo: models[10],
+    Vehicle: models[11],
+    Client: models[12],
+  };
 };
 
 module.exports = {
