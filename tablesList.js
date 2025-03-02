@@ -1,11 +1,28 @@
 const TABLES = {
-  vehicle: 'vehicle',
-  engine_size_measurement_type: 'engine_size_measurement_type',
-  fuel_type: 'fuel_type',
-  vehicle_type: 'vehicle_type',
-  task: 'task',
+  Vehicles: "Vehicles",
+  EngineSizeMeasurementTypes: "EngineSizeMeasurementTypes",
+  FuelTypes: "FuelTypes",
+  VehicleTypes: "VehicleTypes",
+  Tasks: "Tasks",
+};
+
+const MODULES = {
+  VehicleTypes: "VehicleType",
+  FuelTypes: "FuelType",
+  EngineSizeMeasurementTypes: "EngineSizeMeasurementType",
+  PartTaskPhotos: "PartTaskPhoto",
+  PartPhotos: "PartPhoto",
+  TaskPhotos: "TaskPhoto",
+  TaskNeededParts: "TaskNeededPart",
+  Parts: "Part",
+  PartTasks: "PartTask",
+  Tasks: "Task",
+  Photos: "Photo",
+  Vehicles: "Vehicle",
+  Clients: "Client",
 };
 
 module.exports = {
   TABLES,
+  MODULES,
 };

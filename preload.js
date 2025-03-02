@@ -4,57 +4,57 @@ const { TABLES } = require("./tablesList");
 
 contextBridge.exposeInMainWorld("delete", {
   deleteVehicle: (id) => {
-    ipcRenderer.send(CHANNELS.DELETE, TABLES.vehicle, id);
+    ipcRenderer.send(CHANNELS.DELETE, TABLES.Vehicles, id);
   },
   deleteTask: (id) => {
-    ipcRenderer.send(CHANNELS.DELETE, TABLES.task, id);
+    ipcRenderer.send(CHANNELS.DELETE, TABLES.Tasks, id);
   },
 });
 
 contextBridge.exposeInMainWorld("create", {
   createVehicle: (data) => {
-    ipcRenderer.send(CHANNELS.CREATE, TABLES.vehicle, data);
+    ipcRenderer.send(CHANNELS.CREATE, TABLES.Vehicles, data);
   },
   createTask: (data) => {
-    ipcRenderer.send(CHANNELS.CREATE, TABLES.task, data);
+    ipcRenderer.send(CHANNELS.CREATE, TABLES.Tasks, data);
   },
 });
 
 contextBridge.exposeInMainWorld("update", {
   updateVehicle: (data) => {
-    ipcRenderer.send(CHANNELS.UPDATE, TABLES.vehicle, data);
+    ipcRenderer.send(CHANNELS.UPDATE, TABLES.Vehicles, data);
   },
   updateTask: (data) => {
-    ipcRenderer.send(CHANNELS.UPDATE, TABLES.task, data);
+    ipcRenderer.send(CHANNELS.UPDATE, TABLES.Tasks, data);
   },
 });
 
 contextBridge.exposeInMainWorld("select", {
   selectVehicle: (id) => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_VEHICLE, TABLES.vehicle, id);
+    return ipcRenderer.invoke(CHANNELS.SELECT_VEHICLE, TABLES.Vehicles, id);
   },
   selectTask: (id) => {
-    return ipcRenderer.invoke(CHANNELS.SELECT, TABLES.task, id);
+    return ipcRenderer.invoke(CHANNELS.SELECT, TABLES.Tasks, id);
   },
   selectEngineSizeMeasurementType: () => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.engine_size_measurement_type);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.EngineSizeMeasurementTypes);
   },
   selectFuelType: () => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.fuel_type);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.FuelTypes);
   },
   selectVehicleType: () => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.vehicle_type);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.VehicleTypes);
   },
   selectPaginatedVehicles: (params) => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, TABLES.vehicle, params);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, TABLES.Vehicles, params);
   },
   selectPaginatedTasks: (params) => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, TABLES.task, params);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, TABLES.Tasks, params);
   },
   selectAllVehicles: () => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.vehicle);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.Vehicles);
   },
   selectAllTasks: () => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.task);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.Tasks);
   },
 });

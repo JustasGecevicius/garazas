@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 
-const Client = (sequelize) =>
+const ClientInit = (sequelize) =>
   sequelize.define("Client", {
     name: {
       type: DataTypes.STRING,
@@ -20,49 +20,21 @@ const Client = (sequelize) =>
     },
   });
 
-const Vehicle = (sequelize) =>
+const VehicleInit = (sequelize) =>
   sequelize.define("Vehicle", {
     name: DataTypes.STRING,
     model: DataTypes.STRING,
     engineSize: DataTypes.FLOAT,
-    engineSizeMeasurementTypeId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "EngineSizeMeasurementType",
-        key: "id",
-      },
-    },
     vinCode: DataTypes.STRING,
     make: DataTypes.STRING,
-    fuelTypeId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "FuelType",
-        key: "id",
-      },
-    },
     odometer: DataTypes.INTEGER,
     fabricationYear: DataTypes.DATE,
     techInspectionDueDate: DataTypes.DATE,
     note: DataTypes.STRING,
-    clientId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "Client",
-        key: "id",
-      },
-    },
-    vehicleTypeId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "VehicleType",
-        key: "id",
-      },
-    },
     plateNumber: DataTypes.STRING,
   });
 
-const Photo = (sequelize) =>
+const PhotoInit = (sequelize) =>
   sequelize.define("Photo", {
     photoBlob: {
       type: DataTypes.BLOB,
@@ -78,24 +50,16 @@ const Photo = (sequelize) =>
     },
   });
 
-const Task = (sequelize) =>
+const TaskInit = (sequelize) =>
   sequelize.define("Task", {
     taskDate: {
       type: DataTypes.DATE,
       allowNull: false,
     },
     note: DataTypes.STRING,
-    vehicleId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Vehicle",
-        key: "id",
-      },
-    },
   });
 
-const PartTask = (sequelize) =>
+const PartTaskInit = (sequelize) =>
   sequelize.define("PartTask", {
     taskId: {
       type: DataTypes.INTEGER,
@@ -120,7 +84,7 @@ const PartTask = (sequelize) =>
     discount: DataTypes.FLOAT,
   });
 
-const Part = (sequelize) =>
+const PartInit = (sequelize) =>
   sequelize.define("Part", {
     name: {
       type: DataTypes.STRING,
@@ -130,7 +94,7 @@ const Part = (sequelize) =>
     installTime: DataTypes.DATE,
   });
 
-const TaskNeededPart = (sequelize) =>
+const TaskNeededPartInit = (sequelize) =>
   sequelize.define("TaskNeededPart", {
     taskId: {
       type: DataTypes.INTEGER,
@@ -154,7 +118,7 @@ const TaskNeededPart = (sequelize) =>
     },
   });
 
-const TaskPhoto = (sequelize) =>
+const TaskPhotoInit = (sequelize) =>
   sequelize.define("TaskPhoto", {
     photoBlob: {
       type: DataTypes.BLOB,
@@ -170,7 +134,7 @@ const TaskPhoto = (sequelize) =>
     },
   });
 
-const PartPhoto = (sequelize) =>
+const PartPhotoInit = (sequelize) =>
   sequelize.define("PartPhoto", {
     photoBlob: {
       type: DataTypes.BLOB,
@@ -186,7 +150,7 @@ const PartPhoto = (sequelize) =>
     },
   });
 
-const PartTaskPhoto = (sequelize) =>
+const PartTaskPhotoInit = (sequelize) =>
   sequelize.define("PartTaskPhoto", {
     photoBlob: {
       type: DataTypes.BLOB,
@@ -202,7 +166,7 @@ const PartTaskPhoto = (sequelize) =>
     },
   });
 
-const EngineSizeMeasurementType = (sequelize) =>
+const EngineSizeMeasurementTypeInit = (sequelize) =>
   sequelize.define("EngineSizeMeasurementType", {
     measurementUnit: {
       type: DataTypes.STRING,
@@ -214,7 +178,7 @@ const EngineSizeMeasurementType = (sequelize) =>
     },
   });
 
-const FuelType = (sequelize) =>
+const FuelTypeInit = (sequelize) =>
   sequelize.define("FuelType", {
     fuelType: {
       type: DataTypes.STRING,
@@ -222,7 +186,7 @@ const FuelType = (sequelize) =>
     },
   });
 
-const VehicleType = (sequelize) =>
+const VehicleTypeInit = (sequelize) =>
   sequelize.define("VehicleType", {
     vehicleType: {
       type: DataTypes.STRING,
@@ -231,51 +195,56 @@ const VehicleType = (sequelize) =>
   });
 
 const defineAllModels = async (sequelize) => {
+  const VehicleType = VehicleTypeInit(sequelize);
+  const FuelType = FuelTypeInit(sequelize);
+  const EngineSizeMeasurementType = EngineSizeMeasurementTypeInit(sequelize);
+  const Task = TaskInit(sequelize);
+  const Vehicle = VehicleInit(sequelize);
+  //  const PartTaskPhoto = PartTaskPhoto(sequelize),
+  //  const PartPhoto = PartPhoto(sequelize),
+  //  const TaskPhoto = TaskPhoto(sequelize),
+  //  const TaskNeededPart = TaskNeededPart(sequelize),
+  //  const Part = Part(sequelize),
+  //  const PartTask = PartTask(sequelize),
+  //  const Photo = Photo(sequelize),
+  //  const Client = Client(sequelize),
+  VehicleType.hasMany(Vehicle);
+  FuelType.hasMany(Vehicle);
+  EngineSizeMeasurementType.hasMany(Vehicle);
+  Vehicle.hasMany(Task);
+
   const models = await Promise.all([
-    VehicleType(sequelize),
-    FuelType(sequelize),
-    EngineSizeMeasurementType(sequelize),
-    PartTaskPhoto(sequelize),
-    PartPhoto(sequelize),
-    TaskPhoto(sequelize),
-    TaskNeededPart(sequelize),
-    Part(sequelize),
-    PartTask(sequelize),
-    Task(sequelize),
-    Photo(sequelize),
-    Vehicle(sequelize),
-    Client(sequelize),
+    VehicleType,
+    FuelType,
+    EngineSizeMeasurementType,
+    Task,
+    Vehicle,
+    // PartTaskPhoto(sequelize),
+    // PartPhoto(sequelize),
+    // TaskPhoto(sequelize),
+    // TaskNeededPart(sequelize),
+    // Part(sequelize),
+    // PartTask(sequelize),
+    // Photo(sequelize),
+    // Client(sequelize),
   ]);
   return {
     VehicleType: models[0],
     FuelType: models[1],
     EngineSizeMeasurementType: models[2],
-    PartTaskPhoto: models[3],
-    PartPhoto: models[4],
-    TaskPhoto: models[5],
-    TaskNeededPart: models[6],
-    Part: models[7],
-    PartTask: models[8],
     Task: models[9],
-    Photo: models[10],
     Vehicle: models[11],
-    Client: models[12],
+    // PartTaskPhoto: models[3],
+    // PartPhoto: models[4],
+    // TaskPhoto: models[5],
+    // TaskNeededPart: models[6],
+    // Part: models[7],
+    // PartTask: models[8],
+    //   Photo: models[10],
+    //   Client: models[12],
   };
 };
 
 module.exports = {
-  Client,
-  Vehicle,
-  Photo,
-  Task,
-  PartTask,
-  Part,
-  TaskNeededPart,
-  TaskPhoto,
-  PartPhoto,
-  PartTaskPhoto,
-  EngineSizeMeasurementType,
-  FuelType,
-  VehicleType,
   defineAllModels,
 };

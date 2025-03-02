@@ -1,3 +1,4 @@
+const { Sequelize } = require("sequelize");
 const {
   ENGINE_SIZE_MEASUREMENT_INIT_VALUES,
   FUEL_TYPE_VALUES,
@@ -5,7 +6,12 @@ const {
 } = require("./dbInitData");
 const { defineAllModels } = require("./dbInitModels");
 
-let allModels = null;
+const sequelize = new Sequelize({
+  dialect: "sqlite",
+  storage: "db",
+});
+
+let allModels = { current: null };
 
 const initEngineSizeMeasurementType = (model) => {
   return model.bulkCreate(
@@ -24,20 +30,22 @@ const initVehicleType = (model) => {
   return model.bulkCreate(VEHICLE_TYPE_VALUES.map((vehicleType) => ({ vehicleType })));
 };
 
-const initDefaultData = (allModels) => {
+const initDefaultData = async (allModels) => {
+  const count = await allModels.current.EngineSizeMeasurementType.count();
+  if (count > 0) return null;
   return Promise.all([
-    initEngineSizeMeasurementType(allModels.EngineSizeMeasurementType),
-    initFuelType(allModels.FuelType),
-    initVehicleType(allModels.VehicleType),
+    initEngineSizeMeasurementType(allModels.current.EngineSizeMeasurementType),
+    initFuelType(allModels.current.FuelType),
+    initVehicleType(allModels.current.VehicleType),
   ]);
 };
 
-const initDB = async (sequelize) => {
+const initDB = async () => {
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
     const models = await defineAllModels(sequelize);
-    allModels = models;
+    allModels.current = models;
     console.log("All models were defined successfully.");
     await sequelize.sync();
     console.log("All models were synchronized successfully.");
@@ -48,4 +56,4 @@ const initDB = async (sequelize) => {
   }
 };
 
-module.exports = { initDB, allModels };
+module.exports = { initDB, allModels, sequelize };

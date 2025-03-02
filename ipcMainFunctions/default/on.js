@@ -1,6 +1,7 @@
 const { ipcMain } = require("electron");
-const { TABLES } = require("../../tablesList");
+const { TABLES, MODULES } = require("../../tablesList");
 const sqlite3 = require("sqlite3");
+const { sequelize } = require("../../dbInfo/dbInitFunctions");
 
 const sqlite3Verbose = sqlite3.verbose();
 
@@ -47,26 +48,12 @@ ipcMain.on("select_full", (_, tableKey, id, callback) => {
 });
 
 ipcMain.on("create", (_, tableKey, data) => {
-  console.log("DATAS", data, tableKey);
   if (typeof data !== "object" || !data) return;
-  const table = TABLES[tableKey];
-  if (!table) return;
-
-  const db = new sqlite3Verbose.Database("db");
-  console.log("TABLE", table);
-  const query = `INSERT into ${table} (${Object.keys(data)?.join(", ")}) VALUES (${
-    Object.values(data)?.reduce((prev, curr) => {
-      if (prev === "") {
-        prev += `\'${getValue(curr)}\'`;
-      } else {
-        prev += `,\'${getValue(curr)}\'`;
-      }
-      return prev;
-    }, "") || "'name'"
-  })`;
-  console.log("QUERY", query);
-  db.run(query);
-  db.close();
+  const model = MODULES[tableKey];
+  if (!model) return;
+  const sequelizeModel = sequelize.models[model];
+  if (!sequelizeModel) return;
+  sequelizeModel.create(data);
 });
 
 ipcMain.on("update", (_, tableKey, data) => {
