@@ -33,17 +33,36 @@ export default function VehicleEdit(props: Props) {
     window.update.updateVehicle(dataRef.current);
   }
 
+  // return (
+  //   <div className="flex flex-col w-full h-full">
+  //     <div className="flex flex-row w-full h-full gap-2">
+  //       <CarPictures data={data} dataRef={dataRef} />
+  //       <Info data={data} dataRef={dataRef} />
+  //       <RepairHistory data={data} dataRef={dataRef} />
+  //     </div>
+  //     <div>
+  //       <button onClick={handleSave} className="p-2 text-white bg-blue-500 rounded">
+  //         Save
+  //       </button>
+  //     </div>
+  //   </div>
+  // );
+
   return (
-    <div className="flex flex-col w-full h-full">
-      <div className="flex flex-row w-full h-full gap-2">
-        <CarPictures data={data} dataRef={dataRef} />
-        <Info data={data} dataRef={dataRef} />
-        <RepairHistory data={data} dataRef={dataRef} />
-      </div>
-      <div>
-        <button onClick={handleSave} className="p-2 text-white bg-blue-500 rounded">
-          Save
-        </button>
+    <div className="flex w-full h-full my-5 justify-center items-center border border-green-600">
+      <div className="flex flex-row max-w-[1920px] border gap-3">
+        <div className="flex flex-col gap-5 w-1/4">
+          <div className="text-2xl">{data.name}</div>
+          <div className="">
+            <CarPictures data={data} dataRef={dataRef} />
+          </div>
+        </div>
+        <div className="flex flex-col w-3/4 gap-5">
+          <div className="text-2xl">Duomenys</div>
+          <Info data={data} dataRef={dataRef} />
+          <div className="text-2xl">Remontai</div>
+          <RepairHistory data={data} dataRef={dataRef} />
+        </div>
       </div>
     </div>
   );
