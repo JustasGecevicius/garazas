@@ -3,13 +3,13 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-} from '@tanstack/react-table';
-import { useQuery } from 'react-query';
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { IndeterminateCheckbox } from '../components/checkbox/Checkbox';
-import { selectTaskListRefetchToggle } from '../redux/slices/vehicleListRefetchSlice';
-import { useSelector } from 'react-redux';
+} from "@tanstack/react-table";
+import { useQuery } from "react-query";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router";
+import { IndeterminateCheckbox } from "../components/checkbox/Checkbox";
+import { selectTaskListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";
+import { useSelector } from "react-redux";
 
 type Props = {};
 
@@ -18,25 +18,26 @@ const array = [];
 const columnHelper = createColumnHelper();
 
 export default function TaskList(props: Props) {
-
   const navigate = useNavigate();
-  
-  const [pagination, setPagination] = useState({pageIndex: 0, pageSize: 10})
+
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [rowSelection, setRowSelection] = useState({});
   const [refetchToggle, setRefetchToggle] = useState(false);
 
-  const { taskListToggle }= useSelector(selectTaskListRefetchToggle);
-  
-  const { data, error, isFetching } = useQuery({
-    queryKey: ['task_list', pagination, refetchToggle, taskListToggle],
-    queryFn: async ({ queryKey }) => {
+  const { taskListToggle } = useSelector(selectTaskListRefetchToggle);
 
-      const response = await window.select.selectPaginatedTasks({ page: queryKey[1].pageIndex + 1, limit: queryKey[1].pageSize });
+  const { data, error, isFetching } = useQuery({
+    queryKey: ["task_list", pagination, refetchToggle, taskListToggle],
+    queryFn: async ({ queryKey }) => {
+      const response = await window.select.selectPaginatedTasks({
+        page: queryKey[1].pageIndex + 1,
+        limit: queryKey[1].pageSize,
+      });
       return response;
     },
-  })
+  });
 
-  console.log('TASKDATa', data);
+  console.log("TASKDATa", data);
 
   const cols = useMemo(() => {
     const normalCols = Object.keys(data?.data?.[0] || {}).map((key) => {
@@ -44,7 +45,7 @@ export default function TaskList(props: Props) {
     });
 
     normalCols.unshift(
-      columnHelper.accessor('checkbox', {
+      columnHelper.accessor("checkbox", {
         header: ({ table }) => (
           <IndeterminateCheckbox
             checked={table.getIsAllRowsSelected()}
@@ -53,7 +54,7 @@ export default function TaskList(props: Props) {
           />
         ),
         cell: ({ row }) => (
-          <div className='px-1'>
+          <div className="px-1">
             <IndeterminateCheckbox
               checked={row.getIsSelected()}
               disabled={!row.getCanSelect()}
@@ -93,20 +94,19 @@ export default function TaskList(props: Props) {
   };
 
   return (
-    <div className='w-full'>
+    <div className="w-full">
       <button
-        className='px-2 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline'
-        onClick={handleDeleteClick}>
+        className="px-2 my-5 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline"
+        onClick={handleDeleteClick}
+      >
         Delete
       </button>
-      <table className='w-full border border-white rounded-md'>
-        <thead className='border-b'>
+      <table className="w-full border border-white">
+        <thead className="border-b">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className='px-2 py-1'>
+                <th key={header.id} className="px-2 py-1">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -120,17 +120,16 @@ export default function TaskList(props: Props) {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr
-              key={row.original.id}
-              className=''>
+            <tr key={row.original.id} className="">
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
-                  className='text-center border border-white'
+                  className="text-center border border-white"
                   onClick={() => {
-                    cell?.column?.id !== 'checkbox' &&
+                    cell?.column?.id !== "checkbox" &&
                       navigate(`/edit-vehicle/${row.original.id}`);
-                  }}>
+                  }}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
@@ -138,68 +137,71 @@ export default function TaskList(props: Props) {
           ))}
         </tbody>
       </table>
-      <div className='flex justify-between gap-2 pt-2'>
+      <div className="flex justify-between gap-2 pt-2">
         <div>
           <select
             value={pagination.pageSize}
             onChange={(e) => {
               table.setPageSize(Number(e.target.value));
             }}
-            className='p-1 text-black border rounded'>
+            className="p-1 text-black border rounded"
+          >
             {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option
-                key={pageSize}
-                value={pageSize}>
+              <option key={pageSize} value={pageSize}>
                 Show {pageSize}
               </option>
             ))}
           </select>
         </div>
-        <div className='flex items-center gap-2'>
+        <div className="flex items-center gap-2">
           <button
-            className='p-1 border rounded'
+            className="p-1 border rounded"
             onClick={() => table.firstPage()}
-            disabled={!table.getCanPreviousPage()}>
-            {'<<'}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
           </button>
           <button
-            className='p-1 border rounded'
+            className="p-1 border rounded"
             onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}>
-            {'<'}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<"}
           </button>
-          <span className='flex items-center gap-1'>
+          <span className="flex items-center gap-1">
             <div>Page</div>
             <strong>
-              {pagination.pageIndex + 1} of{' '}
+              {pagination.pageIndex + 1} of{" "}
               {table.getPageCount().toLocaleString()}
             </strong>
           </span>
           <button
-            className='p-1 border rounded'
+            className="p-1 border rounded"
             onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}>
-            {'>'}
+            disabled={!table.getCanNextPage()}
+          >
+            {">"}
           </button>
           <button
-            className='p-1 border rounded'
+            className="p-1 border rounded"
             onClick={() => table.lastPage()}
-            disabled={!table.getCanNextPage()}>
-            {'>>'}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
           </button>
         </div>
-        <span className='flex items-center gap-1'>
+        <span className="flex items-center gap-1">
           Go to page:
           <input
-            type='number'
-            min='1'
+            type="number"
+            min="1"
             max={table.getPageCount()}
             defaultValue={table.getState().pagination.pageIndex + 1}
             onChange={(e) => {
               const page = e.target.value ? Number(e.target.value) - 1 : 0;
               table.setPageIndex(page);
             }}
-            className='w-16 p-1 text-black border rounded'
+            className="w-16 p-1 text-black border rounded"
           />
         </span>
       </div>

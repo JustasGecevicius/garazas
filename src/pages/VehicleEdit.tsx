@@ -34,14 +34,17 @@ export default function VehicleEdit(props: Props) {
   }
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex my-5 flex-col w-full h-full">
       <div className="flex flex-row w-full h-full gap-2">
         <CarPictures data={data} dataRef={dataRef} />
         <Info data={data} dataRef={dataRef} />
         <RepairHistory data={data} dataRef={dataRef} />
       </div>
       <div>
-        <button onClick={handleSave} className="p-2 text-white bg-blue-500 rounded">
+        <button
+          onClick={handleSave}
+          className="p-2 text-white bg-blue-500 rounded"
+        >
           Save
         </button>
       </div>

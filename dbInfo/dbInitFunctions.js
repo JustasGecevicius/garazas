@@ -44,7 +44,7 @@ const initDB = async (sequelize) => {
     await initDefaultData(allModels);
     console.log("Default data was inserted successfully.");
   } catch (error) {
-    console.error("Ya fucked up in the database setup somewhete", error);
+    console.error("Ya fucked up in the database setup somewhere", error);
   }
 };
 
