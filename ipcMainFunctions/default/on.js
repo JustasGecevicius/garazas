@@ -35,11 +35,10 @@ ipcMain.on("select_full", (_, tableKey, id, callback) => {
   callback();
 });
 
-ipcMain.on("create", (_, tableKey, data) => {
+ipcMain.on("create", (_, modelName, data) => {
   if (typeof data !== "object" || !data) return;
-  const model = MODELS[tableKey];
-  if (!model) return;
-  const sequelizeModel = sequelize.models[model];
+  console.log(modelName, sequelize.models);
+  const sequelizeModel = sequelize?.models?.[modelName];
   if (!sequelizeModel) return;
   sequelizeModel.create(data);
 });

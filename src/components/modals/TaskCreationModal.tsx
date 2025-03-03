@@ -54,7 +54,7 @@ export function TaskCreationModal(props: PropsType) {
       <div className="grid grid-cols-2 gap-2">
         <VehicleSelect dataRef={dataRef} value={value?.vehicle} />
         <TextInput name="note" dataRef={dataRef} value={value?.note} />
-        <DateInput name="task_date" value={value?.date} dataRef={dataRef} />
+        <DateInput name="taskDate" value={value?.date} dataRef={dataRef} />
         <div className="flex justify-center col-span-2">
           <button className="rounded-sm" onClick={value?.id ? saveTask : submitTask}>
             Save

@@ -28,7 +28,7 @@ export function VehicleSelect(props: VehicleTypeSelectProps) {
 
   useEffect(() => {
     if (!dataRef) return;
-    dataRef.current["vehicle_id"] = selectedVehicle;
+    dataRef.current["VehicleId"] = selectedVehicle;
   }, [dataRef, selectedVehicle]);
 
   useEffect(

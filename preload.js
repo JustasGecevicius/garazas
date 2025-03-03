@@ -50,11 +50,7 @@ contextBridge.exposeInMainWorld("select", {
     return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, MODELS.Vehicles, params);
   },
   selectPaginatedTasks: (params) => {
-    return ipcRenderer.invoke(
-      CHANNELS.SELECT_ALL_WITH_PARAMS,
-      sequelize.models[MODELS.Tasks],
-      params
-    );
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, MODELS.Tasks, params);
   },
   selectAllVehicles: () => {
     return ipcRenderer.invoke(CHANNELS.SELECT_ALL, MODELS.Vehicles);
