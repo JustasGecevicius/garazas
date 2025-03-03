@@ -26,15 +26,11 @@ ipcMain.handle(CHANNELS.SELECT, (_, tableKey, id) => {
 
 const sqlite3Verbose = sqlite3.verbose();
 
-ipcMain.handle(CHANNELS.SELECT_ALL, (_, modelName) => {
-  // if (!tableKey || !TABLES[tableKey]) return;
-  // const db = new sqlite3Verbose.Database("db");
-  // return new Promise((resolve, reject) => {
-  //   db.all(`SELECT * FROM ${TABLES[tableKey]}`, (err, response) => {
-  //     resolve(response);
-  //   });
-  //   db.close();
-  // });
+ipcMain.handle(CHANNELS.SELECT_ALL, async (_, modelName) => {
+  const model = sequelize?.models?.[modelName];
+  if (!model) return;
+  const data = await model.findAll();
+  return data.map((entry) => entry.dataValues);
 });
 
 ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, async (_, modelName, params) => {
