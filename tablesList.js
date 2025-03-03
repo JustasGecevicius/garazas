@@ -6,7 +6,7 @@ const TABLES = {
   Tasks: "Tasks",
 };
 
-const MODULES = {
+const MODELS = {
   VehicleTypes: "VehicleType",
   FuelTypes: "FuelType",
   EngineSizeMeasurementTypes: "EngineSizeMeasurementType",
@@ -24,5 +24,5 @@ const MODULES = {
 
 module.exports = {
   TABLES,
-  MODULES,
+  MODELS,
 };

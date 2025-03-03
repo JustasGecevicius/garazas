@@ -1,5 +1,5 @@
-import { useQuery } from 'react-query';
-import { CarCard } from '../components/carCard/CarCard';
+import { useQuery } from "react-query";
+import { CarCard } from "../components/carCard/CarCard";
 
 export default function Dashboard() {
   const {
@@ -7,12 +7,13 @@ export default function Dashboard() {
     error,
     isFetching,
   } = useQuery({
-    queryKey: ['vehicle_list'],
+    queryKey: ["vehicle_list"],
     queryFn: async ({ queryKey }) => {
       const response = await window.select.selectPaginatedVehicles({
         page: 1,
         limit: 3,
       });
+      console.log("RESPONSE", response);
       return response;
     },
   });
@@ -20,13 +21,10 @@ export default function Dashboard() {
   console.log(cars);
 
   return (
-    <div className=''>
-      <div className='my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2.5 '>
+    <div className="">
+      <div className="my-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2.5 ">
         {cars?.data?.slice(0, 9).map((car) => (
-          <CarCard
-            car={car}
-            key={Math.random()}
-          />
+          <CarCard car={car} key={Math.random()} />
         ))}
       </div>
     </div>

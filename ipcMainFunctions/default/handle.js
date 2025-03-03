@@ -2,6 +2,7 @@ const { ipcMain } = require("electron");
 const { TABLES } = require("../../tablesList");
 const sqlite3 = require("sqlite3");
 const { CHANNELS } = require("../../channels");
+const { sequelize } = require("../../dbInfo/dbInitFunctions");
 
 require("../vehicle/handle");
 
@@ -25,41 +26,32 @@ ipcMain.handle(CHANNELS.SELECT, (_, tableKey, id) => {
 
 const sqlite3Verbose = sqlite3.verbose();
 
-ipcMain.handle(CHANNELS.SELECT_ALL, (_, tableKey) => {
-  if (!tableKey || !TABLES[tableKey]) return;
-  const db = new sqlite3Verbose.Database("db");
-  return new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM ${TABLES[tableKey]}`, (err, response) => {
-      resolve(response);
-    });
-    db.close();
-  });
-});
-
-ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, (_, tableKey, params) => {
-  if (!tableKey || !TABLES[tableKey] | !params) return;
-
-  // const paginationQuery =
-  //   params.limit && params.page
-  //     ? ` LIMIT ${params.limit} OFFSET ${(params.page - 1) * params?.limit}`
-  //     : "";
-
+ipcMain.handle(CHANNELS.SELECT_ALL, (_, modelName) => {
+  // if (!tableKey || !TABLES[tableKey]) return;
   // const db = new sqlite3Verbose.Database("db");
-
-  // const countPromise = new Promise((resolve, reject) =>
-  //   db.all(`SELECT COUNT(*) FROM ${TABLES[tableKey]}`, (err, response) => {
-  //     resolve(response);
-  //   })
-  // );
-
-  // const dataPromise = new Promise(async (resolve, reject) => {
-  //   db.all(`SELECT * FROM ${TABLES[tableKey]}${paginationQuery}`, (err, response) => {
+  // return new Promise((resolve, reject) => {
+  //   db.all(`SELECT * FROM ${TABLES[tableKey]}`, (err, response) => {
   //     resolve(response);
   //   });
+  //   db.close();
   // });
-  // db.close();
-  // return Promise.all([countPromise, dataPromise]).then(([count, data]) => ({
-  //   total: count[0]["COUNT(*)"],
-  //   data,
-  // }));
+});
+
+ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, async (_, modelName, params) => {
+  if (!modelName || !params) return;
+  const model = sequelize?.models?.[modelName];
+
+  if (!model) return;
+
+  const { limit, page } = params;
+
+  const data = await model.findAndCountAll({
+    limit: typeof limit === "number" ? limit : 15,
+    offset: typeof page === "number" ? (page - 1) * limit : 0,
+  });
+
+  return {
+    data: data.rows.map((entry) => entry.dataValues),
+    total: data?.count,
+  };
 });

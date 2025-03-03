@@ -1,60 +1,65 @@
 const { contextBridge, ipcRenderer } = require("electron");
 const { CHANNELS } = require("./channels");
-const { TABLES } = require("./tablesList");
+const { MODELS } = require("./tablesList");
+const { sequelize } = require("./dbInfo/dbInitFunctions");
 
 contextBridge.exposeInMainWorld("delete", {
   deleteVehicle: (id) => {
-    ipcRenderer.send(CHANNELS.DELETE, TABLES.Vehicles, id);
+    ipcRenderer.send(CHANNELS.DELETE, MODELS.Vehicles, id);
   },
   deleteTask: (id) => {
-    ipcRenderer.send(CHANNELS.DELETE, TABLES.Tasks, id);
+    ipcRenderer.send(CHANNELS.DELETE, MODELS.Tasks, id);
   },
 });
 
 contextBridge.exposeInMainWorld("create", {
   createVehicle: (data) => {
-    ipcRenderer.send(CHANNELS.CREATE, TABLES.Vehicles, data);
+    ipcRenderer.send(CHANNELS.CREATE, MODELS.Vehicles, data);
   },
   createTask: (data) => {
-    ipcRenderer.send(CHANNELS.CREATE, TABLES.Tasks, data);
+    ipcRenderer.send(CHANNELS.CREATE, MODELS.Tasks, data);
   },
 });
 
 contextBridge.exposeInMainWorld("update", {
   updateVehicle: (data) => {
-    ipcRenderer.send(CHANNELS.UPDATE, TABLES.Vehicles, data);
+    ipcRenderer.send(CHANNELS.UPDATE, MODELS.Vehicles, data);
   },
   updateTask: (data) => {
-    ipcRenderer.send(CHANNELS.UPDATE, TABLES.Tasks, data);
+    ipcRenderer.send(CHANNELS.UPDATE, MODELS.Tasks, data);
   },
 });
 
 contextBridge.exposeInMainWorld("select", {
   selectVehicle: (id) => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_VEHICLE, TABLES.Vehicles, id);
+    return ipcRenderer.invoke(CHANNELS.SELECT_VEHICLE, MODELS.Vehicles, id);
   },
   selectTask: (id) => {
-    return ipcRenderer.invoke(CHANNELS.SELECT, TABLES.Tasks, id);
+    return ipcRenderer.invoke(CHANNELS.SELECT, MODELS.Tasks, id);
   },
   selectEngineSizeMeasurementType: () => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.EngineSizeMeasurementTypes);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, MODELS.EngineSizeMeasurementTypes);
   },
   selectFuelType: () => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.FuelTypes);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, MODELS.FuelTypes);
   },
   selectVehicleType: () => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.VehicleTypes);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, MODELS.VehicleTypes);
   },
   selectPaginatedVehicles: (params) => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, TABLES.Vehicles, params);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, MODELS.Vehicles, params);
   },
   selectPaginatedTasks: (params) => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, TABLES.Tasks, params);
+    return ipcRenderer.invoke(
+      CHANNELS.SELECT_ALL_WITH_PARAMS,
+      sequelize.models[MODELS.Tasks],
+      params
+    );
   },
   selectAllVehicles: () => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.Vehicles);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, MODELS.Vehicles);
   },
   selectAllTasks: () => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, TABLES.Tasks);
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, MODELS.Tasks);
   },
 });

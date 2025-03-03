@@ -1,5 +1,5 @@
 const { ipcMain } = require("electron");
-const { TABLES, MODULES } = require("../../tablesList");
+const { TABLES, MODELS } = require("../../tablesList");
 const sqlite3 = require("sqlite3");
 const { sequelize } = require("../../dbInfo/dbInitFunctions");
 
@@ -35,21 +35,9 @@ ipcMain.on("select_full", (_, tableKey, id, callback) => {
   callback();
 });
 
-ipcMain.on("select_full", (_, tableKey, id, callback) => {
-  if (!id || !tableKey) return;
-  const table = TABLES[tableKey];
-  if (!table) return;
-  const db = new sqlite3Verbose.Database("db");
-  db.get(`SELECT * FROM ${table} WHERE id = ${id}`, (err, res) => {
-    console.log(res);
-  });
-  db.close();
-  callback();
-});
-
 ipcMain.on("create", (_, tableKey, data) => {
   if (typeof data !== "object" || !data) return;
-  const model = MODULES[tableKey];
+  const model = MODELS[tableKey];
   if (!model) return;
   const sequelizeModel = sequelize.models[model];
   if (!sequelizeModel) return;

@@ -18,7 +18,7 @@ export function EngineSizeMeasurementTypeSelect(props: EngineSizeMeasurementType
 
   useEffect(() => {
     if (!dataRef) return;
-    dataRef.current["engineSizeMeasurementTypeId"] = selectedEngineSize;
+    dataRef.current["EngineSizeMeasurementTypeId"] = selectedEngineSize;
   }, [selectedEngineSize]);
 
   useEffect(() => {

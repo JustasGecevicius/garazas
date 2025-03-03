@@ -18,7 +18,7 @@ export function FuelTypeSelect(props: PropsType) {
 
   useEffect(() => {
     if (!dataRef) return;
-    dataRef.current["fuelTypeId"] = selectedFuelType;
+    dataRef.current["FuelTypeId"] = selectedFuelType;
   }, [selectedFuelType]);
 
   useEffect(() => {
