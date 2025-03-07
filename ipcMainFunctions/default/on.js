@@ -13,14 +13,13 @@ const getValue = (value) => {
   }
 };
 
-ipcMain.on("delete", (_, tableKey, id) => {
+ipcMain.on("delete", (_, modelName, id) => {
   const numberId = Number(id);
-  const table = TABLES[tableKey];
-  if (!numberId || !table) return;
+  if (!numberId || !modelName) return;
 
-  const db = new sqlite3Verbose.Database("db");
-  db.run(`DELETE FROM ${table} WHERE id = '${numberId}'`);
-  db.close();
+  const sequelizeModel = sequelize?.models?.[modelName];
+  if (!sequelizeModel) return;
+  sequelizeModel.destroy({ where: { id: numberId } });
 });
 
 ipcMain.on("select_full", (_, tableKey, id, callback) => {
@@ -37,7 +36,6 @@ ipcMain.on("select_full", (_, tableKey, id, callback) => {
 
 ipcMain.on("create", (_, modelName, data) => {
   if (typeof data !== "object" || !data) return;
-  console.log(modelName, sequelize.models);
   const sequelizeModel = sequelize?.models?.[modelName];
   if (!sequelizeModel) return;
   sequelizeModel.create(data);

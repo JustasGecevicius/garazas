@@ -8,8 +8,8 @@ type VehicleTypeSelectProps = {
 };
 
 export function VehicleTypeSelect(props: VehicleTypeSelectProps) {
-  const { dataRef, value } = props;
-  const [selectedVehicleType, setSelectedVehicleType] = useState(value || "");
+  const { dataRef, value: propsValue } = props;
+  const [selectedVehicleType, setSelectedVehicleType] = useState(propsValue || "");
   const vehicleTypes = useSelector(selectVehicleType);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -22,12 +22,12 @@ export function VehicleTypeSelect(props: VehicleTypeSelectProps) {
   }, [selectedVehicleType]);
 
   useEffect(() => {
-    setSelectedVehicleType(value || "");
-  }, [value]);
+    setSelectedVehicleType(propsValue || "");
+  }, [propsValue]);
 
   return (
     <select value={selectedVehicleType} onChange={handleChange} className="text-black">
-      <option value={null} disabled>
+      <option value={""} disabled>
         Select a vehicle type
       </option>
       {vehicleTypes?.options?.map((type) => (
