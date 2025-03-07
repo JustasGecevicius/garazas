@@ -1,7 +1,8 @@
 const { ipcMain } = require("electron");
-const { TABLES, MODELS } = require("../../tablesList");
+const { TABLES } = require("../../tablesList");
 const sqlite3 = require("sqlite3");
 const { sequelize } = require("../../dbInfo/dbInitFunctions");
+const { CHANNELS } = require("../../channels");
 
 const sqlite3Verbose = sqlite3.verbose();
 
@@ -13,7 +14,7 @@ const getValue = (value) => {
   }
 };
 
-ipcMain.on("delete", (_, modelName, id) => {
+ipcMain.on(CHANNELS.DELETE, (_, modelName, id) => {
   const numberId = Number(id);
   if (!numberId || !modelName) return;
 
@@ -22,26 +23,14 @@ ipcMain.on("delete", (_, modelName, id) => {
   sequelizeModel.destroy({ where: { id: numberId } });
 });
 
-ipcMain.on("select_full", (_, tableKey, id, callback) => {
-  if (!id || !tableKey) return;
-  const table = TABLES[tableKey];
-  if (!table) return;
-  const db = new sqlite3Verbose.Database("db");
-  db.get(`SELECT *FROM ${table} WHERE id = ${id}`, (err, res) => {
-    console.log(res);
-  });
-  db.close();
-  callback();
-});
-
-ipcMain.on("create", (_, modelName, data) => {
+ipcMain.on(CHANNELS.CREATE, (_, modelName, data) => {
   if (typeof data !== "object" || !data) return;
   const sequelizeModel = sequelize?.models?.[modelName];
   if (!sequelizeModel) return;
   sequelizeModel.create(data);
 });
 
-ipcMain.on("update", (_, tableKey, data) => {
+ipcMain.on(CHANNELS.UPDATE, (_, tableKey, data) => {
   if (typeof data !== "object" || !data) return;
   const table = TABLES[tableKey];
   if (!table) return;

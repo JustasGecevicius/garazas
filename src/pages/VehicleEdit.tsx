@@ -17,9 +17,8 @@ export default function VehicleEdit(props: Props) {
 
   const { data, error, isFetching } = useQuery({
     queryKey: ["edit-vehicle", id, taskListToggle],
-    queryFn: async ({ queryKey }) => {
-      const response = await window.select.selectVehicle(id);
-      response.tasks = JSON.parse(response.tasks);
+    queryFn: async () => {
+      const response = await window.select.selectVehicle(id, { include: ["Task"] });
       return response;
     },
   });

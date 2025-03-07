@@ -1,7 +1,6 @@
 const { contextBridge, ipcRenderer } = require("electron");
 const { CHANNELS } = require("./channels");
 const { MODELS } = require("./tablesList");
-const { sequelize } = require("./dbInfo/dbInitFunctions");
 
 contextBridge.exposeInMainWorld("delete", {
   deleteVehicle: (id) => {
@@ -31,8 +30,8 @@ contextBridge.exposeInMainWorld("update", {
 });
 
 contextBridge.exposeInMainWorld("select", {
-  selectVehicle: (id) => {
-    return ipcRenderer.invoke(CHANNELS.SELECT_VEHICLE, MODELS.Vehicles, id);
+  selectVehicle: (id, params) => {
+    return ipcRenderer.invoke(CHANNELS.SELECT, MODELS.Vehicles, id, params);
   },
   selectTask: (id) => {
     return ipcRenderer.invoke(CHANNELS.SELECT, MODELS.Tasks, id);
