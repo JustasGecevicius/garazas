@@ -19,6 +19,7 @@ export function DateInput(props: DateInputPropsType) {
   }, [name, value]);
 
   useEffect(() => {
+    if (!propValue) return;
     const date = new Date(propValue);
     const dateString = date.toLocaleDateString("lt-LT");
     setValue(dateString);

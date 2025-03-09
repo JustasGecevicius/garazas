@@ -2,6 +2,16 @@ const { ipcMain } = require("electron");
 const { CHANNELS } = require("../../channels");
 const { sequelize } = require("../../dbInfo/dbInitFunctions");
 
+const addIncludedModelData = (entry, params) => ({
+  ...entry.dataValues,
+  ...params?.include?.reduce((prev, curr) => {
+    return {
+      ...prev,
+      [curr]: entry.dataValues[curr]?.dataValues,
+    };
+  }, {}),
+});
+
 ipcMain.handle(CHANNELS.SELECT, async (_, modelName, id, params = {}) => {
   const numberId = Number(id);
   if (!modelName || !numberId) return;
@@ -10,31 +20,34 @@ ipcMain.handle(CHANNELS.SELECT, async (_, modelName, id, params = {}) => {
   const data = await sequelizeModel.findByPk(id, {
     include: params?.include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
   });
-  return data.dataValues;
+  return addIncludedModelData(data, params);
 });
 
-ipcMain.handle(CHANNELS.SELECT_ALL, async (_, modelName) => {
+ipcMain.handle(CHANNELS.SELECT_ALL, async (_, modelName, params) => {
   const sequelizeModel = sequelize?.models?.[modelName];
   if (!sequelizeModel) return;
-  const data = await sequelizeModel.findAll();
-  return data.map((entry) => entry.dataValues);
+  const data = await sequelizeModel.findAll({
+    include: params?.include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
+  });
+  return data.map((entry) => addIncludedModelData(entry, params));
 });
 
 ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, async (_, modelName, params) => {
-  if (!modelName || !params) return;
+  if (!modelName || !params || typeof params !== "object") return;
   const sequelizeModel = sequelize?.models?.[modelName];
 
   if (!sequelizeModel) return;
 
-  const { limit, page } = params;
+  const { limit, page, include } = params;
 
   const data = await sequelizeModel.findAndCountAll({
     limit: typeof limit === "number" ? limit : 15,
     offset: typeof page === "number" ? (page - 1) * limit : 0,
+    include: include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
   });
 
   return {
-    data: data.rows.map((entry) => entry.dataValues),
+    data: data.rows.map((entry) => addIncludedModelData(entry, params)),
     total: data?.count,
   };
 });

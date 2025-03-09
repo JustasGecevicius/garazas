@@ -1,4 +1,4 @@
-import { MutableRefObject, useRef } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 import { BaseModalWrapper } from "./BaseModalWrapper";
 import VehicleTypeSelect from "../selects/VehicleTypeSelect";
 import { EngineSizeMeasurementTypeSelect } from "../selects/EngineTypeSelect";
@@ -19,17 +19,20 @@ export function VehicleCreationModal(props: PropsType) {
 
   const dataRef = useRef<{ [key: string]: any }>({});
 
+  const [modalKey, setModalKey] = useState(() => Math.random());
+
   const dispatch = useDispatch();
 
   function submitVehicle() {
-    console.log(dataRef?.current);
     window.create.createVehicle(dataRef?.current);
     dispatch(toggleVehicleListRefetchState());
+    dataRef.current = {};
+    setModalKey(Math.random()); // To reset the modal
     closeRef.current();
   }
 
   return (
-    <BaseModalWrapper closeRef={closeRef} openRef={openRef}>
+    <BaseModalWrapper closeRef={closeRef} openRef={openRef} key={modalKey}>
       <div className="grid grid-cols-2 gap-2">
         <TextInput name="name" dataRef={dataRef} />
         <TextInput name="model" dataRef={dataRef} />

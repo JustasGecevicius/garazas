@@ -22,7 +22,7 @@ export function EngineSizeMeasurementTypeSelect(props: EngineSizeMeasurementType
   }, [selectedEngineSize]);
 
   useEffect(() => {
-    setSelectedEngineSize(propsValue || "");
+    setSelectedEngineSize(propsValue || null);
   }, [propsValue]);
 
   return (
@@ -32,7 +32,7 @@ export function EngineSizeMeasurementTypeSelect(props: EngineSizeMeasurementType
       </option>
       {engineSizes?.options?.map((size) => (
         <option key={size.id} value={size.id}>
-          {size.measurementUnit}
+          {size.engineSizeMeasurementType}
         </option>
       ))}
     </select>

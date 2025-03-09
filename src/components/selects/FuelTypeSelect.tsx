@@ -22,7 +22,7 @@ export function FuelTypeSelect(props: PropsType) {
   }, [selectedFuelType]);
 
   useEffect(() => {
-    setSelectedFuelType(propsValue || "");
+    setSelectedFuelType(propsValue || null);
   }, [propsValue]);
 
   return (

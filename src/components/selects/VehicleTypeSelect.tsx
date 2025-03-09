@@ -22,7 +22,7 @@ export function VehicleTypeSelect(props: VehicleTypeSelectProps) {
   }, [selectedVehicleType]);
 
   useEffect(() => {
-    setSelectedVehicleType(propsValue || "");
+    setSelectedVehicleType(propsValue || null);
   }, [propsValue]);
 
   return (

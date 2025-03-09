@@ -168,7 +168,7 @@ const PartTaskPhotoInit = (sequelize) =>
 
 const EngineSizeMeasurementTypeInit = (sequelize) =>
   sequelize.define("EngineSizeMeasurementType", {
-    measurementUnit: {
+    engineSizeMeasurementType: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -209,8 +209,11 @@ const defineAllModels = async (sequelize) => {
   //  const Photo = Photo(sequelize),
   //  const Client = Client(sequelize),
   VehicleType.hasMany(Vehicle);
+  Vehicle.belongsTo(VehicleType);
   FuelType.hasMany(Vehicle);
+  Vehicle.belongsTo(FuelType);
   EngineSizeMeasurementType.hasMany(Vehicle);
+  Vehicle.belongsTo(EngineSizeMeasurementType);
   Vehicle.hasMany(Task);
 
   const models = await Promise.all([

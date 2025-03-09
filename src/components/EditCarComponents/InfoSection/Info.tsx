@@ -13,12 +13,10 @@ type Props = {
     vinCode?: string;
     engineSize?: string;
     odometer?: string;
-    type?: string;
-    productionYear?: string;
+    fabricationYear?: string;
     plateNumber?: string;
     note?: string;
     techInspectionDueDate?: string;
-    fabricationYear?: string;
     FuelTypeId?: string;
     VehicleTypeId?: string;
     ClientId?: string;
@@ -32,14 +30,12 @@ export function Info(props: Props) {
   const {
     make,
     odometer,
-    type,
     note,
     techInspectionDueDate,
-    fabricationYear,
     name,
     vinCode,
     engineSize,
-    productionYear,
+    fabricationYear,
     FuelTypeId,
     VehicleTypeId,
     EngineSizeMeasurementTypeId,
@@ -54,15 +50,15 @@ export function Info(props: Props) {
       <LabelledNumberInput name="engineSize" dataRef={dataRef} value={engineSize} />
       <LabelledNumberInput name="odometer" dataRef={dataRef} value={odometer} />
       <LabelledInputWrapper title="vehicleType">
-        <VehicleTypeSelect dataRef={dataRef} value={type} />
+        <VehicleTypeSelect dataRef={dataRef} value={VehicleTypeId} />
       </LabelledInputWrapper>
-      <LabelledInputWrapper title="productionYear">
-        <DateInput name="productionYear" dataRef={dataRef} value={productionYear} />
+      <LabelledInputWrapper title="fabricationYear">
+        <DateInput name="fabricationYear" dataRef={dataRef} value={fabricationYear} />
       </LabelledInputWrapper>
       <LabelledInputWrapper title="fuelType">
         <FuelTypeSelect dataRef={dataRef} value={FuelTypeId} />
       </LabelledInputWrapper>
-      <LabelledInputWrapper title="engine_size_measurement_type">
+      <LabelledInputWrapper title="engineSizeMeasurementType">
         <EngineSizeMeasurementTypeSelect dataRef={dataRef} value={EngineSizeMeasurementTypeId} />
       </LabelledInputWrapper>
       <LabelledInputWrapper title="vehicleType">

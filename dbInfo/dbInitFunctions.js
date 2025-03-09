@@ -15,8 +15,8 @@ let allModels = { current: null };
 
 const initEngineSizeMeasurementType = (model) => {
   return model.bulkCreate(
-    ENGINE_SIZE_MEASUREMENT_INIT_VALUES.map(([measurementUnit, conversionToLitre]) => ({
-      measurementUnit,
+    ENGINE_SIZE_MEASUREMENT_INIT_VALUES.map(([unit, conversionToLitre]) => ({
+      engineSizeMeasurementType: unit,
       conversionToLitre,
     }))
   );

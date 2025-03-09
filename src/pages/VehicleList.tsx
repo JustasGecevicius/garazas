@@ -10,6 +10,7 @@ import { useNavigate } from "react-router";
 import { IndeterminateCheckbox } from "../components/checkbox/Checkbox";
 import { selectVehicleListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";
 import { useSelector } from "react-redux";
+import { camelCase } from "lodash";
 
 type Props = {};
 
@@ -32,6 +33,7 @@ export default function VehicleList(props: Props) {
       const response = await window.select.selectPaginatedVehicles({
         page: queryKey[1].pageIndex + 1,
         limit: queryKey[1].pageSize,
+        include: ["VehicleType", "FuelType", "EngineSizeMeasurementType"],
       });
       return response;
     },
@@ -42,13 +44,19 @@ export default function VehicleList(props: Props) {
       return columnHelper.accessor(key, {
         cell: (info) => {
           const value = info.getValue();
-          switch (typeof value) {
-            case "object":
+          switch (info.column.id) {
+            case "EngineSizeMeasurementType":
+            case "FuelType":
+            case "VehicleType":
+              return value?.[camelCase(info?.column?.id)];
+            case "createdAt":
+            case "updatedAt":
+            case "techInspectionDueDate":
+            case "fabricationYear":
               return JSON.stringify(value);
             default:
               return value;
           }
-          return value;
         },
       });
     });
