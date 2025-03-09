@@ -215,6 +215,7 @@ const defineAllModels = async (sequelize) => {
   EngineSizeMeasurementType.hasMany(Vehicle);
   Vehicle.belongsTo(EngineSizeMeasurementType);
   Vehicle.hasMany(Task);
+  Task.belongsTo(Vehicle);
 
   const models = await Promise.all([
     VehicleType,
