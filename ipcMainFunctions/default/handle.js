@@ -2,16 +2,6 @@ const { ipcMain } = require("electron");
 const { CHANNELS } = require("../../channels");
 const { sequelize } = require("../../dbInfo/dbInitFunctions");
 
-const addIncludedModelData = (entry, params) => ({
-  ...entry.dataValues,
-  ...params?.include?.reduce((prev, curr) => {
-    return {
-      ...prev,
-      [curr]: entry.dataValues[curr]?.dataValues,
-    };
-  }, {}),
-});
-
 ipcMain.handle(CHANNELS.SELECT, async (_, modelName, id, params = {}) => {
   const numberId = Number(id);
   if (!modelName || !numberId) return;
@@ -19,8 +9,10 @@ ipcMain.handle(CHANNELS.SELECT, async (_, modelName, id, params = {}) => {
   if (!sequelizeModel) return;
   const data = await sequelizeModel.findByPk(id, {
     include: params?.include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
+    raw: true,
+    nest: true,
   });
-  return addIncludedModelData(data, params);
+  return data;
 });
 
 ipcMain.handle(CHANNELS.SELECT_ALL, async (_, modelName, params) => {
@@ -28,8 +20,10 @@ ipcMain.handle(CHANNELS.SELECT_ALL, async (_, modelName, params) => {
   if (!sequelizeModel) return;
   const data = await sequelizeModel.findAll({
     include: params?.include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
+    raw: true,
+    nest: true,
   });
-  return data.map((entry) => addIncludedModelData(entry, params));
+  return data;
 });
 
 ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, async (_, modelName, params) => {
@@ -44,10 +38,12 @@ ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, async (_, modelName, params) => 
     limit: typeof limit === "number" ? limit : 15,
     offset: typeof page === "number" ? (page - 1) * limit : 0,
     include: include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
+    raw: true,
+    nest: true,
   });
 
   return {
-    data: data.rows.map((entry) => addIncludedModelData(entry, params)),
+    data: data.rows,
     total: data?.count,
   };
 });
