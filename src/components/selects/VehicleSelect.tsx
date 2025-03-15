@@ -39,7 +39,7 @@ export function VehicleSelect(props: VehicleTypeSelectProps) {
   );
 
   const options = useMemo(() => {
-    return allVehicles?.map((vehicle) => (
+    return allVehicles?.map(({ dataValues: vehicle }) => (
       <option key={vehicle.id} value={vehicle.id}>
         {vehicle.name}
       </option>

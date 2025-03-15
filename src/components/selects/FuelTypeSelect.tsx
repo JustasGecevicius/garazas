@@ -30,7 +30,7 @@ export function FuelTypeSelect(props: PropsType) {
       <option value="" disabled>
         Select a fuel type
       </option>
-      {fuelTypes?.options?.map((type) => (
+      {fuelTypes?.options?.map(({ dataValues: type }) => (
         <option key={type.id} value={type.id}>
           {type.fuelType}
         </option>
