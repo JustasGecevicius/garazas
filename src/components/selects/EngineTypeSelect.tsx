@@ -30,7 +30,7 @@ export function EngineSizeMeasurementTypeSelect(props: EngineSizeMeasurementType
       <option value="" disabled>
         Select an engine size
       </option>
-      {engineSizes?.options?.map(({ dataValues: size }) => (
+      {engineSizes?.options?.map((size) => (
         <option key={size.id} value={size.id}>
           {size.engineSizeMeasurementType}
         </option>

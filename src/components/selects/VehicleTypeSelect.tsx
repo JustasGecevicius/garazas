@@ -30,7 +30,7 @@ export function VehicleTypeSelect(props: VehicleTypeSelectProps) {
       <option value={""} disabled>
         Select a vehicle type
       </option>
-      {vehicleTypes?.options?.map(({ dataValues: type }) => (
+      {vehicleTypes?.options?.map((type) => (
         <option key={type.id} value={type.id}>
           {type.vehicleType}
         </option>

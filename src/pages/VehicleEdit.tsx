@@ -20,7 +20,7 @@ export default function VehicleEdit(props: Props) {
     queryFn: async () => {
       const response = await window.select.selectVehicle(id, { include: ["Task"] });
       console.log("reSponse", response);
-      return response?.dataValues;
+      return response;
     },
   });
 

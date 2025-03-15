@@ -21,6 +21,8 @@ type PropsType = {
 export function TaskCreationModal(props: PropsType) {
   const { closeRef, openRef, task } = props;
 
+  console.log("TASK", task);
+
   const dataRef = useRef<{ [key: string]: any }>({});
   const [value, setValue] = useState(task);
 
@@ -39,8 +41,13 @@ export function TaskCreationModal(props: PropsType) {
   }
 
   useEffect(() => {
+    console.log("SETTASk", task);
     setValue(task);
   }, [task]);
+
+  useEffect(() => {
+    console.log("VALUE", value);
+  }, [value]);
 
   return (
     <BaseModalWrapper closeRef={closeRef} openRef={openRef}>
