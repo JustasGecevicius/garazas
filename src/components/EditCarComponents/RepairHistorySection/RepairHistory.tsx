@@ -13,7 +13,7 @@ type Props = {
 
 export function RepairHistory(props: Props) {
   const { data } = props;
-  const { tasks } = data || {};
+  const { Tasks } = data || {};
 
   const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ export function RepairHistory(props: Props) {
     <>
       <div className="w-full p-2 rounded-md grow-1 outline outline-red-900 flex flex-col justify-between">
         <div>
-          {tasks?.map((task) => (
+          {Tasks?.map((task) => (
             <RepairHistoryItem data={task} onClick={handleSelect} />
           ))}
         </div>

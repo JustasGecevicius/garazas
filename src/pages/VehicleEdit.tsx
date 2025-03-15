@@ -19,7 +19,6 @@ export default function VehicleEdit(props: Props) {
     queryKey: ["edit-vehicle", id, taskListToggle],
     queryFn: async () => {
       const response = await window.select.selectVehicle(id, { include: ["Task"] });
-      console.log("reSponse", response);
       return response;
     },
   });

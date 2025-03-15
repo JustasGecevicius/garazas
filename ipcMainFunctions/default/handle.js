@@ -9,10 +9,8 @@ ipcMain.handle(CHANNELS.SELECT, async (_, modelName, id, params = {}) => {
   if (!sequelizeModel) return;
   const data = await sequelizeModel.findByPk(id, {
     include: params?.include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
-    raw: true,
-    nest: true,
   });
-  return data;
+  return data.toJSON();
 });
 
 ipcMain.handle(CHANNELS.SELECT_ALL, async (_, modelName, params) => {
@@ -20,10 +18,8 @@ ipcMain.handle(CHANNELS.SELECT_ALL, async (_, modelName, params) => {
   if (!sequelizeModel) return;
   const data = await sequelizeModel.findAll({
     include: params?.include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
-    raw: true,
-    nest: true,
   });
-  return data;
+  return data?.map((row) => row.toJSON());
 });
 
 ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, async (_, modelName, params) => {
@@ -38,12 +34,10 @@ ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, async (_, modelName, params) => 
     limit: typeof limit === "number" ? limit : 15,
     offset: typeof page === "number" ? (page - 1) * limit : 0,
     include: include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
-    raw: true,
-    nest: true,
   });
 
   return {
-    data: data.rows,
+    data: data.rows.map((row) => row.toJSON()),
     total: data?.count,
   };
 });
