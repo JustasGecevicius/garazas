@@ -61,22 +61,6 @@ const TaskInit = (sequelize) =>
 
 const PartTaskInit = (sequelize) =>
   sequelize.define("PartTask", {
-    taskId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Task",
-        key: "id",
-      },
-    },
-    usedPartId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Part",
-        key: "id",
-      },
-    },
     quantity: {
       type: DataTypes.FLOAT,
       allowNull: false,
@@ -91,27 +75,11 @@ const PartInit = (sequelize) =>
       allowNull: false,
     },
     price: DataTypes.INTEGER,
-    installTime: DataTypes.DATE,
+    installTime: DataTypes.INTEGER,
   });
 
 const TaskNeededPartInit = (sequelize) =>
   sequelize.define("TaskNeededPart", {
-    taskId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Task",
-        key: "id",
-      },
-    },
-    neededPartId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Part",
-        key: "id",
-      },
-    },
     quantity: {
       type: DataTypes.FLOAT,
       allowNull: false,
@@ -124,14 +92,6 @@ const TaskPhotoInit = (sequelize) =>
       type: DataTypes.BLOB,
       allowNull: false,
     },
-    taskId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Task",
-        key: "id",
-      },
-    },
   });
 
 const PartPhotoInit = (sequelize) =>
@@ -140,14 +100,6 @@ const PartPhotoInit = (sequelize) =>
       type: DataTypes.BLOB,
       allowNull: false,
     },
-    partId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Part",
-        key: "id",
-      },
-    },
   });
 
 const PartTaskPhotoInit = (sequelize) =>
@@ -155,14 +107,6 @@ const PartTaskPhotoInit = (sequelize) =>
     photoBlob: {
       type: DataTypes.BLOB,
       allowNull: false,
-    },
-    partTaskId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "PartTask",
-        key: "id",
-      },
     },
   });
 
@@ -200,14 +144,14 @@ const defineAllModels = async (sequelize) => {
   const EngineSizeMeasurementType = EngineSizeMeasurementTypeInit(sequelize);
   const Task = TaskInit(sequelize);
   const Vehicle = VehicleInit(sequelize);
-  //  const PartTaskPhoto = PartTaskPhoto(sequelize),
-  //  const PartPhoto = PartPhoto(sequelize),
-  //  const TaskPhoto = TaskPhoto(sequelize),
-  //  const TaskNeededPart = TaskNeededPart(sequelize),
-  //  const Part = Part(sequelize),
-  //  const PartTask = PartTask(sequelize),
-  //  const Photo = Photo(sequelize),
-  //  const Client = Client(sequelize),
+  const Part = PartInit(sequelize);
+  const PartTask = PartTaskInit(sequelize);
+  const PartPhoto = PartPhotoInit(sequelize);
+  const PartTaskPhoto = PartTaskPhotoInit(sequelize);
+  const TaskPhoto = TaskPhotoInit(sequelize);
+  const Client = ClientInit(sequelize);
+  const TaskNeededPart = TaskNeededPartInit(sequelize);
+
   VehicleType.hasMany(Vehicle);
   Vehicle.belongsTo(VehicleType);
   FuelType.hasMany(Vehicle);
@@ -217,35 +161,46 @@ const defineAllModels = async (sequelize) => {
   Vehicle.hasMany(Task);
   Task.belongsTo(Vehicle);
 
+  Part.belongsToMany(Task, { through: PartTask });
+  Task.belongsToMany(Part, { through: PartTask });
+  Task.hasMany(TaskPhoto);
+  TaskPhoto.belongsTo(Task);
+  PartPhoto.belongsTo(Part);
+  Part.hasMany(PartPhoto);
+  PartTaskPhoto.belongsTo(PartTask);
+  PartTask.hasMany(PartTaskPhoto);
+  Client.hasMany(Vehicle);
+  Vehicle.belongsTo(Client);
+  Part.belongsToMany(Task, { through: TaskNeededPart });
+  Task.belongsToMany(Part, { through: TaskNeededPart });
+
   const models = await Promise.all([
     VehicleType,
     FuelType,
     EngineSizeMeasurementType,
     Task,
     Vehicle,
-    // PartTaskPhoto(sequelize),
-    // PartPhoto(sequelize),
-    // TaskPhoto(sequelize),
-    // TaskNeededPart(sequelize),
-    // Part(sequelize),
-    // PartTask(sequelize),
-    // Photo(sequelize),
-    // Client(sequelize),
+    Part,
+    PartTask,
+    PartPhoto,
+    PartTaskPhoto,
+    TaskPhoto,
+    Client,
+    TaskNeededPart,
   ]);
   return {
     VehicleType: models[0],
     FuelType: models[1],
     EngineSizeMeasurementType: models[2],
-    Task: models[9],
-    Vehicle: models[11],
-    // PartTaskPhoto: models[3],
-    // PartPhoto: models[4],
-    // TaskPhoto: models[5],
-    // TaskNeededPart: models[6],
-    // Part: models[7],
-    // PartTask: models[8],
-    //   Photo: models[10],
-    //   Client: models[12],
+    Task: models[4],
+    Vehicle: models[5],
+    Part: models[6],
+    PartTask: models[7],
+    PartPhoto: models[8],
+    PartTaskPhoto: models[9],
+    TaskPhoto: models[10],
+    Client: models[11],
+    TaskNeededPart: models[12],
   };
 };
 

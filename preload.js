@@ -33,8 +33,8 @@ contextBridge.exposeInMainWorld("select", {
   selectVehicle: (id, params) => {
     return ipcRenderer.invoke(CHANNELS.SELECT, MODELS.Vehicles, id, params);
   },
-  selectTask: (id) => {
-    return ipcRenderer.invoke(CHANNELS.SELECT, MODELS.Tasks, id);
+  selectTask: (id, params) => {
+    return ipcRenderer.invoke(CHANNELS.SELECT, MODELS.Tasks, id, params);
   },
   selectEngineSizeMeasurementType: () => {
     return ipcRenderer.invoke(CHANNELS.SELECT_ALL, MODELS.EngineSizeMeasurementTypes);
