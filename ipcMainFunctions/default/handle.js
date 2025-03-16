@@ -1,65 +1,43 @@
 const { ipcMain } = require("electron");
-const { TABLES } = require("../../tablesList");
-const sqlite3 = require("sqlite3");
 const { CHANNELS } = require("../../channels");
+const { sequelize } = require("../../dbInfo/dbInitFunctions");
 
-require("../vehicle/handle");
-
-ipcMain.handle(CHANNELS.SELECT, (_, tableKey, id) => {
+ipcMain.handle(CHANNELS.SELECT, async (_, modelName, id, params = {}) => {
   const numberId = Number(id);
-  const table = TABLES[tableKey];
-  if (!tableKey || !table || !numberId) return;
-  const db = new sqlite3Verbose.Database("db");
-  let promise = null;
-  switch (table) {
-    default:
-      promise = new Promise((resolve, reject) => {
-        db.get(`SELECT * FROM ${table} WHERE id='${numberId}'`, (err, response) => {
-          resolve(response);
-        });
-      });
-  }
-  db.close();
-  return promise;
+  if (!modelName || !numberId) return;
+  const sequelizeModel = sequelize?.models?.[modelName];
+  if (!sequelizeModel) return;
+  const data = await sequelizeModel.findByPk(id, {
+    include: params?.include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
+  });
+  return data.toJSON();
 });
 
-const sqlite3Verbose = sqlite3.verbose();
-
-ipcMain.handle(CHANNELS.SELECT_ALL, (_, tableKey) => {
-  if (!tableKey || !TABLES[tableKey]) return;
-  const db = new sqlite3Verbose.Database("db");
-  return new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM ${TABLES[tableKey]}`, (err, response) => {
-      resolve(response);
-    });
-    db.close();
+ipcMain.handle(CHANNELS.SELECT_ALL, async (_, modelName, params) => {
+  const sequelizeModel = sequelize?.models?.[modelName];
+  if (!sequelizeModel) return;
+  const data = await sequelizeModel.findAll({
+    include: params?.include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
   });
+  return data?.map((row) => row.toJSON());
 });
 
-ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, (_, tableKey, params) => {
-  if (!tableKey || !TABLES[tableKey] | !params) return;
+ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, async (_, modelName, params) => {
+  if (!modelName || !params || typeof params !== "object") return;
+  const sequelizeModel = sequelize?.models?.[modelName];
 
-  const paginationQuery =
-    params.limit && params.page
-      ? ` LIMIT ${params.limit} OFFSET ${(params.page - 1) * params?.limit}`
-      : "";
+  if (!sequelizeModel) return;
 
-  const db = new sqlite3Verbose.Database("db");
+  const { limit, page, include } = params;
 
-  const countPromise = new Promise((resolve, reject) =>
-    db.all(`SELECT COUNT(*) FROM ${TABLES[tableKey]}`, (err, response) => {
-      resolve(response);
-    })
-  );
-
-  const dataPromise = new Promise(async (resolve, reject) => {
-    db.all(`SELECT * FROM ${TABLES[tableKey]}${paginationQuery}`, (err, response) => {
-      resolve(response);
-    });
+  const data = await sequelizeModel.findAndCountAll({
+    limit: typeof limit === "number" ? limit : 15,
+    offset: typeof page === "number" ? (page - 1) * limit : 0,
+    include: include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
   });
-  db.close();
-  return Promise.all([countPromise, dataPromise]).then(([count, data]) => ({
-    total: count[0]["COUNT(*)"],
-    data,
-  }));
+
+  return {
+    data: data.rows.map((row) => row.toJSON()),
+    total: data?.count,
+  };
 });

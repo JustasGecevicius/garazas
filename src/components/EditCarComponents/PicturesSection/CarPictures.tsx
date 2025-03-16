@@ -10,10 +10,10 @@ export function CarPictures(props: Props) {
   const pictures = ["Bmw330.png", "Bmw330.png", "Bmw330.png", null];
 
   return (
-    <div className="grow-1 w-full gap-2 grid grid-cols-1 auto-rows-min">
-      {pictures?.map((pic) =>
+    <div className="grow-1 w-full gap-2 grid grid-cols-2 auto-rows-min">
+      {pictures?.map((pic, index) =>
         pic !== null ? (
-          <Picture picture={pic} />
+          <Picture key={`${pic}_${index}`} picture={pic} />
         ) : (
           <EmptyPicture picture={pic} />
         )
