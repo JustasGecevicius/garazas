@@ -43,7 +43,7 @@ export function Info(props: Props) {
   } = data || {};
 
   return (
-    <div className="w-full outline outline-white grow-1 rounded-md px-2">
+    <div className="w-full outline outline-white grow-1 rounded-md p-2">
       <LabelledTextInput name="name" dataRef={dataRef} value={name} />
       <LabelledTextInput name="make" dataRef={dataRef} value={make} />
       <LabelledTextInput name="vinCode" dataRef={dataRef} value={vinCode} />
