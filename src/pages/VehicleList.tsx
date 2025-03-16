@@ -10,6 +10,7 @@ import { useNavigate } from "react-router";
 import { IndeterminateCheckbox } from "../components/checkbox/Checkbox";
 import { selectVehicleListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";
 import { useSelector } from "react-redux";
+import { camelCase } from "lodash";
 
 type Props = {};
 
@@ -32,6 +33,7 @@ export default function VehicleList(props: Props) {
       const response = await window.select.selectPaginatedVehicles({
         page: queryKey[1].pageIndex + 1,
         limit: queryKey[1].pageSize,
+        include: ["VehicleType", "FuelType", "EngineSizeMeasurementType"],
       });
       return response;
     },
@@ -39,7 +41,24 @@ export default function VehicleList(props: Props) {
 
   const cols = useMemo(() => {
     const normalCols = Object.keys(data?.data?.[0] || {}).map((key) => {
-      return columnHelper.accessor(key, { cell: (info) => info.getValue() });
+      return columnHelper.accessor(key, {
+        cell: (info) => {
+          const value = info.getValue();
+          switch (info.column.id) {
+            case "EngineSizeMeasurementType":
+            case "FuelType":
+            case "VehicleType":
+              return value?.[camelCase(info?.column?.id)];
+            case "createdAt":
+            case "updatedAt":
+            case "techInspectionDueDate":
+            case "fabricationYear":
+              return JSON.stringify(value);
+            default:
+              return value;
+          }
+        },
+      });
     });
 
     normalCols.unshift(
@@ -97,7 +116,7 @@ export default function VehicleList(props: Props) {
   return (
     <div className="w-full">
       <button
-        className="px-2 my-5 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline"
+        className="px-2 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline"
         onClick={handleDeleteClick}
       >
         Delete

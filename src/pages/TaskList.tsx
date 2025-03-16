@@ -41,7 +41,18 @@ export default function TaskList(props: Props) {
 
   const cols = useMemo(() => {
     const normalCols = Object.keys(data?.data?.[0] || {}).map((key) => {
-      return columnHelper.accessor(key, { cell: (info) => info.getValue() });
+      return columnHelper.accessor(key, {
+        cell: (info) => {
+          const value = info.getValue();
+          switch (typeof value) {
+            case "object":
+              return JSON.stringify(value);
+            default:
+              return value;
+          }
+          return value;
+        },
+      });
     });
 
     normalCols.unshift(
@@ -96,12 +107,12 @@ export default function TaskList(props: Props) {
   return (
     <div className="w-full">
       <button
-        className="px-2 my-5 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline"
+        className="px-2 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline"
         onClick={handleDeleteClick}
       >
         Delete
       </button>
-      <table className="w-full border border-white">
+      <table className="w-full border border-white rounded-md">
         <thead className="border-b">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -109,10 +120,7 @@ export default function TaskList(props: Props) {
                 <th key={header.id} className="px-2 py-1">
                   {header.isPlaceholder
                     ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                    : flexRender(header.column.columnDef.header, header.getContext())}
                 </th>
               ))}
             </tr>
@@ -126,8 +134,7 @@ export default function TaskList(props: Props) {
                   key={cell.id}
                   className="text-center border border-white"
                   onClick={() => {
-                    cell?.column?.id !== "checkbox" &&
-                      navigate(`/edit-vehicle/${row.original.id}`);
+                    cell?.column?.id !== "checkbox" && navigate(`/edit-vehicle/${row.original.id}`);
                   }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -171,8 +178,7 @@ export default function TaskList(props: Props) {
           <span className="flex items-center gap-1">
             <div>Page</div>
             <strong>
-              {pagination.pageIndex + 1} of{" "}
-              {table.getPageCount().toLocaleString()}
+              {pagination.pageIndex + 1} of {table.getPageCount().toLocaleString()}
             </strong>
           </span>
           <button

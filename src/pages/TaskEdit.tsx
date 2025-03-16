@@ -1,64 +1,37 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
+import { useQuery } from "react-query";
+import { useParams } from "react-router";
+import { TextInput } from "../components/Inputs/TextInput";
+import { DateInput } from "../components/Inputs/DateInput";
+import VehicleSelect from "../components/selects/VehicleSelect";
 
 const TaskEdit = () => {
-  const [task, setTask] = useState({
-    title: "",
-    description: "",
-    dueDate: "",
-    priority: "",
-  });
+  const { id } = useParams();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setTask((prevTask) => ({
-      ...prevTask,
-      [name]: value,
-    }));
-  };
+  const dataRef = useRef<{ [key: string]: any }>({});
+
+  const { data } = useQuery({
+    queryKey: ["edit-task", id],
+    queryFn: async () => {
+      const response = await window.select.selectTask(id);
+      dataRef.current = response;
+      return response;
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log("Task submitted:", task);
+    window.update.updateTask(dataRef.current);
   };
 
   return (
     <div>
       <h1>Edit Task</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title:</label>
-          <input type="text" id="title" name="title" value={task.title} onChange={handleChange} />
-        </div>
-        <div>
-          <label htmlFor="description">Description:</label>
-          <textarea
-            id="description"
-            name="description"
-            value={task.description}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="dueDate">Due Date:</label>
-          <input
-            type="date"
-            id="dueDate"
-            name="dueDate"
-            value={task.dueDate}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="priority">Priority:</label>
-          <input
-            type="text"
-            id="priority"
-            name="priority"
-            value={task.priority}
-            onChange={handleChange}
-          />
-        </div>
+        <VehicleSelect dataRef={dataRef} value={data?.VehicleId} />
+        <TextInput name="note" dataRef={dataRef} value={data?.note} />
+        <DateInput name="taskDate" dataRef={dataRef} value={data?.taskDate} />
         <button type="submit">Save Task</button>
       </form>
     </div>

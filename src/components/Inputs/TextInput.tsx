@@ -19,7 +19,7 @@ export function TextInput(props: TextInputPropsType) {
   }, [name, value]);
 
   useEffect(() => {
-    setValue(propValue || "");
+    setValue(propValue || null);
   }, [propValue]);
 
   return (

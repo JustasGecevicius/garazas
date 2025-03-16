@@ -13,6 +13,7 @@ export default function Dashboard() {
         page: 1,
         limit: 3,
       });
+      console.log("RESPONSE", response);
       return response;
     },
   });
