@@ -21,7 +21,24 @@ ipcMain.on(CHANNELS.CREATE, (_, modelName, data) => {
   try {
     const sequelizeModel = sequelize?.models?.[modelName];
     if (!sequelizeModel) return;
-    console.log('DATA', data);
+    sequelizeModel.create(data);
+  } catch (error) {
+    console.log("ERROR", error);
+  }
+});
+
+ipcMain.on(CHANNELS.CREATE_BLOB, (_, modelName, data) => {
+  if (typeof data !== "object" || !data?.photoBlob?.type || !data?.photoBlob?.data) return;
+
+  try {
+    const sequelizeModel = sequelize?.models?.[modelName];
+    if (!sequelizeModel) return;
+
+    const { photoBlob } = data;
+    const { type, data: blobArray } = photoBlob;
+    data.photoBlobType = type;
+    data.photoBlob = blobArray;
+
     sequelizeModel.create(data);
   } catch (error) {
     console.log("ERROR", error);

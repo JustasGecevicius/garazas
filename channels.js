@@ -1,6 +1,7 @@
 const CHANNELS = {
   DELETE: "delete",
   CREATE: "create",
+  CREATE_BLOB: "create_blob",
   UPDATE: "update",
   SELECT: "select",
   SELECT_VEHICLE: "select_vehicle",

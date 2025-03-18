@@ -87,9 +87,13 @@ const TaskNeededPartInit = (sequelize) =>
   });
 
 const TaskPhotoInit = (sequelize) =>
-  sequelize.define('TaskPhoto', {
+  sequelize.define("TaskPhoto", {
     photoBlob: {
-      type: DataTypes.TEXT,
+      type: DataTypes.BLOB("long"),
+      allowNull: false,
+    },
+    photoBlobType: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });
