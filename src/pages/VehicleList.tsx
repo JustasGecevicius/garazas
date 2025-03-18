@@ -129,7 +129,10 @@ export default function VehicleList(props: Props) {
                 <th key={header.id} className="px-2 py-1">
                   {header.isPlaceholder
                     ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                 </th>
               ))}
             </tr>
@@ -143,7 +146,8 @@ export default function VehicleList(props: Props) {
                   key={cell.id}
                   className="text-center border border-white"
                   onClick={() => {
-                    cell?.column?.id !== "checkbox" && navigate(`/edit-vehicle/${row.original.id}`);
+                    cell?.column?.id !== "checkbox" &&
+                      navigate(`/edit-vehicle/${row.original.id}`);
                   }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -187,7 +191,8 @@ export default function VehicleList(props: Props) {
           <span className="flex items-center gap-1">
             <div>Page</div>
             <strong>
-              {pagination.pageIndex + 1} of {table.getPageCount().toLocaleString()}
+              {pagination.pageIndex + 1} of{" "}
+              {table.getPageCount().toLocaleString()}
             </strong>
           </span>
           <button
