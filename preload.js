@@ -11,12 +11,15 @@ contextBridge.exposeInMainWorld("delete", {
   },
 });
 
-contextBridge.exposeInMainWorld("create", {
+contextBridge.exposeInMainWorld('create', {
   createVehicle: (data) => {
     ipcRenderer.send(CHANNELS.CREATE, MODELS.Vehicles, data);
   },
   createTask: (data) => {
     ipcRenderer.send(CHANNELS.CREATE, MODELS.Tasks, data);
+  },
+  createTaskImage: (data) => {
+    ipcRenderer.send(CHANNELS.CREATE, MODELS.TaskPhotos, data);
   },
 });
 

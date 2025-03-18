@@ -6,23 +6,16 @@ import { selectVehicleListRefetchToggle } from '../redux/slices/vehicleListRefet
 export default function Dashboard() {
   const { vehicleListToggle } = useSelector(selectVehicleListRefetchToggle);
 
-  const {
-    data: cars,
-    error,
-    isFetching,
-  } = useQuery({
+  const { data: cars } = useQuery({
     queryKey: ['vehicle_list', vehicleListToggle],
     queryFn: async ({ queryKey }) => {
       const response = await window.select.selectPaginatedVehicles({
         page: 1,
         limit: 3,
       });
-      console.log('RESPONSE', response);
       return response;
     },
   });
-
-  console.log(cars);
 
   return (
     <div className=''>

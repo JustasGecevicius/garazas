@@ -21,6 +21,7 @@ ipcMain.on(CHANNELS.CREATE, (_, modelName, data) => {
   try {
     const sequelizeModel = sequelize?.models?.[modelName];
     if (!sequelizeModel) return;
+    console.log('DATA', data);
     sequelizeModel.create(data);
   } catch (error) {
     console.log("ERROR", error);
