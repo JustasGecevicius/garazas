@@ -21,6 +21,9 @@ contextBridge.exposeInMainWorld("create", {
   createTaskImage: (data) => {
     ipcRenderer.send(CHANNELS.CREATE_BLOB, MODELS.TaskPhotos, data);
   },
+  createVehicleImage: (data) => {
+    ipcRenderer.send(CHANNELS.CREATE_BLOB, MODELS.VehiclePhotos, data);
+  },
 });
 
 contextBridge.exposeInMainWorld("update", {

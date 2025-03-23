@@ -1,10 +1,14 @@
+import { useId } from "react";
+
 export type DateInputPropsType = {
-  name: string;
+  name?: string;
   callback: (blob: Blob) => void;
+  id?: string;
 };
 
 export function FileInput(props: DateInputPropsType) {
-  const { name, callback } = props;
+  const { name, callback, id: outsideId } = props;
+  const id = useId();
 
   function handleFileAdd(e) {
     e.preventDefault();
@@ -21,10 +25,15 @@ export function FileInput(props: DateInputPropsType) {
 
   return (
     <input
-      className="flex flex-row border rounded-md bg-gray-100 p-1 focus-within:outline-2 focus-within:outline-gray-600"
+      className={
+        name
+          ? "flex flex-row border rounded-md bg-gray-100 p-1 focus-within:outline-2 focus-within:outline-gray-600"
+          : "display"
+      }
       type="file"
       placeholder={name}
       onChange={handleFileAdd}
+      id={outsideId || id}
     />
   );
 }

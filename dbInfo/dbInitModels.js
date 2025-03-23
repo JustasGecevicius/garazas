@@ -34,19 +34,11 @@ const VehicleInit = (sequelize) =>
     plateNumber: DataTypes.STRING,
   });
 
-const PhotoInit = (sequelize) =>
+const VehiclePhotoInit = (sequelize) =>
   sequelize.define("Photo", {
     photoBlob: {
-      type: DataTypes.BLOB,
+      type: DataTypes.TEXT("long"),
       allowNull: false,
-    },
-    vehicleId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "Vehicle",
-        key: "id",
-      },
     },
   });
 
@@ -101,7 +93,7 @@ const TaskPhotoInit = (sequelize) =>
 const PartPhotoInit = (sequelize) =>
   sequelize.define("PartPhoto", {
     photoBlob: {
-      type: DataTypes.BLOB,
+      type: DataTypes.TEXT("long"),
       allowNull: false,
     },
   });
@@ -109,7 +101,7 @@ const PartPhotoInit = (sequelize) =>
 const PartTaskPhotoInit = (sequelize) =>
   sequelize.define("PartTaskPhoto", {
     photoBlob: {
-      type: DataTypes.BLOB,
+      type: DataTypes.TEXT("long"),
       allowNull: false,
     },
   });
@@ -153,6 +145,7 @@ const defineAllModels = async (sequelize) => {
   const PartPhoto = PartPhotoInit(sequelize);
   const PartTaskPhoto = PartTaskPhotoInit(sequelize);
   const TaskPhoto = TaskPhotoInit(sequelize);
+  const VehiclePhoto = VehiclePhotoInit(sequelize);
   const Client = ClientInit(sequelize);
   const TaskNeededPart = TaskNeededPartInit(sequelize);
 
@@ -169,6 +162,8 @@ const defineAllModels = async (sequelize) => {
   Task.belongsToMany(Part, { through: PartTask });
   Task.hasMany(TaskPhoto);
   TaskPhoto.belongsTo(Task);
+  Vehicle.hasMany(VehiclePhoto);
+  VehiclePhoto.belongsTo(Vehicle);
   PartPhoto.belongsTo(Part);
   Part.hasMany(PartPhoto);
   PartTaskPhoto.belongsTo(PartTask);

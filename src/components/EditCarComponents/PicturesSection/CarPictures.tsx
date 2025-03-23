@@ -1,5 +1,6 @@
-import { MutableRefObject } from "react";
+import { MutableRefObject, useMemo } from "react";
 import { EmptyPicture, Picture } from "./Picture";
+import { arrayBufferToBase64 } from "../../../utils/imageCodingDecoding";
 
 type Props = {
   data: any;
@@ -7,7 +8,26 @@ type Props = {
 };
 
 export function CarPictures(props: Props) {
-  const pictures = ["Bmw330.png", "Bmw330.png", "Bmw330.png", null];
+  const { data } = props;
+  const pictures = useMemo(() => [{}, null], []);
+
+  async function handleImageAdd(blob: Blob) {
+    console.log("ADD IMAGE");
+    const blobArray = await blob.arrayBuffer();
+    const blobString = arrayBufferToBase64(blobArray);
+    try {
+      window.create.createVehicleImage({
+        photoBlob: { data: blobString, type: blob.type },
+        VehicleId: data?.id,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleImageLoad = (images) => {};
+
+  // useEffect(handleImageAdd, []);
 
   return (
     <div className="grow-1 w-full gap-2 flex flex-col auto-rows-min">
@@ -15,7 +35,7 @@ export function CarPictures(props: Props) {
         pic !== null ? (
           <Picture key={`${pic}_${index}`} picture={pic} />
         ) : (
-          <EmptyPicture picture={pic} />
+          <EmptyPicture picture={pic} onClick={handleImageAdd} />
         )
       )}
     </div>

@@ -5,6 +5,7 @@ import { TextInput } from "../components/Inputs/TextInput";
 import { DateInput } from "../components/Inputs/DateInput";
 import VehicleSelect from "../components/selects/VehicleSelect";
 import { FileInput } from "../components/Inputs/FileInput";
+import { arrayBufferToBase64, base64ToBlob } from "../utils/imageCodingDecoding";
 
 const TaskEdit = () => {
   const { id } = useParams();
@@ -25,28 +26,6 @@ const TaskEdit = () => {
       return response;
     },
   });
-
-  function base64ToBlob(base64String: string, contentType = "") {
-    const byteCharacters = atob(base64String);
-    const byteArrays = [];
-
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteArrays.push(byteCharacters.charCodeAt(i));
-    }
-
-    const byteArray = new Uint8Array(byteArrays);
-    return new Blob([byteArray], { type: contentType });
-  }
-
-  function arrayBufferToBase64(buffer: ArrayBuffer) {
-    var binary = "";
-    var bytes = new Uint8Array(buffer);
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-  }
 
   const handleFileChange = async (blob: Blob) => {
     const blobArray = await blob.arrayBuffer();

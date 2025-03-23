@@ -17,7 +17,7 @@ const MODELS = {
   Parts: "Part",
   PartTasks: "PartTask",
   Tasks: "Task",
-  Photos: "Photo",
+  VehiclePhotos: "VehiclePhoto",
   Vehicles: "Vehicle",
   Clients: "Client",
 };

@@ -34,21 +34,6 @@ export default function VehicleEdit(props: Props) {
     window.update.updateVehicle(dataRef.current);
   }
 
-  // return (
-  //   <div className="flex flex-col w-full h-full">
-  //     <div className="flex flex-row w-full h-full gap-2">
-  //       <CarPictures data={data} dataRef={dataRef} />
-  //       <Info data={data} dataRef={dataRef} />
-  //       <RepairHistory data={data} dataRef={dataRef} />
-  //     </div>
-  //     <div>
-  //       <button onClick={handleSave} className="p-2 text-white bg-blue-500 rounded">
-  //         Save
-  //       </button>
-  //     </div>
-  //   </div>
-  // );
-
   return (
     <div className="flex w-full h-full my-5 justify-center items-center">
       <div className="flex flex-row max-w-[1920px] gap-3">
@@ -61,10 +46,7 @@ export default function VehicleEdit(props: Props) {
         <div className="flex flex-col w-3/4 gap-5 p-2">
           <div className="flex flex-row justify-between">
             <div className="text-2xl">Duomenys</div>
-            <button
-              onClick={handleSave}
-              className="px-4 text-white bg-blue-500 rounded"
-            >
+            <button onClick={handleSave} className="px-4 text-white bg-blue-500 rounded">
               Save
             </button>
           </div>
