@@ -26,12 +26,34 @@ const TaskEdit = () => {
     },
   });
 
+  function base64ToBlob(base64String: string, contentType = "") {
+    const byteCharacters = atob(base64String);
+    const byteArrays = [];
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteArrays.push(byteCharacters.charCodeAt(i));
+    }
+
+    const byteArray = new Uint8Array(byteArrays);
+    return new Blob([byteArray], { type: contentType });
+  }
+
+  function arrayBufferToBase64(buffer: ArrayBuffer) {
+    var binary = "";
+    var bytes = new Uint8Array(buffer);
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  }
+
   const handleFileChange = async (blob: Blob) => {
-    const blobArray = await blob.text();
-    console.log(blobArray);
+    const blobArray = await blob.arrayBuffer();
+    const blobString = arrayBufferToBase64(blobArray);
     try {
       window.create.createTaskImage({
-        photoBlob: { data: blobArray, type: blob.type },
+        photoBlob: { data: blobString, type: blob.type },
         TaskId: id,
       });
     } catch (error) {
@@ -47,14 +69,8 @@ const TaskEdit = () => {
 
   useEffect(() => {
     if (data?.TaskPhotos?.[0]?.photoBlob) {
-      console.log(data?.TaskPhotos?.[0]?.photoBlob);
-      const blob = new Blob([new Uint8Array(data.TaskPhotos[0].photoBlob)], {
-        type: data.TaskPhotos[0].photoBlobType,
-      });
-
-      console.log(blob);
+      const blob = base64ToBlob(data.TaskPhotos[0].photoBlob, data.TaskPhotos[0].photoBlobType);
       const url = URL.createObjectURL(blob);
-      console.log(url);
       imageRef.current.src = url;
       setImageURL(url);
     }
