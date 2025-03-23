@@ -33,7 +33,7 @@ export function RepairHistoryItem(props: Props) {
 
   return (
     <div
-      className='p-2 rounded-md outline outline-yellow-500'
+      className='p-2 rounded-md outline outline-white'
       onClick={handleClick}>
       <HistoryField
         data={data.date}

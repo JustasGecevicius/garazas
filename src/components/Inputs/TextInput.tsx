@@ -24,7 +24,7 @@ export function TextInput(props: TextInputPropsType) {
 
   return (
     <input
-      className="flex col-span-2 border rounded-md bg-gray-100 p-1 focus-within:outline-2 focus-within:outline-gray-600"
+      className="flex col-span-2 border rounded-md text-black bg-gray-100 p-1 focus-within:outline-2 focus-within:outline-gray-600"
       type="text"
       value={value}
       placeholder={name}
