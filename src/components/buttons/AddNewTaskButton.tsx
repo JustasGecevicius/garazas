@@ -39,7 +39,7 @@ export function AddNewTaskButton({ vehicleId }: PropsType) {
             <img src={`icons/menuIcons/car-repair.svg`} alt="plus icon" className="w-7 h-7" />
           </div>
         ) : (
-          <div className="flex flex-row gap-4 justify-start items-center text-white text-lg">
+          <div className="flex-row gap-4 justify-start items-center text-white text-lg">
             <img src={`icons/menuIcons/car-repair.svg`} alt="plus icon" className="w-6 h-6" />
             <div className="pt-1">Add Task</div>
           </div>

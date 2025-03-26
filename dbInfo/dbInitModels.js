@@ -35,9 +35,13 @@ const VehicleInit = (sequelize) =>
   });
 
 const VehiclePhotoInit = (sequelize) =>
-  sequelize.define("Photo", {
+  sequelize.define("VehiclePhoto", {
     photoBlob: {
       type: DataTypes.TEXT("long"),
+      allowNull: false,
+    },
+    photoBlobType: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });
@@ -96,12 +100,20 @@ const PartPhotoInit = (sequelize) =>
       type: DataTypes.TEXT("long"),
       allowNull: false,
     },
+    photoBlobType: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
 const PartTaskPhotoInit = (sequelize) =>
   sequelize.define("PartTaskPhoto", {
     photoBlob: {
       type: DataTypes.TEXT("long"),
+      allowNull: false,
+    },
+    photoBlobType: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   });
@@ -186,21 +198,13 @@ const defineAllModels = async (sequelize) => {
     TaskPhoto,
     Client,
     TaskNeededPart,
+    VehiclePhoto,
   ]);
-  return {
-    VehicleType: models[0],
-    FuelType: models[1],
-    EngineSizeMeasurementType: models[2],
-    Task: models[4],
-    Vehicle: models[5],
-    Part: models[6],
-    PartTask: models[7],
-    PartPhoto: models[8],
-    PartTaskPhoto: models[9],
-    TaskPhoto: models[10],
-    Client: models[11],
-    TaskNeededPart: models[12],
-  };
+
+  return models.reduce((prev, curr) => {
+    prev[curr?.getTableName()] = curr;
+    return prev;
+  }, {});
 };
 
 module.exports = {

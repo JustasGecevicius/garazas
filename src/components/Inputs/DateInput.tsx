@@ -27,7 +27,7 @@ export function DateInput(props: DateInputPropsType) {
 
   return (
     <input
-      className="flex flex-row border rounded-md text-black bg-gray-100 p-1 focus-within:outline-2 focus-within:outline-gray-600"
+      className="flex-row border rounded-md text-black bg-gray-100 p-1 focus-within:outline-2 focus-within:outline-gray-600"
       type="date"
       placeholder={name}
       value={value}

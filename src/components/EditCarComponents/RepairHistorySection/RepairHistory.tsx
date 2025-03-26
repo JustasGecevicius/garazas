@@ -33,7 +33,7 @@ export function RepairHistory(props: Props) {
 
   return (
     <>
-      <div className="w-full p-2 rounded-md grow-1 flex flex-col justify-between gap-4">
+      <div className="w-full p-2 rounded-md grow-1 flex-col justify-between gap-4">
         <div>
           {Tasks?.map((task) => (
             <RepairHistoryItem data={task} onClick={handleSelect} />

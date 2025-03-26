@@ -4,10 +4,11 @@ export type DateInputPropsType = {
   name?: string;
   callback: (blob: Blob) => void;
   id?: string;
+  hide?: boolean;
 };
 
 export function FileInput(props: DateInputPropsType) {
-  const { name, callback, id: outsideId } = props;
+  const { name, callback, id: outsideId, hide } = props;
   const id = useId();
 
   function handleFileAdd(e) {
@@ -26,9 +27,9 @@ export function FileInput(props: DateInputPropsType) {
   return (
     <input
       className={
-        name
-          ? "flex flex-row border rounded-md bg-gray-100 p-1 focus-within:outline-2 focus-within:outline-gray-600"
-          : "display"
+        hide
+          ? "hidden"
+          : "flex-row border rounded-md bg-gray-100 p-1 focus-within:outline-2 focus-within:outline-gray-600"
       }
       type="file"
       placeholder={name}

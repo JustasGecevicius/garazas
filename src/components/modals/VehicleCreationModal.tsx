@@ -50,7 +50,7 @@ export function VehicleCreationModal(props: PropsType) {
         <VehicleTypeSelect dataRef={dataRef} />
         <div className="flex justify-center col-span-2">
           <button
-            className="flex flex-row text-center px-10 border rounded-md bg-gray-100 p-1 hover:border-2 hover:outline-gray-600 hover:bg-gray-200"
+            className="flex-row text-center px-10 border rounded-md bg-gray-100 p-1 hover:border-2 hover:outline-gray-600 hover:bg-gray-200"
             onClick={submitVehicle}
           >
             Išsaugoti

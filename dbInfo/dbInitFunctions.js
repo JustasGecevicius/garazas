@@ -11,8 +11,6 @@ const sequelize = new Sequelize({
   storage: "db",
 });
 
-let allModels = { current: null };
-
 const initEngineSizeMeasurementType = (model) => {
   return model.bulkCreate(
     ENGINE_SIZE_MEASUREMENT_INIT_VALUES.map(([unit, conversionToLitre]) => ({
@@ -31,12 +29,12 @@ const initVehicleType = (model) => {
 };
 
 const initDefaultData = async (allModels) => {
-  const count = await allModels.current.EngineSizeMeasurementType.count();
+  const count = await allModels.EngineSizeMeasurementTypes.count();
   if (count > 0) return null;
   return Promise.all([
-    initEngineSizeMeasurementType(allModels.current.EngineSizeMeasurementType),
-    initFuelType(allModels.current.FuelType),
-    initVehicleType(allModels.current.VehicleType),
+    initEngineSizeMeasurementType(allModels.EngineSizeMeasurementTypes),
+    initFuelType(allModels.FuelTypes),
+    initVehicleType(allModels.VehicleTypes),
   ]);
 };
 
@@ -45,15 +43,14 @@ const initDB = async () => {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
     const models = await defineAllModels(sequelize);
-    allModels.current = models;
     console.log("All models were defined successfully.");
     await sequelize.sync();
     console.log("All models were synchronized successfully.");
-    await initDefaultData(allModels);
+    await initDefaultData(models);
     console.log("Default data was inserted successfully.");
   } catch (error) {
     console.error("Ya fucked up in the database setup somewhere", error);
   }
 };
 
-module.exports = { initDB, allModels, sequelize };
+module.exports = { initDB, sequelize };

@@ -13,7 +13,7 @@ function HeaderMain() {
     <>
       <div className="flex justify-center sm:justify-between items-center text-white rounded-xl bg-stone-900 outline-white outline outline-2 p-5">
         <Link to="/">
-          <div className="flex flex-row gap-5 items-center">
+          <div className="flex-row gap-5 items-center">
             <img src="bmw.png" alt="logo" className="max-w-8 max-h-8" />
             <h1 className="text-2xl">Garazas</h1>
           </div>
@@ -28,11 +28,8 @@ function HeaderMain() {
         </div>
       </div>
 
-      <div
-        id="navBurger"
-        className="sm:hidden grid py-4 gap-2 text-lg items-center w-full"
-      >
-        <div className="flex flex-row justify-between">
+      <div id="navBurger" className="sm:hidden grid py-4 gap-2 text-lg items-center w-full">
+        <div className="flex-row justify-between">
           <p>{moment().format("YYYY-MM-DD")}</p>
           <ClockComponent />
         </div>
@@ -57,21 +54,17 @@ export function Header() {
       <div
         className={`bg-stone-900 text-white transition-all duration-300 ${
           isCollapsed ? "w-24" : "w-64"
-        } py-6 gap-10 rounded-xl border-2 border-white flex flex-col relative`}
+        } py-6 gap-10 rounded-xl border-2 border-white flex-col relative`}
       >
         <div className="px-6">
           <Link to="/">
             <div
-              className={`flex items-center ${
-                isCollapsed ? "justify-center" : "justify-start"
-              }`}
+              className={`flex items-center ${isCollapsed ? "justify-center" : "justify-start"}`}
             >
               <img src="bmw.png" alt="logo" className="w-10 h-10" />
               <span
                 className={`text-2xl font-semibold transition-all duration-300 ${
-                  isCollapsed
-                    ? "max-w-0 overflow-hidden opacity-0"
-                    : "max-w-full opacity-100 pl-5"
+                  isCollapsed ? "max-w-0 overflow-hidden opacity-0" : "max-w-full opacity-100 pl-5"
                 }`}
               >
                 Garazas
@@ -79,13 +72,13 @@ export function Header() {
             </div>
           </Link>
         </div>
-        <div className="flex flex-col w-full gap-2 px-3 transition-all duration-300">
+        <div className="flex-col w-full gap-2 px-3 transition-all duration-300">
           <AddNewVehicleButton />
           <AddNewTaskButton />
         </div>
 
         <div
-          className={`flex flex-col w-full gap-2 px-3 transition-all duration-300 ${
+          className={`flex-col w-full gap-2 px-3 transition-all duration-300 ${
             isCollapsed ? "items-center justify-center" : "items-start"
           }`}
         >
@@ -98,9 +91,7 @@ export function Header() {
               <div
                 key={index}
                 className={`flex items-center ${
-                  isCollapsed
-                    ? "px-2 gap-0 justify-center"
-                    : "justify-start px-3 gap-4"
+                  isCollapsed ? "px-2 gap-0 justify-center" : "justify-start px-3 gap-4"
                 } py-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer`}
               >
                 <div className="w-8 h-8 flex justify-center items-center">

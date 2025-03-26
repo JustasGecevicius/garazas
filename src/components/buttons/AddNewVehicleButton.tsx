@@ -31,19 +31,11 @@ export function AddNewVehicleButton() {
       >
         {isCompact ? (
           <div className="flex justify-center w-full">
-            <img
-              src={`icons/menuIcons/plus.svg`}
-              alt="plus icon"
-              className="w-8 h-8"
-            />
+            <img src={`icons/menuIcons/plus.svg`} alt="plus icon" className="w-8 h-8" />
           </div>
         ) : (
-          <div className="flex flex-row gap-4 justify-start items-center text-white text-lg">
-            <img
-              src={`icons/menuIcons/plus.svg`}
-              alt="plus icon"
-              className="w-8 h-8"
-            />
+          <div className="flex-row gap-4 justify-start items-center text-white text-lg">
+            <img src={`icons/menuIcons/plus.svg`} alt="plus icon" className="w-8 h-8" />
             <div className="pt-1">Add new car</div>
           </div>
         )}

@@ -31,7 +31,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="MainBody flex flex-row p-7 text-white h-full gap-5">
+    <div className="MainBody flex-row p-7 text-white h-full gap-5">
       <Header />
       <Router />
     </div>
