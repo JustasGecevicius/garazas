@@ -13,25 +13,29 @@ export type EditCarType = {
 export default function App() {
   const dispatch = useDispatch();
 
-  useEffect(function initialSetup() {
-    const func = async () => {
-      const engineMeasurementTypePromise = window.select.selectEngineSizeMeasurementType();
-      const fuelTypePromise = window.select.selectFuelType();
-      const selectVehicleTypePromise = window.select.selectVehicleType();
-      const resolvedPromises = await Promise.all([
-        engineMeasurementTypePromise,
-        fuelTypePromise,
-        selectVehicleTypePromise,
-      ]);
-      dispatch(initialiseEngineTypes(resolvedPromises[0]));
-      dispatch(initialiseFuelType(resolvedPromises[1]));
-      dispatch(initialiseVehicleType(resolvedPromises[2]));
-    };
-    func();
-  }, []);
+  useEffect(
+    function initialSetup() {
+      const func = async () => {
+        const engineMeasurementTypePromise =
+          window.select.selectEngineSizeMeasurementType();
+        const fuelTypePromise = window.select.selectFuelType();
+        const selectVehicleTypePromise = window.select.selectVehicleType();
+        const resolvedPromises = await Promise.all([
+          engineMeasurementTypePromise,
+          fuelTypePromise,
+          selectVehicleTypePromise,
+        ]);
+        dispatch(initialiseEngineTypes(resolvedPromises[0]));
+        dispatch(initialiseFuelType(resolvedPromises[1]));
+        dispatch(initialiseVehicleType(resolvedPromises[2]));
+      };
+      func();
+    },
+    [dispatch]
+  );
 
   return (
-    <div className="MainBody flex-row p-7 text-white h-full gap-5">
+    <div className='flex-row h-full gap-5 text-white MainBody p-7'>
       <Header />
       <Router />
     </div>

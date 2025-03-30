@@ -153,7 +153,6 @@ const defineAllModels = async (sequelize) => {
   const Task = TaskInit(sequelize);
   const Vehicle = VehicleInit(sequelize);
   const Part = PartInit(sequelize);
-  const PartTask = PartTaskInit(sequelize);
   const PartPhoto = PartPhotoInit(sequelize);
   const PartTaskPhoto = PartTaskPhotoInit(sequelize);
   const TaskPhoto = TaskPhotoInit(sequelize);
@@ -169,21 +168,16 @@ const defineAllModels = async (sequelize) => {
   Vehicle.belongsTo(EngineSizeMeasurementType);
   Vehicle.hasMany(Task);
   Task.belongsTo(Vehicle);
-
-  Part.belongsToMany(Task, { through: PartTask });
-  Task.belongsToMany(Part, { through: PartTask });
+  Task.hasMany(Part);
+  Part.belongsTo(Task);
   Task.hasMany(TaskPhoto);
   TaskPhoto.belongsTo(Task);
   Vehicle.hasMany(VehiclePhoto);
   VehiclePhoto.belongsTo(Vehicle);
   PartPhoto.belongsTo(Part);
   Part.hasMany(PartPhoto);
-  PartTaskPhoto.belongsTo(PartTask);
-  PartTask.hasMany(PartTaskPhoto);
   Client.hasMany(Vehicle);
   Vehicle.belongsTo(Client);
-  Part.belongsToMany(Task, { through: TaskNeededPart });
-  Task.belongsToMany(Part, { through: TaskNeededPart });
 
   const models = await Promise.all([
     VehicleType,

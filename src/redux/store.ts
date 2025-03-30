@@ -3,6 +3,7 @@ import engineSizeMeasurementTypeSliceReducer from "./slices/engineSizeMeasuremen
 import vehicleTypeSliceReducer from "./slices/vehicleTypeSlice";
 import fuelTypeSliceReducer from "./slices/fuelTypeSlice";
 import vehicleListRefetchSliceReducer from "./slices/vehicleListRefetchSlice";
+import partListRefetchReducer from './slices/partListRefetchSlice';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     vehicleType: vehicleTypeSliceReducer,
     fuelType: fuelTypeSliceReducer,
     listRefetch: vehicleListRefetchSliceReducer,
+    partListRefetch: partListRefetchReducer,
   },
 });
 
