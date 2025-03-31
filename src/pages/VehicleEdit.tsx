@@ -7,6 +7,7 @@ import { useParams } from "react-router";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectTaskListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";
+import { SaveButton } from "../components/buttons/SaveButton";
 
 type Props = {} & EditCarType;
 
@@ -47,9 +48,7 @@ export default function VehicleEdit(props: Props) {
         <div className="flex-col w-3/4 gap-5 p-2">
           <div className="flex-row justify-between">
             <div className="text-2xl">Duomenys</div>
-            <button onClick={handleSave} className="px-4 text-white bg-blue-500 rounded">
-              Save
-            </button>
+            <SaveButton handleSave={handleSave} />
           </div>
           <Info data={data} dataRef={dataRef} />
           <div className="text-2xl">Remontai</div>

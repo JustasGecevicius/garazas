@@ -6,13 +6,13 @@ type PropsType = {
   vehicleId?: string;
 };
 
-export function AddNewPartButton({ vehicleId }: PropsType) {
+export function AddNewPartButton({ taskId }: PropsType) {
   const openPartCreationModalRef = useRef<() => void | null>(null);
   const closePartCreationModalRef = useRef<() => void | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isCompact, setIsCompact] = useState(false);
 
-  const part = useMemo(() => ({ vehicle: vehicleId }), [vehicleId]);
+  const part = useMemo(() => ({ TaskId: taskId }), [taskId]);
 
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {

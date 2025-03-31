@@ -2,9 +2,7 @@ import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { BaseModalWrapper } from "./BaseModalWrapper";
 import { useDispatch } from "react-redux";
 import { toggleTaskListRefetchState } from "../../redux/slices/vehicleListRefetchSlice";
-import VehicleSelect from "../selects/VehicleSelect";
 import { TextInput } from "../Inputs/TextInput";
-import { DateInput } from "../Inputs/DateInput";
 import { togglePartListRefetchState } from "../../redux/slices/partListRefetchSlice";
 import { NumberInput } from "../Inputs/NumberInput";
 
@@ -21,15 +19,16 @@ type PropsType = {
 };
 
 export function PartCreationModal(props: PropsType) {
-  const { closeRef, openRef, part} = props;
+  const { closeRef, openRef, part } = props;
 
-  const dataRef = useRef<{ [key: string]: any }>({});
+  const dataRef = useRef<{ [key: string]: any }>(part || {});
   const [value, setValue] = useState(part);
 
   const dispatch = useDispatch();
 
   function submitPart() {
-    window.create.createPart(dataRef?.current);
+    console.log(dataRef, part);
+    window.create.createTaskPart(dataRef?.current);
     dispatch(togglePartListRefetchState());
     closeRef.current();
   }
@@ -42,15 +41,15 @@ export function PartCreationModal(props: PropsType) {
 
   useEffect(() => {
     setValue(part);
+    dataRef.current = part;
   }, [part]);
 
   return (
     <BaseModalWrapper closeRef={closeRef} openRef={openRef}>
       <div className="grid grid-cols-2 gap-2">
-        {/* <VehicleSelect dataRef={dataRef} value={value?.vehicle} /> */}
         <TextInput name="name" dataRef={dataRef} value={value?.name} />
-        <NumberInput name="price"  dataRef={dataRef}value={value?.price} />
-        <NumberInput name="installTime"  dataRef={dataRef}value={value?.installTime} />
+        <NumberInput name="price" dataRef={dataRef} value={value?.price} />
+        <NumberInput name="installTime" dataRef={dataRef} value={value?.installTime} />
         <div className="flex justify-center col-span-2">
           <button className="rounded-sm" onClick={value?.id ? savePart : submitPart}>
             Save

@@ -2,26 +2,26 @@ const { contextBridge, ipcRenderer } = require("electron");
 const { CHANNELS } = require("./channels");
 const { MODELS } = require("./tablesList");
 
-contextBridge.exposeInMainWorld('delete', {
+contextBridge.exposeInMainWorld("delete", {
   deleteVehicle: (id) => {
     ipcRenderer.send(CHANNELS.DELETE, MODELS.Vehicles, id);
   },
   deleteTask: (id) => {
     ipcRenderer.send(CHANNELS.DELETE, MODELS.Tasks, id);
   },
-  deletePart: (id) => {
+  deleteTaskPart: (id) => {
     ipcRenderer.send(CHANNELS.DELETE, MODELS.Parts, id);
   },
 });
 
-contextBridge.exposeInMainWorld('create', {
+contextBridge.exposeInMainWorld("create", {
   createVehicle: (data) => {
     ipcRenderer.send(CHANNELS.CREATE, MODELS.Vehicles, data);
   },
   createTask: (data) => {
     ipcRenderer.send(CHANNELS.CREATE, MODELS.Tasks, data);
   },
-  createPart: (data) => {
+  createTaskPart: (data) => {
     ipcRenderer.send(CHANNELS.CREATE, MODELS.Parts, data);
   },
   createTaskImage: (data) => {
@@ -32,7 +32,7 @@ contextBridge.exposeInMainWorld('create', {
   },
 });
 
-contextBridge.exposeInMainWorld('update', {
+contextBridge.exposeInMainWorld("update", {
   updateVehicle: (data) => {
     ipcRenderer.send(CHANNELS.UPDATE, MODELS.Vehicles, data);
   },
@@ -44,7 +44,7 @@ contextBridge.exposeInMainWorld('update', {
   },
 });
 
-contextBridge.exposeInMainWorld('select', {
+contextBridge.exposeInMainWorld("select", {
   selectVehicle: (id, params) => {
     return ipcRenderer.invoke(CHANNELS.SELECT, MODELS.Vehicles, id, params);
   },
@@ -58,10 +58,7 @@ contextBridge.exposeInMainWorld('select', {
     return ipcRenderer.invoke(CHANNELS.SELECT, MODELS.PartTasks, id, params);
   },
   selectEngineSizeMeasurementType: () => {
-    return ipcRenderer.invoke(
-      CHANNELS.SELECT_ALL,
-      MODELS.EngineSizeMeasurementTypes
-    );
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL, MODELS.EngineSizeMeasurementTypes);
   },
   selectFuelType: () => {
     return ipcRenderer.invoke(CHANNELS.SELECT_ALL, MODELS.FuelTypes);
@@ -70,25 +67,13 @@ contextBridge.exposeInMainWorld('select', {
     return ipcRenderer.invoke(CHANNELS.SELECT_ALL, MODELS.VehicleTypes);
   },
   selectPaginatedVehicles: (params) => {
-    return ipcRenderer.invoke(
-      CHANNELS.SELECT_ALL_WITH_PARAMS,
-      MODELS.Vehicles,
-      params
-    );
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, MODELS.Vehicles, params);
   },
   selectPaginatedTasks: (params) => {
-    return ipcRenderer.invoke(
-      CHANNELS.SELECT_ALL_WITH_PARAMS,
-      MODELS.Tasks,
-      params
-    );
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, MODELS.Tasks, params);
   },
   selectPaginatedParts: (params) => {
-    return ipcRenderer.invoke(
-      CHANNELS.SELECT_ALL_WITH_PARAMS,
-      MODELS.Parts,
-      params
-    );
+    return ipcRenderer.invoke(CHANNELS.SELECT_ALL_WITH_PARAMS, MODELS.Parts, params);
   },
   selectAllVehicles: () => {
     return ipcRenderer.invoke(CHANNELS.SELECT_ALL, MODELS.Vehicles);

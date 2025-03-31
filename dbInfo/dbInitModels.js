@@ -55,14 +55,14 @@ const TaskInit = (sequelize) =>
     note: DataTypes.STRING,
   });
 
-const PartTaskInit = (sequelize) =>
-  sequelize.define("PartTask", {
-    quantity: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    discount: DataTypes.FLOAT,
-  });
+// const PartTaskInit = (sequelize) =>
+//   sequelize.define("PartTask", {
+//     quantity: {
+//       type: DataTypes.FLOAT,
+//       allowNull: false,
+//     },
+//     discount: DataTypes.FLOAT,
+//   });
 
 const PartInit = (sequelize) =>
   sequelize.define("Part", {
@@ -186,7 +186,7 @@ const defineAllModels = async (sequelize) => {
     Task,
     Vehicle,
     Part,
-    PartTask,
+    // PartTask,
     PartPhoto,
     PartTaskPhoto,
     TaskPhoto,

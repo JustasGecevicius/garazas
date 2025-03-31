@@ -1,65 +1,9 @@
-import moment from "moment";
-import { ClockComponent } from "./Clock";
 import { AddNewVehicleButton } from "../buttons/AddNewVehicleButton";
-import NavigateButton from "../buttons/NavigateButton";
 import { Link } from "react-router";
 import { AddNewTaskButton } from "../buttons/AddNewTaskButton";
-import { useMemo, useState } from 'react';
-import { AddNewPartButton } from '../buttons/AddNewPartButton';
-import { ROUTES } from '../../Routes';
-
-// Old header version -----
-
-function HeaderMain() {
-  return (
-    <>
-      <div className='flex items-center justify-center p-5 text-white sm:justify-between rounded-xl bg-stone-900 outline-white outline outline-2'>
-        <Link to='/'>
-          <div className='flex-row items-center gap-5'>
-            <img
-              src='bmw.png'
-              alt='logo'
-              className='max-w-8 max-h-8'
-            />
-            <h1 className='text-2xl'>Garazas</h1>
-          </div>
-        </Link>
-
-        <div className='items-center justify-between hidden gap-6 text-xl sm:flex'>
-          <p className='hidden md:flex'>{moment().format('YYYY-MM-DD')}</p>
-          <ClockComponent />
-          <AddNewVehicleButton />
-          <NavigateButton
-            label='list'
-            to='/vehicle-list'
-          />
-          {/* <NavigateButton label='Layout' to='/responsiveTest'/> */}
-        </div>
-      </div>
-
-      <div
-        id='navBurger'
-        className='grid items-center w-full gap-2 py-4 text-lg sm:hidden'>
-        <div className='flex-row justify-between'>
-          <p>{moment().format('YYYY-MM-DD')}</p>
-          <ClockComponent />
-        </div>
-
-        <AddNewVehicleButton />
-        <AddNewTaskButton />
-        <NavigateButton
-          label='list'
-          to='/vehicle-list'
-        />
-        <NavigateButton
-          label='task_list'
-          to='/task-list'
-        />
-        {/* <NavigateButton label='Layout' to='/responsiveTest'/> */}
-      </div>
-    </>
-  );
-}
+import { useMemo, useState } from "react";
+import { AddNewPartButton } from "../buttons/AddNewPartButton";
+import { ROUTES } from "../../Routes";
 
 // New header version -----
 
@@ -68,10 +12,10 @@ export function Header() {
 
   const options = useMemo(
     () => [
-      { to: ROUTES.ROOT, src: 'dashboard', label: 'Dashboard' },
-      { to: ROUTES.VEHICLE_LIST, src: 'cars', label: 'All cars' },
-      { to: ROUTES.TASK_LIST, src: 'task', label: 'All repairs' },
-      { to: ROUTES.PART_LIST, src: 'part', label: 'All parts' },
+      { to: ROUTES.ROOT, src: "dashboard", label: "Dashboard" },
+      { to: ROUTES.VEHICLE_LIST, src: "cars", label: "All cars" },
+      { to: ROUTES.TASK_LIST, src: "task", label: "All repairs" },
+      // { to: ROUTES.PART_LIST, src: "part", label: "All parts" },
     ],
     []
   );
@@ -79,31 +23,22 @@ export function Header() {
   const optionComponents = useMemo(
     () =>
       options.map((item, index) => (
-        <Link
-          key={index}
-          to={item.to}
-          className='w-full'>
+        <Link key={index} to={item.to} className="w-full">
           <div
             key={index}
             className={`flex items-center ${
-              isCollapsed
-                ? 'px-2 gap-0 justify-center'
-                : 'justify-start px-3 gap-4'
-            } py-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer`}>
-            <div className='flex items-center justify-center w-8 h-8'>
-              <img
-                src={`icons/menuIcons/${item.src}.svg`}
-                alt={item.label}
-                className='w-6 h-6'
-              />
+              isCollapsed ? "px-2 gap-0 justify-center" : "justify-start px-3 gap-4"
+            } py-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer`}
+          >
+            <div className="flex items-center justify-center w-8 h-8">
+              <img src={`icons/menuIcons/${item.src}.svg`} alt={item.label} className="w-6 h-6" />
             </div>
 
             <span
               className={`text-white text-lg transition-all duration-300 ${
-                isCollapsed
-                  ? 'max-w-0 overflow-hidden opacity-0 h-10'
-                  : 'max-w-full opacity-100'
-              }`}>
+                isCollapsed ? "max-w-0 overflow-hidden opacity-0 h-10" : "max-w-full opacity-100"
+              }`}
+            >
               {item.label}
             </span>
           </div>
@@ -113,60 +48,58 @@ export function Header() {
   );
 
   return (
-    <div className='flex my-5 '>
+    <div className="flex my-5 ">
       <div
         className={`bg-stone-900 text-white transition-all duration-300 ${
-          isCollapsed ? 'w-24' : 'w-64'
-        } py-6 gap-10 rounded-xl border-2 border-white flex-col relative`}>
-        <div className='px-6'>
-          <Link to='/'>
+          isCollapsed ? "w-24" : "w-64"
+        } py-6 gap-10 rounded-xl border-2 border-white flex-col relative`}
+      >
+        <div className="px-6">
+          <Link to="/">
             <div
-              className={`flex items-center ${
-                isCollapsed ? 'justify-center' : 'justify-start'
-              }`}>
-              <img
-                src='bmw.png'
-                alt='logo'
-                className='w-10 h-10'
-              />
+              className={`flex items-center ${isCollapsed ? "justify-center" : "justify-start"}`}
+            >
+              <img src="bmw.png" alt="logo" className="w-10 h-10" />
               <span
                 className={`text-2xl font-semibold transition-all duration-300 ${
-                  isCollapsed
-                    ? 'max-w-0 overflow-hidden opacity-0'
-                    : 'max-w-full opacity-100 pl-5'
-                }`}>
+                  isCollapsed ? "max-w-0 overflow-hidden opacity-0" : "max-w-full opacity-100 pl-5"
+                }`}
+              >
                 Garazas
               </span>
             </div>
           </Link>
         </div>
-        <div className='flex-col w-full gap-2 px-3 transition-all duration-300'>
+        <div className="flex-col w-full gap-2 px-3 transition-all duration-300">
           <AddNewVehicleButton />
           <AddNewTaskButton />
-          <AddNewPartButton />
+          {/* <AddNewPartButton /> */}
         </div>
 
         <div
           className={`flex-col w-full gap-2 px-3 transition-all duration-300 ${
-            isCollapsed ? 'items-center justify-center' : 'items-start'
-          }`}>
+            isCollapsed ? "items-center justify-center" : "items-start"
+          }`}
+        >
           {optionComponents}
         </div>
 
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className='absolute top-0 right-0 p-2 transition transform translate-x-1/2 translate-y-1/2 rounded bg-stone-900'>
+          className="absolute top-0 right-0 p-2 transition transform translate-x-1/2 translate-y-1/2 rounded bg-stone-900"
+        >
           <svg
-            className='w-6 h-6 transition-all duration-300 transform'
-            fill='none'
-            stroke='currentColor'
+            className="w-6 h-6 transition-all duration-300 transform"
+            fill="none"
+            stroke="currentColor"
             strokeWidth={2}
-            viewBox='0 0 24 24'
-            xmlns='http://www.w3.org/2000/svg'>
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              d={isCollapsed ? 'M 8 4 l 7 7 l -7 7' : 'M 15 19 l -7 -7 l 7 -7'}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d={isCollapsed ? "M 8 4 l 7 7 l -7 7" : "M 15 19 l -7 -7 l 7 -7"}
             />
           </svg>
         </button>

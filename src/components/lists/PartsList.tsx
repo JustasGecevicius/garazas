@@ -1,38 +1,25 @@
-import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { useQuery } from "react-query";
-import { useMemo, useState } from "react";
-import { useNavigate } from "react-router";
-import { IndeterminateCheckbox } from "../components/checkbox/Checkbox";
-import { selectVehicleListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";
-import { useSelector } from "react-redux";
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { camelCase } from "lodash";
-import { ARRAY, columnHelper } from "../functions/fetch/defaults";
+import { useMemo, useState } from "react";
+import { IndeterminateCheckbox } from "../checkbox/Checkbox";
+import { ARRAY } from "../../functions/fetch/defaults";
 
-type Props = {};
+const columnHelper = createColumnHelper();
 
-export default function VehicleList(props: Props) {
-  const navigate = useNavigate();
+export function PartsList(props) {
+  const { parts } = props;
 
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [rowSelection, setRowSelection] = useState({});
   const [refetchToggle, setRefetchToggle] = useState(false);
 
-  const { vehicleListToggle } = useSelector(selectVehicleListRefetchToggle);
-
-  const { data, error, isFetching } = useQuery({
-    queryKey: ["vehicle_list", pagination, refetchToggle, vehicleListToggle],
-    queryFn: async ({ queryKey }) => {
-      const response = await window.select.selectPaginatedVehicles({
-        page: queryKey[1].pageIndex + 1,
-        limit: queryKey[1].pageSize,
-        include: ["VehicleType", "FuelType", "EngineSizeMeasurementType"],
-      });
-      return response;
-    },
-  });
-
   const columns = useMemo(() => {
-    const normalCols = Object.keys(data?.data?.[0] || {}).map((key) => {
+    const normalCols = Object.keys(parts[0] || {}).map((key) => {
       return columnHelper.accessor(key, {
         cell: (info) => {
           const value = info.getValue();
@@ -53,64 +40,45 @@ export default function VehicleList(props: Props) {
       });
     });
 
-    normalCols.unshift(
-      columnHelper.accessor("checkbox", {
-        header: ({ table }) => (
-          <IndeterminateCheckbox
-            checked={table.getIsAllRowsSelected()}
-            indeterminate={table.getIsSomeRowsSelected()}
-            onChange={table.getToggleAllRowsSelectedHandler()}
-          />
-        ),
-        cell: ({ row }) => (
-          <div className="px-1">
-            <IndeterminateCheckbox
-              checked={row.getIsSelected()}
-              disabled={!row.getCanSelect()}
-              indeterminate={row.getIsSomeSelected()}
-              onChange={row.getToggleSelectedHandler()}
-            />
-          </div>
-        ),
-      })
-    );
+    // normalCols.unshift(
+    //   columnHelper.accessor("checkbox", {
+    //     header: ({ table }) => (
+    //       <IndeterminateCheckbox
+    //         checked={table.getIsAllRowsSelected()}
+    //         indeterminate={table.getIsSomeRowsSelected()}
+    //         onChange={table.getToggleAllRowsSelectedHandler()}
+    //       />
+    //     ),
+    //     cell: ({ row }) => (
+    //       <div className="px-1">
+    //         <IndeterminateCheckbox
+    //           checked={row.getIsSelected()}
+    //           disabled={!row.getCanSelect()}
+    //           indeterminate={row.getIsSomeSelected()}
+    //           onChange={row.getToggleSelectedHandler()}
+    //         />
+    //       </div>
+    //     ),
+    //   })
+    // );
 
     return normalCols;
-  }, [data?.data]);
+  }, [parts]);
 
   const table = useReactTable({
-    data: data?.data || ARRAY,
+    data: parts || ARRAY,
     columns: columns || ARRAY,
     getCoreRowModel: getCoreRowModel(),
     onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
     state: { pagination, rowSelection },
-    rowCount: data?.total || 0,
+    rowCount: parts?.length || 0,
     manualPagination: true,
     enableRowSelection: true,
   });
 
-  const handleDeleteClick = () => {
-    const selected = table.getSelectedRowModel().rows;
-    console.log(selected);
-    if (selected.length === 0) {
-      return;
-    }
-    selected.forEach((row) => {
-      window.delete.deleteVehicle(row.original.id);
-    });
-    setRefetchToggle((prevState) => !prevState);
-    setRowSelection({});
-  };
-
   return (
-    <div className="w-full">
-      <button
-        className="px-2 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline"
-        onClick={handleDeleteClick}
-      >
-        Delete
-      </button>
+    <>
       <table className="w-full border border-white rounded-md">
         <thead className="border-b">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -133,7 +101,7 @@ export default function VehicleList(props: Props) {
                   key={cell.id}
                   className="text-center border border-white"
                   onClick={() => {
-                    cell?.column?.id !== "checkbox" && navigate(`/edit-vehicle/${row.original.id}`);
+                    // cell?.column?.id !== "checkbox" && navigate(`/edit-vehicle/${row.original.id}`);
                   }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -210,6 +178,6 @@ export default function VehicleList(props: Props) {
           />
         </span>
       </div>
-    </div>
+    </>
   );
 }
