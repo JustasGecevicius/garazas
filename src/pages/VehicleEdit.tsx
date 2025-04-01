@@ -6,7 +6,10 @@ import { RepairHistory } from "../components/EditCarComponents/RepairHistorySect
 import { useParams } from "react-router";
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { selectTaskListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";
+import {
+  selectImageListRefetchToggle,
+  selectTaskListRefetchToggle,
+} from "../redux/slices/vehicleListRefetchSlice";
 import { SaveButton } from "../components/buttons/SaveButton";
 
 type Props = {} & EditCarType;
@@ -15,10 +18,11 @@ export default function VehicleEdit(props: Props) {
   const { id } = useParams();
 
   const dataRef = useRef<{ [key: string]: any }>({});
-  const { taskListToggle } = useSelector(selectTaskListRefetchToggle);
+  const taskListToggle = useSelector(selectTaskListRefetchToggle);
+  const imageListToggle = useSelector(selectImageListRefetchToggle);
 
   const { data, error, isFetching } = useQuery({
-    queryKey: ["edit-vehicle", id, taskListToggle],
+    queryKey: ["edit-vehicle", id, taskListToggle, imageListToggle],
     queryFn: async () => {
       const response = await window.select.selectVehicle(id, {
         include: ["Task", "VehiclePhoto"],
@@ -37,15 +41,15 @@ export default function VehicleEdit(props: Props) {
   }
 
   return (
-    <div className="flex w-full h-full my-5 justify-center items-center">
-      <div className="flex-row max-w-[1920px] gap-3">
-        <div className="flex-col gap-5 w-1/4">
-          <div className="flex-col p-2 gap-5 ">
+    <div className="flex w-full h-full justify-center items-center grow">
+      <div className="flex-row gap-3 grow">
+        <div className="flex-col gap-5">
+          <div className="flex-col p-2 gap-5 max-w-[350px]">
             <p className="text-2xl">{data ? data.name : "No name available"}</p>
             <CarPictures data={data} dataRef={dataRef} />
           </div>
         </div>
-        <div className="flex-col w-3/4 gap-5 p-2">
+        <div className="flex-col gap-5 p-2 grow w-full">
           <div className="flex-row justify-between">
             <div className="text-2xl">Duomenys</div>
             <SaveButton handleSave={handleSave} />

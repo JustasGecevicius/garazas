@@ -17,7 +17,7 @@ export default function VehicleList(props: Props) {
   const [rowSelection, setRowSelection] = useState({});
   const [refetchToggle, setRefetchToggle] = useState(false);
 
-  const { vehicleListToggle } = useSelector(selectVehicleListRefetchToggle);
+  const vehicleListToggle = useSelector(selectVehicleListRefetchToggle);
 
   const { data, error, isFetching } = useQuery({
     queryKey: ["vehicle_list", pagination, refetchToggle, vehicleListToggle],

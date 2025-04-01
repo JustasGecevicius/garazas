@@ -6,6 +6,9 @@ contextBridge.exposeInMainWorld("delete", {
   deleteVehicle: (id) => {
     ipcRenderer.send(CHANNELS.DELETE, MODELS.Vehicles, id);
   },
+  deleteVehicleImage: (id) => {
+    ipcRenderer.send(CHANNELS.DELETE, MODELS.VehiclePhotos, id);
+  },
   deleteTask: (id) => {
     ipcRenderer.send(CHANNELS.DELETE, MODELS.Tasks, id);
   },

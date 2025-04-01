@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { selectVehicleListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";
 
 export default function Dashboard() {
-  const { vehicleListToggle } = useSelector(selectVehicleListRefetchToggle);
+  const vehicleListToggle = useSelector(selectVehicleListRefetchToggle);
 
   const { data: cars } = useQuery({
     queryKey: ["vehicle_list", vehicleListToggle],

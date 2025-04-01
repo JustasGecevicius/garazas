@@ -1,18 +1,19 @@
-import { Link } from 'react-router';
+import { useNavigate } from "react-router";
 
 type NavigateButtonProps = {
   to: string;
-  label: string;
 };
 
-const NavigateButton = ({ to, label }: NavigateButtonProps) => {
+const NavigateButton = ({ to }: NavigateButtonProps) => {
+  const navigate = useNavigate();
   return (
-    <Link
-        to={to}
-        className='px-4 py-2 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline text-center'
-      >
-      {label}
-    </Link>
+    <button onClick={() => navigate(to)} className="w-12 aspect-square bg-white rounded-2xl">
+      <img
+        alt="visit_arrow"
+        src={"icons/right-arrow.svg"}
+        className="flex-col center rounded-2xl"
+      ></img>
+    </button>
   );
 };
 

@@ -2,10 +2,32 @@ import { AddNewVehicleButton } from "../buttons/AddNewVehicleButton";
 import { Link } from "react-router";
 import { AddNewTaskButton } from "../buttons/AddNewTaskButton";
 import { useMemo, useState } from "react";
-import { AddNewPartButton } from "../buttons/AddNewPartButton";
 import { ROUTES } from "../../Routes";
 
-// New header version -----
+function HeaderCollapseButton(props) {
+  const { setIsCollapsed, isCollapsed } = props;
+  return (
+    <button
+      onClick={() => setIsCollapsed((prevState) => !prevState)}
+      className="absolute top-0 right-0 p-2 transition transform translate-x-1/2 translate-y-1/2 rounded bg-stone-900"
+    >
+      <svg
+        className="w-6 h-6 transition-all duration-300 transform"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d={isCollapsed ? "M 8 4 l 7 7 l -7 7" : "M 15 19 l -7 -7 l 7 -7"}
+        />
+      </svg>
+    </button>
+  );
+}
 
 export function Header() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -15,7 +37,6 @@ export function Header() {
       { to: ROUTES.ROOT, src: "dashboard", label: "Dashboard" },
       { to: ROUTES.VEHICLE_LIST, src: "cars", label: "All cars" },
       { to: ROUTES.TASK_LIST, src: "task", label: "All repairs" },
-      // { to: ROUTES.PART_LIST, src: "part", label: "All parts" },
     ],
     []
   );
@@ -48,7 +69,7 @@ export function Header() {
   );
 
   return (
-    <div className="flex my-5 ">
+    <div className="flex">
       <div
         className={`bg-stone-900 text-white transition-all duration-300 ${
           isCollapsed ? "w-24" : "w-64"
@@ -73,7 +94,6 @@ export function Header() {
         <div className="flex-col w-full gap-2 px-3 transition-all duration-300">
           <AddNewVehicleButton />
           <AddNewTaskButton />
-          {/* <AddNewPartButton /> */}
         </div>
 
         <div
@@ -83,26 +103,7 @@ export function Header() {
         >
           {optionComponents}
         </div>
-
-        <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="absolute top-0 right-0 p-2 transition transform translate-x-1/2 translate-y-1/2 rounded bg-stone-900"
-        >
-          <svg
-            className="w-6 h-6 transition-all duration-300 transform"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d={isCollapsed ? "M 8 4 l 7 7 l -7 7" : "M 15 19 l -7 -7 l 7 -7"}
-            />
-          </svg>
-        </button>
+        <HeaderCollapseButton setIsCollapsed={setIsCollapsed} isCollapsed={isCollapsed} />
       </div>
     </div>
   );

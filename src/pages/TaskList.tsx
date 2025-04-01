@@ -24,7 +24,7 @@ export default function TaskList(props: Props) {
   const [rowSelection, setRowSelection] = useState({});
   const [refetchToggle, setRefetchToggle] = useState(false);
 
-  const { taskListToggle } = useSelector(selectTaskListRefetchToggle);
+  const taskListToggle = useSelector(selectTaskListRefetchToggle);
 
   const { data, error, isFetching } = useQuery({
     queryKey: ["task_list", pagination, refetchToggle, taskListToggle],

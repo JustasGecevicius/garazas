@@ -111,7 +111,7 @@ const TaskEdit = () => {
         />
         <button type="submit">Save Task</button>
         <AddNewPartButton taskId={data?.id} />
-        <DeleteButton handleDelete={handleDelete} />
+        <DeleteButton onDelete={handleDelete} />
         <p>{totalPrice}</p>
         <p>{totalInstallTime}</p>
         <img ref={imageRef} src={imageURL} alt="Uzduoties nuotrauka" />
