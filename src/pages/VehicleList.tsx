@@ -108,6 +108,7 @@ export default function VehicleList(props: Props) {
       <button
         className="px-2 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline"
         onClick={handleDeleteClick}
+        type="button"
       >
         Delete
       </button>
@@ -164,6 +165,7 @@ export default function VehicleList(props: Props) {
             className="border rounded p-1"
             onClick={() => table.firstPage()}
             disabled={!table.getCanPreviousPage()}
+            type="button"
           >
             {"<<"}
           </button>
@@ -171,6 +173,7 @@ export default function VehicleList(props: Props) {
             className="border rounded p-1"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            type="button"
           >
             {"<"}
           </button>
@@ -184,6 +187,7 @@ export default function VehicleList(props: Props) {
             className="border rounded p-1"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            type="button"
           >
             {">"}
           </button>
@@ -191,6 +195,7 @@ export default function VehicleList(props: Props) {
             className="border rounded p-1"
             onClick={() => table.lastPage()}
             disabled={!table.getCanNextPage()}
+            type="button"
           >
             {">>"}
           </button>

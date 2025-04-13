@@ -25,7 +25,7 @@ export default function PartList(props: Props) {
   const [rowSelection, setRowSelection] = useState({});
   const [refetchToggle, setRefetchToggle] = useState(false);
 
-  const {partListToggle} = useSelector(selectPartListRefetchToggle);
+  const { partListToggle } = useSelector(selectPartListRefetchToggle);
 
   const { data, error, isFetching } = useQuery({
     queryKey: ["parts_list", pagination, refetchToggle, partListToggle],
@@ -87,7 +87,7 @@ export default function PartList(props: Props) {
 
   const table = useReactTable({
     data: data?.data || array,
-    columns: cols|| array,
+    columns: cols || array,
     getCoreRowModel: getCoreRowModel(),
     onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
@@ -115,6 +115,7 @@ export default function PartList(props: Props) {
       <button
         className="px-2 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline"
         onClick={handleDeleteClick}
+        type="button"
       >
         Delete
       </button>
@@ -126,10 +127,7 @@ export default function PartList(props: Props) {
                 <th key={header.id} className="px-2 py-1">
                   {header.isPlaceholder
                     ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                    : flexRender(header.column.columnDef.header, header.getContext())}
                 </th>
               ))}
             </tr>
@@ -143,8 +141,7 @@ export default function PartList(props: Props) {
                   key={cell.id}
                   className="text-center border border-white"
                   onClick={() => {
-                    cell?.column?.id !== "checkbox" &&
-                      navigate(`/edit-part/${row.original.id}`);
+                    cell?.column?.id !== "checkbox" && navigate(`/edit-part/${row.original.id}`);
                   }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -175,6 +172,7 @@ export default function PartList(props: Props) {
             className="p-1 border rounded"
             onClick={() => table.firstPage()}
             disabled={!table.getCanPreviousPage()}
+            type="button"
           >
             {"<<"}
           </button>
@@ -182,20 +180,21 @@ export default function PartList(props: Props) {
             className="p-1 border rounded"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            type="button"
           >
             {"<"}
           </button>
           <span className="flex items-center gap-1">
             <div>Page</div>
             <strong>
-              {pagination.pageIndex + 1} of{" "}
-              {table.getPageCount().toLocaleString()}
+              {pagination.pageIndex + 1} of {table.getPageCount().toLocaleString()}
             </strong>
           </span>
           <button
             className="p-1 border rounded"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            type="button"
           >
             {">"}
           </button>
@@ -203,6 +202,7 @@ export default function PartList(props: Props) {
             className="p-1 border rounded"
             onClick={() => table.lastPage()}
             disabled={!table.getCanNextPage()}
+            type="button"
           >
             {">>"}
           </button>

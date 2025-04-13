@@ -15,6 +15,9 @@ contextBridge.exposeInMainWorld("delete", {
   deleteTaskPart: (id) => {
     ipcRenderer.send(CHANNELS.DELETE, MODELS.Parts, id);
   },
+  deleteTaskImage: (id) => {
+    ipcRenderer.send(CHANNELS.DELETE, MODELS.TaskPhotos, id);
+  },
 });
 
 contextBridge.exposeInMainWorld("create", {

@@ -44,7 +44,7 @@ export function Info(props: Props) {
 
   return (
     <div className="w-full outline outline-white grow-1 rounded-md p-2">
-      <LabelledTextInput name="name" dataRef={dataRef} value={name} />
+      <LabelledTextInput name="name" dataRef={dataRef} value={name} required />
       <LabelledTextInput name="make" dataRef={dataRef} value={make} />
       <LabelledTextInput name="vinCode" dataRef={dataRef} value={vinCode} />
       <LabelledNumberInput name="engineSize" dataRef={dataRef} value={engineSize} />
@@ -60,9 +60,6 @@ export function Info(props: Props) {
       </LabelledInputWrapper>
       <LabelledInputWrapper title="engineSizeMeasurementType">
         <EngineSizeMeasurementTypeSelect dataRef={dataRef} value={EngineSizeMeasurementTypeId} />
-      </LabelledInputWrapper>
-      <LabelledInputWrapper title="vehicleType">
-        <VehicleTypeSelect dataRef={dataRef} value={VehicleTypeId} />
       </LabelledInputWrapper>
       <LabelledTextInput name="plateNumber" dataRef={dataRef} value={plateNumber} />
       <LabelledTextInput name="note" dataRef={dataRef} value={note} />

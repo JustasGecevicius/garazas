@@ -7,7 +7,11 @@ type NavigateButtonProps = {
 const NavigateButton = ({ to }: NavigateButtonProps) => {
   const navigate = useNavigate();
   return (
-    <button onClick={() => navigate(to)} className="w-12 aspect-square bg-white rounded-2xl">
+    <button
+      type="button"
+      onClick={() => navigate(to)}
+      className="w-12 aspect-square bg-white rounded-2xl"
+    >
       <img
         alt="visit_arrow"
         src={"icons/right-arrow.svg"}

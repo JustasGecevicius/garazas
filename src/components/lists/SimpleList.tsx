@@ -82,39 +82,42 @@ export function SimpleList(props) {
   };
 
   return (
-    <>
-      <table className="w-full border border-white rounded-md">
-        <thead className="border-b">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="px-2 py-1">
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.original.id} className="">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="text-center border border-white">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <button
-        className="px-2 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline"
-        onClick={handleDeleteClick}
-      >
-        Delete
-      </button>
-    </>
+    !!elements?.length && (
+      <>
+        <table className="w-full border border-white rounded-md">
+          <thead className="border-b">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id} className="px-2 py-1">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.original.id} className="">
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="text-center border border-white">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button
+          className="px-2 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline"
+          onClick={handleDeleteClick}
+          type="button"
+        >
+          Delete
+        </button>
+      </>
+    )
   );
 }

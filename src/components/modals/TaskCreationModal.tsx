@@ -56,7 +56,7 @@ export function TaskCreationModal(props: PropsType) {
         <TextInput name="note" dataRef={dataRef} value={value?.note} />
         <DateInput name="taskDate" value={value?.date} dataRef={dataRef} />
         <div className="flex justify-center col-span-2">
-          <button className="rounded-sm" onClick={value?.id ? saveTask : submitTask}>
+          <button type="button" className="rounded-sm" onClick={value?.id ? saveTask : submitTask}>
             Save
           </button>
         </div>

@@ -10,6 +10,7 @@ function HeaderCollapseButton(props) {
     <button
       onClick={() => setIsCollapsed((prevState) => !prevState)}
       className="absolute top-0 right-0 p-2 transition transform translate-x-1/2 translate-y-1/2 rounded bg-stone-900"
+      type="button"
     >
       <svg
         className="w-6 h-6 transition-all duration-300 transform"

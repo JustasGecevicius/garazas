@@ -4,14 +4,17 @@ import { useImageFromDB } from "../../../hooks/imageHooks";
 import { checkImage } from "../../../functions/fetch/image";
 import { DeleteOverlay } from "../../overlays/deleteOverlay";
 
-type Props = {
+type EmptyPicturePropsType = {
+  handleImageAdd: (blob: Blob) => void;
+};
+
+type BasePicturePropsType = {
   picture: string;
 };
 
-type EmptyProps = {
-  handleImageAdd: (blob: Blob) => void;
-};
-export function OutlinedPicture(props: Props) {
+type OutlinedPicturePropsType = { onDelete: () => void } & BasePicturePropsType;
+
+export function OutlinedPicture(props: OutlinedPicturePropsType) {
   const { picture, onDelete } = props;
 
   const [isHovering, setIsHovering] = useState(false);
@@ -23,12 +26,12 @@ export function OutlinedPicture(props: Props) {
       onMouseLeave={() => setIsHovering(false)}
     >
       <BasePicture picture={picture} />
-      {isHovering && <DeleteOverlay onDelete={onDelete} />}
+      {isHovering && onDelete && <DeleteOverlay onDelete={onDelete} />}
     </div>
   );
 }
 
-export function BasePicture(props: Props) {
+export function BasePicture(props: BasePicturePropsType) {
   const { picture } = props;
 
   const imageURL = useImageFromDB(picture);
@@ -46,7 +49,7 @@ export function BasePicture(props: Props) {
   return isImageOk ? <img src={imageURL} alt="CAR-IMAGE" /> : null;
 }
 
-export function EmptyPicture(props: EmptyProps) {
+export function EmptyPicture(props: EmptyPicturePropsType) {
   const { handleImageAdd } = props;
   const inputId = useId();
   return (

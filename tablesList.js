@@ -15,7 +15,7 @@ const MODELS = {
   TaskPhotos: "TaskPhoto",
   TaskNeededParts: "TaskNeededPart",
   Parts: "Part",
-  PartTasks: "PartTask",
+  TaskParts: "TaskPart",
   Tasks: "Task",
   VehiclePhotos: "VehiclePhoto",
   Vehicles: "Vehicle",

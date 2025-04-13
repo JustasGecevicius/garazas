@@ -24,12 +24,15 @@ export function PartCreationModal(props: PropsType) {
   const dataRef = useRef<{ [key: string]: any }>(part || {});
   const [value, setValue] = useState(part);
 
+  const [modalKey, setModalKey] = useState(() => Math.random());
+
   const dispatch = useDispatch();
 
   function submitPart() {
     console.log(dataRef, part);
     window.create.createTaskPart(dataRef?.current);
     dispatch(togglePartListRefetchState());
+    setModalKey(Math.random()); // To reset the modal
     closeRef.current();
   }
 
@@ -45,13 +48,13 @@ export function PartCreationModal(props: PropsType) {
   }, [part]);
 
   return (
-    <BaseModalWrapper closeRef={closeRef} openRef={openRef}>
+    <BaseModalWrapper closeRef={closeRef} openRef={openRef} key={modalKey}>
       <div className="grid grid-cols-2 gap-2">
         <TextInput name="name" dataRef={dataRef} value={value?.name} />
         <NumberInput name="price" dataRef={dataRef} value={value?.price} />
         <NumberInput name="installTime" dataRef={dataRef} value={value?.installTime} />
         <div className="flex justify-center col-span-2">
-          <button className="rounded-sm" onClick={value?.id ? savePart : submitPart}>
+          <button type="button" className="rounded-sm" onClick={value?.id ? savePart : submitPart}>
             Save
           </button>
         </div>

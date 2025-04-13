@@ -1,29 +1,29 @@
-import { useId } from 'react';
+import { useEffect, useId } from "react";
 
 type FieldProps = { name?: string; data?: string };
 
 type Props = { data: { date: string; note: string }; onClick: () => void };
 
-function HistoryField(props: FieldProps) {
+function TaskHistoryField(props: FieldProps) {
   const id = useId();
   const { data, name } = props;
   return (
     <div>
-      <label
-        htmlFor={id}
-        className='text-sm'>
-        {name}
-      </label>
-      <p
-        id={id}
-        className='text-xl font-bold'>
-        {data}
-      </p>
+      {!!name && (
+        <label htmlFor={id} className="text-sm">
+          {name}
+        </label>
+      )}
+      {!!data && (
+        <p id={id} className="text-xl font-bold">
+          {data}
+        </p>
+      )}
     </div>
   );
 }
 
-export function RepairHistoryItem(props: Props) {
+export function TaskHistoryItem(props: Props) {
   const { data, onClick } = props;
 
   function handleClick(e) {
@@ -31,18 +31,14 @@ export function RepairHistoryItem(props: Props) {
     onClick(data);
   }
 
+  useEffect(() => {
+    console.log("DATA", data);
+  }, [data]);
+
   return (
-    <div
-      className='p-2 rounded-md outline outline-white'
-      onClick={handleClick}>
-      <HistoryField
-        data={data.date}
-        name='date'
-      />
-      <HistoryField
-        data={data.note}
-        name='notes'
-      />
+    <div className="p-2 rounded-md outline outline-white" onClick={handleClick}>
+      <TaskHistoryField data={data.date} name="date" />
+      <TaskHistoryField data={data.note} name="notes" />
     </div>
   );
 }

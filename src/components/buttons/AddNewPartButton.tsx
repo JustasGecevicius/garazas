@@ -34,6 +34,7 @@ export function AddNewPartButton({ taskId }: PropsType) {
       <button
         className="flex items-center w-full gap-4 p-4 transition-all duration-200 rounded-lg cursor-pointer hover:bg-gray-700/50 hover:scale-105"
         onClick={() => openPartCreationModalRef.current?.()}
+        type="button"
       >
         {isCompact ? (
           <div className="flex justify-center w-full">

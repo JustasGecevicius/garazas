@@ -33,6 +33,7 @@ export function AddNewTaskButton({ vehicleId }: PropsType) {
       <button
         className="w-full p-4 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:scale-105 cursor-pointer flex items-center gap-4"
         onClick={() => openTaskCreationModalRef.current?.()}
+        type="button"
       >
         {isCompact ? (
           <div className="flex justify-center w-full">

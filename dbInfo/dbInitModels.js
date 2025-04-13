@@ -22,7 +22,10 @@ const ClientInit = (sequelize) =>
 
 const VehicleInit = (sequelize) =>
   sequelize.define("Vehicle", {
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     model: DataTypes.STRING,
     engineSize: DataTypes.FLOAT,
     vinCode: DataTypes.STRING,
@@ -54,15 +57,6 @@ const TaskInit = (sequelize) =>
     },
     note: DataTypes.STRING,
   });
-
-// const PartTaskInit = (sequelize) =>
-//   sequelize.define("PartTask", {
-//     quantity: {
-//       type: DataTypes.FLOAT,
-//       allowNull: false,
-//     },
-//     discount: DataTypes.FLOAT,
-//   });
 
 const PartInit = (sequelize) =>
   sequelize.define("Part", {

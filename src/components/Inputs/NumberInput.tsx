@@ -1,13 +1,14 @@
 import { MutableRefObject, useEffect, useState } from "react";
 
-export type TextInputPropsType = {
+export type NumberInputPropsType = {
   name: string;
   value?: string;
   dataRef?: MutableRefObject<{ [key: string]: any }>;
+  required?: boolean;
 };
 
-export function NumberInput(props: TextInputPropsType) {
-  const { name, value: propValue, dataRef } = props;
+export function NumberInput(props: NumberInputPropsType) {
+  const { name, value: propValue, dataRef, required } = props;
   const [value, setValue] = useState(propValue || null);
 
   useEffect(() => {
@@ -33,6 +34,7 @@ export function NumberInput(props: TextInputPropsType) {
       placeholder={name}
       value={value}
       onChange={(e) => setValue(e.target.value)}
+      required={required}
     />
   );
 }

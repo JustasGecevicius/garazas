@@ -1,7 +1,5 @@
-import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
-import { RepairHistoryItem } from "./RepairHistoryItem";
-import { TaskCreationModal } from "../../modals/TaskCreationModal";
-import { cloneDeep } from "lodash";
+import { MutableRefObject } from "react";
+import { TaskHistoryItem } from "./RepairHistoryItem";
 import { AddNewTaskButton } from "../../buttons/AddNewTaskButton";
 import { useNavigate } from "react-router";
 import { ROUTES } from "../../../Routes";
@@ -17,31 +15,20 @@ export function RepairHistory(props: Props) {
 
   const navigate = useNavigate();
 
-  // const [selectedTask, setSelectedTask] = useState(null);
-
-  // const openRef = useRef(() => {});
-  // const closeRef = useRef(() => {});
-
   function handleSelect(item) {
     navigate(`${ROUTES.EDIT_TASK}/${item.id}`);
   }
 
-  // const selectedTaskAllData = useMemo(() => {
-  //   if (!selectedTask) return null;
-  //   return { ...selectedTask, vehicle: data.id };
-  // }, [selectedTask, data]);
-
   return (
     <>
       <div className="w-full p-2 rounded-md grow-1 flex-col justify-between gap-4">
-        <div>
+        <div className="flex-col gap-2">
           {Tasks?.map((task) => (
-            <RepairHistoryItem data={task} onClick={handleSelect} />
+            <TaskHistoryItem data={task} onClick={handleSelect} />
           ))}
         </div>
         <AddNewTaskButton vehicleId={data?.id} />
       </div>
-      {/* <TaskCreationModal task={selectedTaskAllData} closeRef={closeRef} openRef={openRef} /> */}
     </>
   );
 }

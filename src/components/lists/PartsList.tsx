@@ -6,7 +6,6 @@ import {
 } from "@tanstack/react-table";
 import { camelCase } from "lodash";
 import { useMemo, useState } from "react";
-import { IndeterminateCheckbox } from "../checkbox/Checkbox";
 import { ARRAY } from "../../functions/fetch/defaults";
 
 const columnHelper = createColumnHelper();
@@ -16,7 +15,6 @@ export function PartsList(props) {
 
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [rowSelection, setRowSelection] = useState({});
-  const [refetchToggle, setRefetchToggle] = useState(false);
 
   const columns = useMemo(() => {
     const normalCols = Object.keys(parts[0] || {}).map((key) => {
@@ -39,28 +37,6 @@ export function PartsList(props) {
         },
       });
     });
-
-    // normalCols.unshift(
-    //   columnHelper.accessor("checkbox", {
-    //     header: ({ table }) => (
-    //       <IndeterminateCheckbox
-    //         checked={table.getIsAllRowsSelected()}
-    //         indeterminate={table.getIsSomeRowsSelected()}
-    //         onChange={table.getToggleAllRowsSelectedHandler()}
-    //       />
-    //     ),
-    //     cell: ({ row }) => (
-    //       <div className="px-1">
-    //         <IndeterminateCheckbox
-    //           checked={row.getIsSelected()}
-    //           disabled={!row.getCanSelect()}
-    //           indeterminate={row.getIsSomeSelected()}
-    //           onChange={row.getToggleSelectedHandler()}
-    //         />
-    //       </div>
-    //     ),
-    //   })
-    // );
 
     return normalCols;
   }, [parts]);
@@ -132,6 +108,7 @@ export function PartsList(props) {
             className="border rounded p-1"
             onClick={() => table.firstPage()}
             disabled={!table.getCanPreviousPage()}
+            type="button"
           >
             {"<<"}
           </button>
@@ -139,6 +116,7 @@ export function PartsList(props) {
             className="border rounded p-1"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            type="button"
           >
             {"<"}
           </button>
@@ -152,6 +130,7 @@ export function PartsList(props) {
             className="border rounded p-1"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            type="button"
           >
             {">"}
           </button>
@@ -159,6 +138,7 @@ export function PartsList(props) {
             className="border rounded p-1"
             onClick={() => table.lastPage()}
             disabled={!table.getCanNextPage()}
+            type="button"
           >
             {">>"}
           </button>

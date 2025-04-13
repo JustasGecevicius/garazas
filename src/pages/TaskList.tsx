@@ -109,6 +109,7 @@ export default function TaskList(props: Props) {
       <button
         className="px-2 border border-white rounded-md hover:outline-2 hover:outline-white hover:outline"
         onClick={handleDeleteClick}
+        type="button"
       >
         Delete
       </button>
@@ -165,6 +166,7 @@ export default function TaskList(props: Props) {
             className="p-1 border rounded"
             onClick={() => table.firstPage()}
             disabled={!table.getCanPreviousPage()}
+            type="button"
           >
             {"<<"}
           </button>
@@ -172,6 +174,7 @@ export default function TaskList(props: Props) {
             className="p-1 border rounded"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            type="button"
           >
             {"<"}
           </button>
@@ -185,6 +188,7 @@ export default function TaskList(props: Props) {
             className="p-1 border rounded"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            type="button"
           >
             {">"}
           </button>
@@ -192,6 +196,7 @@ export default function TaskList(props: Props) {
             className="p-1 border rounded"
             onClick={() => table.lastPage()}
             disabled={!table.getCanNextPage()}
+            type="button"
           >
             {">>"}
           </button>

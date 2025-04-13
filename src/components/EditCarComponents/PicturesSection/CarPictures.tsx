@@ -1,38 +1,33 @@
 import { MutableRefObject, useEffect, useMemo, useState } from "react";
 import { EmptyPicture, OutlinedPicture } from "./Picture";
 import { arrayBufferToBase64 } from "../../../utils/imageCodingDecoding";
-import { useDispatch } from "react-redux";
-import { toggleImageListRefetchState } from "../../../redux/slices/vehicleListRefetchSlice";
 
 type Props = {
-  data: any;
+  images: any;
   dataRef?: MutableRefObject<{ [key: string]: any }>;
+  createMethod: (blobString: string, blobType: string) => void;
+  deleteMethod: (id: number) => void;
 };
 
 export function CarPictures(props: Props) {
-  const { data } = props;
+  const { images, createMethod, deleteMethod } = props;
 
   const [addedPictures, setAddedPictures] = useState([]);
 
-  const dispatch = useDispatch();
-
   const pictures = useMemo(
-    () => [...addedPictures, ...(data?.VehiclePhotos || []), null],
-    [data?.VehiclePhotos, addedPictures]
+    () => [...addedPictures, ...(images || []), null],
+    [images, addedPictures]
   );
 
   useEffect(() => {
     return () => setAddedPictures([]);
-  }, [data]);
+  }, [images]);
 
   async function handleImageAdd(blob: Blob) {
     const blobArray = await blob.arrayBuffer();
     const blobString = arrayBufferToBase64(blobArray);
     try {
-      window.create.createVehicleImage({
-        photoBlob: { data: blobString, type: blob.type },
-        VehicleId: data?.id,
-      });
+      createMethod(blobString, blob.type);
       setAddedPictures((prev) => [
         ...prev,
         { photoBlob: blobString, photoBlobType: blob.type, id: `${Math.random()}` },
@@ -43,12 +38,8 @@ export function CarPictures(props: Props) {
   }
 
   function handleImageDelete(picture: any) {
-    console.log("ID", picture);
     try {
-      if ((picture?.id * 2) % 2 === 0) {
-        window.delete.deleteVehicleImage(picture?.id);
-        dispatch(toggleImageListRefetchState());
-      }
+      deleteMethod(picture.id);
       setAddedPictures((prev) => prev.filter((item) => item.id !== picture.id));
     } catch (error) {
       console.error(error);
@@ -65,7 +56,7 @@ export function CarPictures(props: Props) {
             onDelete={() => handleImageDelete(picture)}
           />
         ) : (
-          <EmptyPicture key={picture?.id} picture={picture} handleImageAdd={handleImageAdd} />
+          <EmptyPicture key={picture?.id} handleImageAdd={handleImageAdd} />
         )
       )}
     </div>
