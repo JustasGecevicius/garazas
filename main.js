@@ -16,7 +16,7 @@ function createWindow() {
   });
 
   const startUrl =
-    process?.env?.ELECTRON_START_URL ||
+    "http://localhost:3000" ||
     url.format({
       pathname: join(__dirname, "../index.html"),
       protocol: "file:",
