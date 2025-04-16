@@ -1,7 +1,9 @@
 const { app, BrowserWindow } = require("electron");
 require("./ipcMainFunctions/default/on");
 require("./ipcMainFunctions/default/handle");
+const { join } = require("path");
 const { initDB } = require("./dbInfo/dbInitFunctions");
+const url = require("url");
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -13,7 +15,14 @@ function createWindow() {
     },
   });
 
-  win.loadURL("http://localhost:3000");
+  const startUrl =
+    process?.env?.ELECTRON_START_URL ||
+    url.format({
+      pathname: join(__dirname, "../index.html"),
+      protocol: "file:",
+      slashes: true,
+    });
+  win.loadURL(startUrl);
   win.webContents.openDevTools();
 }
 

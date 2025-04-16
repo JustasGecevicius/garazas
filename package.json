@@ -2,6 +2,8 @@
   "name": "garazas",
   "version": "0.1.0",
   "private": true,
+  "description": "A simple Electron app with React and Tailwind CSS",
+  "author": "Justas Gecevicius",
   "dependencies": {
     "@iconscout/react-unicons": "^2.0.2",
     "@reduxjs/toolkit": "^2.5.0",
@@ -32,7 +34,8 @@
     "electron": "electron .",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "package": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never"
   },
   "eslintConfig": {
     "extends": [
@@ -56,9 +59,22 @@
     "@types/lodash": "^4.17.15",
     "autoprefixer": "^10.4.21",
     "electron": "^33.2.0",
+    "electron-builder": "^26.0.12",
     "electron-packager": "^17.1.2",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17"
   },
-  "main": "main.js"
+  "main": "main.js",
+  "homepage": "./",
+  "build": {
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "publish": {
+      "provider": "github",
+      "repo": "bimbam",
+      "owner": "justas.gecevicius"
+    }
+  }
 }
