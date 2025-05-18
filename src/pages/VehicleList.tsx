@@ -6,9 +6,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useQuery } from "react-query";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import { IndeterminateCheckbox } from "../components/checkbox/Checkbox";
 import { selectVehicleListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";
 import { useSelector } from "react-redux";
 import { debounce } from "lodash";
@@ -30,7 +29,7 @@ export default function VehicleList(props: Props) {
 
   const setColumnFiltersDebounce = useMemo(() => debounce(setColumnFilters, 500), []);
 
-  const { data, error, isFetching } = useQuery({
+  const { data } = useQuery({
     queryKey: ["vehicle_list", pagination, refetchToggle, vehicleListToggle, columnFilters],
     queryFn: async ({ queryKey }) => {
       const response = await window.select.selectPaginatedVehicles({
