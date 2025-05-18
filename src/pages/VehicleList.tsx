@@ -1,12 +1,20 @@
-import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { useQuery } from "react-query";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { IndeterminateCheckbox } from "../components/checkbox/Checkbox";
 import { selectVehicleListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";
 import { useSelector } from "react-redux";
-import { camelCase } from "lodash";
-import { ARRAY, columnHelper } from "../functions/fetch/defaults";
+import { debounce } from "lodash";
+import { ARRAY } from "../functions/fetch/defaults";
+import { TextInput } from "../components/Inputs/TextInput";
+import { useVehicleListColumns } from "../hooks/vehicleListHooks";
 
 type Props = {};
 
@@ -16,77 +24,40 @@ export default function VehicleList(props: Props) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [rowSelection, setRowSelection] = useState({});
   const [refetchToggle, setRefetchToggle] = useState(false);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const vehicleListToggle = useSelector(selectVehicleListRefetchToggle);
 
+  const setColumnFiltersDebounce = useMemo(() => debounce(setColumnFilters, 500), []);
+
   const { data, error, isFetching } = useQuery({
-    queryKey: ["vehicle_list", pagination, refetchToggle, vehicleListToggle],
+    queryKey: ["vehicle_list", pagination, refetchToggle, vehicleListToggle, columnFilters],
     queryFn: async ({ queryKey }) => {
       const response = await window.select.selectPaginatedVehicles({
         page: queryKey[1].pageIndex + 1,
         limit: queryKey[1].pageSize,
         include: ["VehicleType", "FuelType", "EngineSizeMeasurementType"],
+        filters: columnFilters,
       });
       return response;
     },
   });
 
-  const columns = useMemo(() => {
-    const normalCols = Object.keys(data?.data?.[0] || {}).map((key) => {
-      return columnHelper.accessor(key, {
-        cell: (info) => {
-          const value = info.getValue();
-          switch (info.column.id) {
-            case "EngineSizeMeasurementType":
-            case "FuelType":
-            case "VehicleType":
-              return value?.[camelCase(info?.column?.id)];
-            case "createdAt":
-            case "updatedAt":
-            case "techInspectionDueDate":
-            case "fabricationYear":
-              return JSON.stringify(value);
-            default:
-              return value;
-          }
-        },
-      });
-    });
-
-    normalCols.unshift(
-      columnHelper.accessor("checkbox", {
-        header: ({ table }) => (
-          <IndeterminateCheckbox
-            checked={table.getIsAllRowsSelected()}
-            indeterminate={table.getIsSomeRowsSelected()}
-            onChange={table.getToggleAllRowsSelectedHandler()}
-          />
-        ),
-        cell: ({ row }) => (
-          <div className="px-1">
-            <IndeterminateCheckbox
-              checked={row.getIsSelected()}
-              disabled={!row.getCanSelect()}
-              indeterminate={row.getIsSomeSelected()}
-              onChange={row.getToggleSelectedHandler()}
-            />
-          </div>
-        ),
-      })
-    );
-
-    return normalCols;
-  }, [data?.data]);
+  const columns = useVehicleListColumns(data);
 
   const table = useReactTable({
     data: data?.data || ARRAY,
     columns: columns || ARRAY,
+    filterFns: {},
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
-    state: { pagination, rowSelection },
+    state: { pagination, rowSelection, columnFilters },
+    onColumnFiltersChange: setColumnFiltersDebounce,
     rowCount: data?.total || 0,
     manualPagination: true,
+    manualFiltering: true,
     enableRowSelection: true,
   });
 
@@ -114,17 +85,30 @@ export default function VehicleList(props: Props) {
       </button>
       <table className="w-full border border-white rounded-md">
         <thead className="border-b">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="px-2 py-1">
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
+          {table.getHeaderGroups().map((headerGroup) => {
+            return (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <th key={header.id} className="px-2 py-1">
+                      <div>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                        {header.column.getCanFilter() ? (
+                          <TextInput
+                            name={header.column.id}
+                            value={header.column.getFilterValue()}
+                            modificationCallback={header.column.setFilterValue}
+                          />
+                        ) : null}
+                      </div>
+                    </th>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (

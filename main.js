@@ -26,8 +26,15 @@ function createWindow() {
   win.webContents.openDevTools();
 }
 
-initDB();
+app.whenReady().then(async () => {
+  try {
+    const dbInitialised = await initDB();
+    dbInitialised && createWindow();
+  } catch (error) {
+    throw new Error("Error in app ready", error);
+  }
+});
 
-app.whenReady().then(() => {
-  createWindow();
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
 });

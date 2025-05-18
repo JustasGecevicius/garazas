@@ -30,12 +30,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "electron": "electron .",
+    "start": "set NODE_ENV=development&& react-scripts start",
+    "electron": "set NODE_ENV=development&& electron .",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "package": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never"
+    "package": "electron-builder build --win --x64 -c.extraMetadata.main=build/electron/main.js --publish never"
   },
   "eslintConfig": {
     "extends": [
@@ -75,6 +75,10 @@
       "provider": "github",
       "repo": "bimbam",
       "owner": "justas.gecevicius"
-    }
+    },
+    "extraResources": [
+      "db",
+      "build/**/*"
+    ]
   }
 }

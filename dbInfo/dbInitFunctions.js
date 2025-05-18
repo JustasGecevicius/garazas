@@ -5,10 +5,14 @@ const {
   VEHICLE_TYPE_VALUES,
 } = require("./dbInitData");
 const { defineAllModels } = require("./dbInitModels");
+const path = require("path");
+
+const dbPath =
+  process.env.NODE_ENV === "development" ? "db" : path.join(process.resourcesPath, "db");
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
-  storage: "db",
+  storage: dbPath,
 });
 
 const initEngineSizeMeasurementType = (model) => {
@@ -48,8 +52,10 @@ const initDB = async () => {
     console.log("All models were synchronized successfully.");
     await initDefaultData(models);
     console.log("Default data was inserted successfully.");
+    return true;
   } catch (error) {
     console.error("Ya fucked up in the database setup somewhere", error);
+    return false;
   }
 };
 

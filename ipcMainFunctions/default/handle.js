@@ -1,6 +1,7 @@
 const { ipcMain } = require("electron");
 const { CHANNELS } = require("../../channels");
 const { sequelize } = require("../../dbInfo/dbInitFunctions");
+const { Op } = require("sequelize");
 
 ipcMain.handle(CHANNELS.SELECT, async (_, modelName, id, params = {}) => {
   const numberId = Number(id);
@@ -28,12 +29,19 @@ ipcMain.handle(CHANNELS.SELECT_ALL_WITH_PARAMS, async (_, modelName, params) => 
 
   if (!sequelizeModel) return;
 
-  const { limit, page, include } = params;
+  const { limit, page, include, filters } = params;
 
   const data = await sequelizeModel.findAndCountAll({
     limit: typeof limit === "number" ? limit : 15,
     offset: typeof page === "number" ? (page - 1) * limit : 0,
     include: include?.map((modelName) => ({ model: sequelize.models[modelName] })) || null,
+    where:
+      filters?.reduce((prev, curr) => {
+        prev[curr.id] = {
+          [Op.substring]: curr.value,
+        };
+        return prev;
+      }, {}) || {},
   });
 
   return {

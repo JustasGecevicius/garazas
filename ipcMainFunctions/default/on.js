@@ -46,13 +46,13 @@ ipcMain.on(CHANNELS.CREATE_BLOB, (_, modelName, data) => {
 });
 
 ipcMain.on(CHANNELS.UPDATE, (_, modelName, data) => {
-  if (typeof data !== 'object' || !data || !data?.id) return;
+  if (typeof data !== "object" || !data || !data?.id) return;
 
   try {
     const sequelizeModel = sequelize?.models?.[modelName];
     if (!sequelizeModel) return;
     sequelizeModel.update(data, { where: { id: data.id } });
   } catch (error) {
-    console.log('ERROR', error);
+    console.log("ERROR", error);
   }
 });

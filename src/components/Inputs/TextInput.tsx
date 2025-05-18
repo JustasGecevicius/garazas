@@ -1,14 +1,16 @@
-import { MutableRefObject, useEffect, useState } from "react";
+import { MutableRefObject, useCallback, useEffect, useMemo, useState } from "react";
+import { useEffectNoInitialTrigger } from "../../hooks/useEffectUtilityHooks";
 
 export type TextInputPropsType = {
   name: string;
   value?: string;
   dataRef?: MutableRefObject<{ [key: string]: any }>;
+  modificationCallback?: (value: string) => void;
   required?: boolean;
 };
 
 export function TextInput(props: TextInputPropsType) {
-  const { name, value: propValue, dataRef, required } = props;
+  const { name, value: propValue, dataRef, required, modificationCallback } = props;
   const [value, setValue] = useState(propValue || "");
 
   useEffect(() => {
@@ -22,6 +24,13 @@ export function TextInput(props: TextInputPropsType) {
   useEffect(() => {
     setValue(propValue || null);
   }, [propValue]);
+
+  const valueChangeCallback = useCallback(
+    () => (modificationCallback ? modificationCallback(value) : null),
+    [modificationCallback, value]
+  );
+
+  useEffectNoInitialTrigger(valueChangeCallback);
 
   return (
     <input
