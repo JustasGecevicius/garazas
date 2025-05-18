@@ -1,5 +1,5 @@
 import React, { MutableRefObject, useEffect, useMemo, useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 type VehicleTypeSelectProps = {
   dataRef: MutableRefObject<{ [key: string]: any }>;

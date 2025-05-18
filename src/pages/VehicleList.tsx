@@ -5,7 +5,7 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { selectVehicleListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";

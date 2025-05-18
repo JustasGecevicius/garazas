@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { EditCarType } from "../App";
 import { Info } from "../components/EditCarComponents/InfoSection/Info";
 import { CarPictures } from "../components/EditCarComponents/PicturesSection/CarPictures";

@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { CarCard } from "../components/carCard/CarCard";
 import { useSelector } from "react-redux";
 import { selectVehicleListRefetchToggle } from "../redux/slices/vehicleListRefetchSlice";
