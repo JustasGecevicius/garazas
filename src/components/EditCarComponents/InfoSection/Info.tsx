@@ -10,6 +10,7 @@ import { LabelledNumberInput } from "../../labeledInputs/LabelledNumberInput";
 type Props = {
   data: {
     make?: string;
+    name?: string;
     vinCode?: string;
     engineSize?: string;
     odometer?: string;

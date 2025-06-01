@@ -4,24 +4,26 @@ import type { ReactElement, ReactPortal } from "react";
 declare global {
   interface Window {
     delete: {
-      deleteVehicle: () => void;
-      deleteTask: () => void;
+      deleteVehicle: (id: number) => void;
+      deleteTask: (id: number) => void;
     };
     create: {
-      createVehicle: () => void;
-      createTask: () => void;
+      createVehicle: (x: any) => void;
+      createTask: (x: any) => void;
+      createTaskPart: (x: any) => void;
     };
     update: {
-      updateVehicle: () => void;
-      updateTask: () => void;
+      updateVehicle: (data: any) => void;
+      updateTask: (data: any) => void;
+      updatePart: (data: any) => void;
     };
     select: {
-      selectVehicle: () => void;
-      selectTask: () => void;
+      selectVehicle: (id: number, params: { [x: string]: string | number }) => void;
+      selectTask: (id: number, params: { [x: string]: string | number }) => void;
       selectEngineSizeMeasurementType: () => Promise<any>;
       selectFuelType: () => Promise<any>;
       selectVehicleType: () => Promise<any>;
-      selectPaginatedVehicle: () => Promise<any>;
+      selectPaginatedVehicles: (params: { [x: string]: string | number }) => Promise<any>;
       selectPaginatedTasks: () => Promise<any>;
       selectAllVehicles: () => Promise<any>;
       selectAllTasks: () => Promise<any>;

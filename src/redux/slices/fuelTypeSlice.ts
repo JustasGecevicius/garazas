@@ -1,14 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 export type FuelType = {
-  id: number,
-  fuel_type: string,
-}
+  id: number;
+  fuelType: string;
+};
 
 const fuelTypeSlice = createSlice({
-  name: 'fuelTypeSlice',
-  initialState: {options: [] as FuelType[]},
+  name: "fuelTypeSlice",
+  initialState: { options: [] as FuelType[] },
   reducers: {
     initialiseFuelType: (state, action) => {
       state.options = action.payload;

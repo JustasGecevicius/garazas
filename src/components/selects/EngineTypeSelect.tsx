@@ -12,6 +12,10 @@ export function EngineSizeMeasurementTypeSelect(props: EngineSizeMeasurementType
   const [selectedEngineSize, setSelectedEngineSize] = useState<string>(propsValue || "");
   const engineSizes = useSelector(selectEngineSizeMeasurementType);
 
+  useEffect(() => {
+    console.log("EngineSizes", engineSizes);
+  }, [engineSizes]);
+
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedEngineSize(event.target.value);
   };

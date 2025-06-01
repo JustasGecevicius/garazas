@@ -5,12 +5,26 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { camelCase } from "lodash";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ARRAY } from "../../functions/fetch/defaults";
 
 const columnHelper = createColumnHelper();
 
-export function PartsList(props) {
+type PartsListProps = {
+  parts: {
+    id: string;
+    EngineSizeMeasurementType?: string;
+    FuelType?: string;
+    VehicleType?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    techInspectionDueDate?: string;
+    fabricationYear?: string;
+    [key: string]: any; // Allow other properties
+  }[]; // CHECK IF THE TYPE IS CORRECT
+};
+
+export function PartsList(props: PartsListProps) {
   const { parts } = props;
 
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
@@ -41,7 +55,7 @@ export function PartsList(props) {
     return normalCols;
   }, [parts]);
 
-  const table = useReactTable({
+  const table = useReactTable<PartsListProps["parts"][number]>({
     data: parts || ARRAY,
     columns: columns || ARRAY,
     getCoreRowModel: getCoreRowModel(),

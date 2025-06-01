@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { TaskCreationModal } from "../modals/TaskCreationModal";
 
 type PropsType = {
-  vehicleId?: string;
+  vehicleId?: number;
 };
 
 export function AddNewTaskButton({ vehicleId }: PropsType) {

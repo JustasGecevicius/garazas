@@ -1,15 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 export type EngineSizeMeasurementType = {
-  id: number,
-  measurement_unit: string,
-  conversion_to_litre: number,
-}
+  id: number;
+  measurement_unit: string;
+  conversion_to_litre: number;
+  engineSizeMeasurementType: string;
+};
 
 const engineSizeMeasurementTypeSlice = createSlice({
-  name: 'engineSizeMeasurementTypeSlice',
-  initialState: {options: [] as EngineSizeMeasurementType[]},
+  name: "engineSizeMeasurementTypeSlice",
+  initialState: { options: [] as EngineSizeMeasurementType[] },
   reducers: {
     initialiseEngineTypes: (state, action) => {
       state.options = action.payload;
@@ -20,4 +21,5 @@ const engineSizeMeasurementTypeSlice = createSlice({
 export const { initialiseEngineTypes } = engineSizeMeasurementTypeSlice.actions;
 export default engineSizeMeasurementTypeSlice.reducer;
 
-export const selectEngineSizeMeasurementType = (state: RootState) => state.engineSizeMeasurementType;
+export const selectEngineSizeMeasurementType = (state: RootState) =>
+  state.engineSizeMeasurementType;

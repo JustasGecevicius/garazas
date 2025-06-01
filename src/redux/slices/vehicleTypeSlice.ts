@@ -1,14 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 export type VehicleType = {
-  id: number,
-  vehicle_type: string,
-}
+  id: number;
+  vehicleType: string;
+};
 
 const vehicleTypeSlice = createSlice({
-  name: 'vehicleTypeSlice',
-  initialState: {options: [] as VehicleType[]},
+  name: "vehicleTypeSlice",
+  initialState: { options: [] as VehicleType[] },
   reducers: {
     initialiseVehicleType: (state, action) => {
       state.options = action.payload;

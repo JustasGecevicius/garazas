@@ -12,6 +12,10 @@ export function FuelTypeSelect(props: PropsType) {
   const [selectedFuelType, setSelectedFuelType] = useState<string>(propsValue || "");
   const fuelTypes = useSelector(selectFuelType);
 
+  useEffect(() => {
+    console.log("FuelTypes", fuelTypes);
+  }, [fuelTypes]);
+
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedFuelType(event.target.value);
   };

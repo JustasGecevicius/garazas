@@ -4,7 +4,16 @@ import { useMemo, useState } from "react";
 import { ARRAY, columnHelper } from "../../functions/fetch/defaults";
 import { IndeterminateCheckbox } from "../checkbox/Checkbox";
 
-export function SimpleList(props) {
+type SimpleListPropsType = {
+  elements: {
+    id: string;
+    [key: string]: any; // Allow other properties
+  }[];
+  keysToShow?: string[];
+  handleDelete: (id: string) => void;
+};
+
+export function SimpleList(props: SimpleListPropsType) {
   const { elements, keysToShow, handleDelete } = props;
 
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });

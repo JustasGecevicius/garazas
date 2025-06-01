@@ -2,7 +2,7 @@ import { useEffect, useId } from "react";
 
 type FieldProps = { name?: string; data?: string };
 
-type Props = { data: { date: string; note: string }; onClick: () => void };
+type Props = { data: { date: string; note: string }; onClick: (x: Props["data"]) => void };
 
 function TaskHistoryField(props: FieldProps) {
   const id = useId();
@@ -30,10 +30,6 @@ export function TaskHistoryItem(props: Props) {
     e.preventDefault();
     onClick(data);
   }
-
-  useEffect(() => {
-    console.log("DATA", data);
-  }, [data]);
 
   return (
     <div className="p-2 rounded-md outline outline-white" onClick={handleClick}>

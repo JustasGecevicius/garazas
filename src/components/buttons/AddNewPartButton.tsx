@@ -3,7 +3,7 @@ import { TaskCreationModal } from "../modals/TaskCreationModal";
 import { PartCreationModal } from "../modals/PartCreationModal";
 
 type PropsType = {
-  vehicleId?: string;
+  taskId?: number;
 };
 
 export function AddNewPartButton({ taskId }: PropsType) {

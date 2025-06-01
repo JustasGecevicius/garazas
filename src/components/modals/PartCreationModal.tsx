@@ -1,7 +1,6 @@
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { BaseModalWrapper } from "./BaseModalWrapper";
 import { useDispatch } from "react-redux";
-import { toggleTaskListRefetchState } from "../../redux/slices/vehicleListRefetchSlice";
 import { TextInput } from "../Inputs/TextInput";
 import { togglePartListRefetchState } from "../../redux/slices/partListRefetchSlice";
 import { NumberInput } from "../Inputs/NumberInput";
@@ -10,19 +9,17 @@ type PropsType = {
   openRef: MutableRefObject<() => void>;
   closeRef: MutableRefObject<() => void>;
   id?: number;
-  part?: {
-    id?: number;
-    vehicle?: number;
-    note?: string;
-    date?: string;
-  };
+  part?: { TaskId?: number };
 };
 
 export function PartCreationModal(props: PropsType) {
   const { closeRef, openRef, part } = props;
 
   const dataRef = useRef<{ [key: string]: any }>(part || {});
-  const [value, setValue] = useState(part);
+  const [value, setValue] =
+    useState<
+      Partial<{ TaskId?: number; name?: string; price?: string; installTime?: string; id?: number }>
+    >(part);
 
   const [modalKey, setModalKey] = useState(() => Math.random());
 
